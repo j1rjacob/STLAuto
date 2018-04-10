@@ -1,8 +1,11 @@
 ﻿using ExcelLibrary.SpreadSheet;
 using OfficeOpenXml;
+using STL_Auto.Helpers;
 using System;
 using System.IO;
 using System.Windows.Forms;
+using Workbook = ExcelLibrary.SpreadSheet.Workbook;
+using Worksheet = ExcelLibrary.SpreadSheet.Worksheet;
 
 namespace STL_Auto
 {
@@ -43,7 +46,6 @@ namespace STL_Auto
                     excelPackage.Save();
                     Console.WriteLine("Done");
                 }
-
             }
         }
 
@@ -91,6 +93,60 @@ namespace STL_Auto
             Worksheet sheet = book.Worksheets[0];
             sheet.Cells[25, 14] = new Cell("Test from junar");
             book.Save(file);
+        }
+
+        private void ButtonCompute_Click(object sender, EventArgs e)
+        {
+            var fileinfo = new FileInfo(@"E:\MaskRider\FormsTemplate\Gosi.xlsx");
+            if (fileinfo.Exists)
+            {
+                using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+                {
+                    ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
+                    var x = excelWorksheet.ToDataTable(true);
+                    dataGridView1.DataSource = x;
+                    Console.WriteLine("Done");
+                }
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+            //var denominations = new[]
+            //{
+            //    500m, 200m, 100m, 50m, 20m, 10m, 5m, 2m, 1m,
+            //    0.5m, 0.2m, 0.1m, 0.05m, 0.02m, 0.01m
+            //};
+
+            //var amount = Convert.ToDecimal(Console.ReadLine());
+
+            //var change = new List<decimal>();
+            //var remaining = amount;
+            //foreach (var denomination in denominations)
+            //{
+            //    while (remaining >= denomination)
+            //    {
+            //        remaining -= denomination;
+            //        change.Add(denomination);
+            //    }
+            //}
+
+            //var display =
+            //    String.Join(
+            //        Environment.NewLine,
+            //        change
+            //            .GroupBy(x => x)
+            //            .Select(x => String.Format("{0}x{1}", x.Count(), x.Key)));
+
+            Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
+            excelApp.Visible = false;
+
+            Microsoft.Office.Interop.Excel.Workbook eWorkbook = excelApp.Workbooks.Open(@"E:\MaskRider\feb 2018 payroll.xls", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+            eWorkbook.SaveAs(@"E:\MaskRider\feb 2018payroll.xlsx", Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+            eWorkbook.Close(false, Type.Missing, Type.Missing);
         }
     }
 }
