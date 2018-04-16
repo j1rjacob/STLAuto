@@ -13,9 +13,8 @@ namespace STL_Auto
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
-            //Application.Run(new FormAuto());
-           
+            //Application.Run(new FormMain());
+            Application.Run(new FormAuto());
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ExcelLibrary.SpreadSheet;
 using OfficeOpenXml;
 using STL_Auto.Helpers;
+using STL_Auto.Util;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -31,22 +32,30 @@ namespace STL_Auto
             //{
             //    MessageBox.Show("Import was not successful");
             //}
-            
-            var fileinfo = new FileInfo(@"E:\MaskRider\FormsTemplate\Gosi.xlsx");
-            if (fileinfo.Exists)
-            {
-                using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
-                {
-                    //ExcelWorkbook excelWorkBook = excelPackage.Workbook;
-                    ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
-                    excelWorksheet.Cells["O142"].Value = "Test";
-                    //excelWorksheet.Cells[3, 2].Value = "Test2";
-                    //excelWorksheet.Cells[3, 3].Value = "Test3";
 
-                    excelPackage.Save();
-                    Console.WriteLine("Done");
-                }
+            //var fileinfo = new FileInfo(@"E:\MaskRider\FormsTemplate\Gosi.xlsx");
+            //if (fileinfo.Exists)
+            //{
+            //    using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+            //    {
+            //        //ExcelWorkbook excelWorkBook = excelPackage.Workbook;
+            //        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
+            //        excelWorksheet.Cells["O142"].Value = "Test";
+            //        //excelWorksheet.Cells[3, 2].Value = "Test2";
+            //        //excelWorksheet.Cells[3, 3].Value = "Test3";
+
+            //        excelPackage.Save();
+            //        Console.WriteLine("Done");
+            //    }
+            //}
+
+            OpenFileDialogExcel.Filter = "Excel files|*.xls;*.xlsx;*.xlsm";
+            DialogResult result = OpenFileDialogExcel.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                TextBoxFiles.Text = OpenFileDialogExcel.FileName;
             }
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -112,7 +121,6 @@ namespace STL_Auto
 
         private void button3_Click(object sender, EventArgs e)
         {
-
             //var denominations = new[]
             //{
             //    500m, 200m, 100m, 50m, 20m, 10m, 5m, 2m, 1m,
@@ -139,14 +147,18 @@ namespace STL_Auto
             //            .GroupBy(x => x)
             //            .Select(x => String.Format("{0}x{1}", x.Count(), x.Key)));
 
-            Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
-            excelApp.Visible = false;
+            var filename = Path.GetFileNameWithoutExtension(OpenFileDialogExcel.SafeFileName);
+            string currentDirectory = Path.GetDirectoryName(OpenFileDialogExcel.FileName);
+            string filePath = Path.GetFullPath(currentDirectory);
 
-            Microsoft.Office.Interop.Excel.Workbook eWorkbook = excelApp.Workbooks.Open(@"E:\MaskRider\feb 2018 payroll.xls", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-
-            eWorkbook.SaveAs(@"E:\MaskRider\feb 2018payroll.xlsx", Microsoft.Office.Interop.Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-
-            eWorkbook.Close(false, Type.Missing, Type.Missing);
+            if (ExcelConvert.ConvertXlsx(filename, filePath))
+            {
+                TextBoxFiles.Text = filePath + "\\" + filename + ".xlsx";
+            }
+            else
+            {
+                MessageBox.Show("Invalid file");
+            }
         }
     }
 }

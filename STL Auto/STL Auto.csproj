@@ -79,6 +79,7 @@
     <Compile Include="Services\ConnectionString.cs" />
     <Compile Include="Services\DataTableUtil.cs" />
     <Compile Include="Services\MakeTable.cs" />
+    <Compile Include="Util\ExcelConvert.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
