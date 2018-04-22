@@ -4,9 +4,9 @@ using System.Data.OleDb;
 
 namespace STL_Auto.Helpers
 {
-    public static class ExcelDataTable
+    public class ExcelDataTable
     {
-        public static DataTable GetDataTable(this string ConnString, string table)
+        public DataTable GetDataTable(string ConnString, string table)
         {
             OleDbConnection objConn = new OleDbConnection();
             OleDbDataAdapter da = new OleDbDataAdapter();

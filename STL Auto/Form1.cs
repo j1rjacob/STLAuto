@@ -1,9 +1,9 @@
 ﻿using ExcelLibrary.SpreadSheet;
 using OfficeOpenXml;
-using STL_Auto.Helpers;
 using STL_Auto.Util;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Workbook = ExcelLibrary.SpreadSheet.Workbook;
 using Worksheet = ExcelLibrary.SpreadSheet.Worksheet;
@@ -112,7 +112,7 @@ namespace STL_Auto
                 using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
                 {
                     ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
-                    var x = excelWorksheet.ToDataTable(true);
+                    var x = new Helpers.Util().ToDataTable(excelWorksheet,true);
                     dataGridView1.DataSource = x;
                     Console.WriteLine("Done");
                 }
@@ -151,7 +151,7 @@ namespace STL_Auto
             string currentDirectory = Path.GetDirectoryName(OpenFileDialogExcel.FileName);
             string filePath = Path.GetFullPath(currentDirectory);
 
-            if (ExcelConvert.ConvertXlsx(filename, filePath))
+            if (new ExcelConvert().ConvertXlsx(filename, filePath))
             {
                 TextBoxFiles.Text = filePath + "\\" + filename + ".xlsx";
             }
@@ -159,6 +159,37 @@ namespace STL_Auto
             {
                 MessageBox.Show("Invalid file");
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //MessageBox.Show(EmployeeIdNo.CheckMatch("2001458797").ToString());
+            //var xs =  WorkSheetName.Get(@"E:\MaskRider\mahmoud\gosi march.xlsx");
+            //foreach (var x in xs)
+            //{
+            //    Console.WriteLine(x.ToString());
+            //}
+            try
+            {
+                var fileinfo = new FileInfo("E:\\MaskRider\\mahmoud\\LATEST UPDATE PAYROLL\\BIG SALARIES ORIGINAL - UPDATED  April 02,2018.xlsx");
+                if (fileinfo.Exists)
+                {
+                    using (var package = new ExcelPackage(fileinfo))
+                    {
+                        var ys = package.Workbook.Worksheets.Select(x => x.Name);
+                        foreach (var y in ys)
+                        {
+                            Console.WriteLine(y);
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+            
         }
     }
 }

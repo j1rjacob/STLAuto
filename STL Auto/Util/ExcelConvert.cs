@@ -4,7 +4,7 @@ namespace STL_Auto.Util
 {
     public class ExcelConvert
     {
-        public static bool ConvertXlsx(string filename, string filePath)
+        public bool ConvertXlsx(string filename, string filePath)
         {
             try
             {

@@ -1,8 +1,8 @@
 ﻿namespace STL_Auto.Services
 {
-    public static class ConnectionString
+    public class ConnectionString
     {
-        public static string GetConnectionString(this string fileExtension, string Path)
+        public string GetConnectionString(string fileExtension, string Path)
         {
             switch (fileExtension.ToUpper())
             {

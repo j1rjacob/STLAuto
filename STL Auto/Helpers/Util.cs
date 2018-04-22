@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace STL_Auto.Helpers
 {
-    public static class Util
+    public class Util
     {
-        public static DataTable GetDataTableFromExcel(string path)
+        public DataTable GetDataTableFromExcel(string path)
         {
             using (var pck = new OfficeOpenXml.ExcelPackage())
             {
@@ -37,7 +37,7 @@ namespace STL_Auto.Helpers
             }
         }
 
-        public static DataTable ToDataTable(this ExcelWorksheet ws, bool hasHeaderRow = true)
+        public DataTable ToDataTable(ExcelWorksheet ws, bool hasHeaderRow = true)
         {
             var tbl = new DataTable();
             foreach (var firstRowCell in ws.Cells[1, 1, 1, ws.Dimension.End.Column])

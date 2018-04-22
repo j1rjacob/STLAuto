@@ -43,13 +43,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.buttonGosi = new System.Windows.Forms.Button();
             this.textBoxGosi = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBoxTblBig = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonBig = new System.Windows.Forms.Button();
             this.textBoxBig = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.TextBoxCol = new System.Windows.Forms.TextBox();
             this.TextBoxPaymentDescription = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -64,8 +60,6 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.textBoxEmpId = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -196,24 +190,6 @@
             this.textBoxGosi.TabIndex = 18;
             this.textBoxGosi.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(449, 88);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(148, 13);
-            this.label6.TabIndex = 28;
-            this.label6.Text = "Big Salaries Worksheet Name";
-            // 
-            // textBoxTblBig
-            // 
-            this.textBoxTblBig.Location = new System.Drawing.Point(416, 105);
-            this.textBoxTblBig.Name = "textBoxTblBig";
-            this.textBoxTblBig.Size = new System.Drawing.Size(184, 20);
-            this.textBoxTblBig.TabIndex = 27;
-            this.textBoxTblBig.Text = "Payroll Information";
-            this.textBoxTblBig.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -241,24 +217,6 @@
             this.textBoxBig.Size = new System.Drawing.Size(184, 20);
             this.textBoxBig.TabIndex = 24;
             this.textBoxBig.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(525, 136);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(78, 13);
-            this.label7.TabIndex = 30;
-            this.label7.Text = "Emp Id Column";
-            // 
-            // TextBoxCol
-            // 
-            this.TextBoxCol.Location = new System.Drawing.Point(520, 153);
-            this.TextBoxCol.Name = "TextBoxCol";
-            this.TextBoxCol.Size = new System.Drawing.Size(79, 20);
-            this.TextBoxCol.TabIndex = 29;
-            this.TextBoxCol.Text = "B";
-            this.TextBoxCol.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // TextBoxPaymentDescription
             // 
@@ -386,24 +344,6 @@
             this.textBox5.Text = "N";
             this.textBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(235, 136);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(78, 13);
-            this.label15.TabIndex = 42;
-            this.label15.Text = "Emp Id Column";
-            // 
-            // textBoxEmpId
-            // 
-            this.textBoxEmpId.Location = new System.Drawing.Point(235, 153);
-            this.textBoxEmpId.Name = "textBoxEmpId";
-            this.textBoxEmpId.Size = new System.Drawing.Size(79, 20);
-            this.textBoxEmpId.TabIndex = 41;
-            this.textBoxEmpId.Text = "E";
-            this.textBoxEmpId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // FormAuto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -413,8 +353,6 @@
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.label15);
-            this.Controls.Add(this.textBoxEmpId);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.label11);
@@ -425,10 +363,6 @@
             this.Controls.Add(this.textBoxNetPayCol);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.TextBoxPaymentDescription);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.TextBoxCol);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.textBoxTblBig);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.buttonBig);
             this.Controls.Add(this.textBoxBig);
@@ -472,13 +406,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonGosi;
         private System.Windows.Forms.TextBox textBoxGosi;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBoxTblBig;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonBig;
         private System.Windows.Forms.TextBox textBoxBig;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox TextBoxCol;
         private System.Windows.Forms.TextBox TextBoxPaymentDescription;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
@@ -493,7 +423,5 @@
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox textBoxEmpId;
     }
 }

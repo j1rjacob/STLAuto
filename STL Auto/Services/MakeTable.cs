@@ -3,9 +3,9 @@ using System.Data;
 
 namespace STL_Auto.Services
 {
-    public static class MakeTable
+    public class MakeTable
     {
-        public static DataTable BigSalaries()
+        public DataTable BigSalaries()
         {
             DataTable newBigSalaries = new DataTable("TableBigSalaries");
 
