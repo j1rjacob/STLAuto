@@ -6,6 +6,7 @@ using STL_Auto.Util;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -17,6 +18,8 @@ namespace STL_Auto
         public FormAuto()
         {
             InitializeComponent();
+            //Application.CurrentCulture = new CultureInfo("ar-SA");
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("ar-SA");
         }
 
         private void buttonPayroll_Click(object sender, EventArgs e)
@@ -106,7 +109,7 @@ namespace STL_Auto
 
             foreach (var ct in cts)
             {
-                if (ct.ColoumnCount <= 13)
+                if (ct.ColoumnCount >= 13)
                 {
                     dtBig = ct.Table;
                     break;
@@ -140,6 +143,8 @@ namespace STL_Auto
                 }
             }
 
+            dataGridView2.DataSource = dtGosi;
+
             var empIdIndexGosi = GetGosiEmpIdColumn(dtGosi);
             var batchNoIndexGosi = GetGosiBatchNoColumn(dtGosi);
             var aestheticIndexGosi = GetGosiAestheticColumn(dtGosi);
@@ -154,21 +159,20 @@ namespace STL_Auto
             {
                 if (Int64.TryParse(dr[empIdIndexGosi].ToString().Trim(), out emplIdValueGosi))
                 {
-                    
-                    DataRow[] row = dtBigSalaries.Select("Iqama ='" + emplIdValueGosi + "'");
+                    DataRow row = dtBigSalaries.Select("Iqama ='" + emplIdValueGosi + "'").FirstOrDefault();
+
                     if (row != null)
                     {
-                        row[0]["BatchNo"] = dr[batchNoIndexGosi];
-                        row[0]["Aesthetic"] = Convert.ToDecimal(dr[aestheticIndexGosi]);
-                        row[0]["BasicSalary"] = Convert.ToDecimal(dr[basicSalaryIndexGosi]);
-                        row[0]["HousingAllowance"] = Convert.ToDecimal(dr[housingAllowanceIndexGosi]);
-                        row[0]["OtherEarnings"] = Convert.ToDecimal(dr[otherEarningsIndexGosi]);
+                        row["BatchNo"] = dr[aestheticIndexGosi].ToString();
+                        row["Aesthetic"] = Convert.ToDecimal(dr[aestheticIndexGosi]);
+                        row["BasicSalary"] = Convert.ToDecimal(dr[basicSalaryIndexGosi]);
+                        row["HousingAllowance"] = Convert.ToDecimal(dr[housingAllowanceIndexGosi]);
+                        row["OtherEarnings"] = Convert.ToDecimal(dr[otherEarningsIndexGosi]);
 
-                        Console.WriteLine($"{row[0]["BatchNo"]}, {row[0]["Aesthetic"]}, {row[0]["BasicSalary"]}, {row[0]["HousingAllowance"]}, {row[0]["OtherEarnings"]}");
+                        //Console.WriteLine($"{row["BatchNo"]}, {row["Aesthetic"]}, {row["BasicSalary"]}, {row["HousingAllowance"]}, {row["OtherEarnings"]}");
 
                         dtBigSalaries.AcceptChanges();
                     }
-
                 }
             }
             #endregion
@@ -213,7 +217,6 @@ namespace STL_Auto
             //        }
             //    }
             //}
-
             #endregion
 
             //dataGridView1.DataSource = dtBigSalaries;
@@ -238,88 +241,83 @@ namespace STL_Auto
             return columnNum;
         }
 
-        private int GetGosiAestheticColumn(DataTable dTable)
+        private int GetGosiAestheticColumn()
         {
             int columnNum = 0;
-            foreach (DataRow dr in dTable.Rows)
+            
+            foreach (DataGridViewColumn column in dataGridView2.Columns)
             {
-                for (int i = 0; i < dTable.Columns.Count; i++)
+                if (column.HeaderText == "الجمالي بعد البدلات")
                 {
-                    if (dr[i].ToString().Trim() == "الرقم الوظيفي بالمنشأة")
-                    {
-                        columnNum = i;
-                        break;
-                    }
+                    columnNum = column.Index;
+                    break;
                 }
             }
+
             return columnNum;
         }
 
-        private int GetGosiBatchNoColumn(DataTable dTable)
+        private int GetGosiBatchNoColumn()
         {
             int columnNum = 0;
-            foreach (DataRow dr in dTable.Rows)
+            
+            foreach (DataGridViewColumn column in dataGridView2.Columns)
             {
-                for (int i = 0; i < dTable.Columns.Count; i++)
+                if (column.HeaderText == "الرقم الوظيفي بالمنشأة")
                 {
-                    if (dr[i].ToString().Trim() == "الجمالي بعد البدلات")
-                    {
-                        columnNum = i;
-                        break;
-                    }
+                    columnNum = column.Index;
+                    break;
                 }
             }
+
             return columnNum;
         }
 
-        private int GetGosiBasicSalaryColumn(DataTable dTable)
+        private int GetGosiBasicSalaryColumn()
         {
             int columnNum = 0;
-            foreach (DataRow dr in dTable.Rows)
+            
+            foreach (DataGridViewColumn column in dataGridView2.Columns)
             {
-                for (int i = 0; i < dTable.Columns.Count; i++)
+                if (column.HeaderText == "الأجر الأساسي")
                 {
-                    if (dr[i].ToString().Trim() == "الأجر الأساسي")
-                    {
-                        columnNum = i;
-                        break;
-                    }
+                    columnNum = column.Index;
+                    break;
                 }
             }
+
             return columnNum;
         }
 
-        private int GetHousingAllowanceColumn(DataTable dTable)
+        private int GetHousingAllowanceColumn()
         {
             int columnNum = 0;
-            foreach (DataRow dr in dTable.Rows)
+            
+            foreach (DataGridViewColumn column in dataGridView2.Columns)
             {
-                for (int i = 0; i < dTable.Columns.Count; i++)
+                if (column.HeaderText == "بدل السكن الشهري")
                 {
-                    if (dr[i].ToString().Trim() == "بدل السكن الشهري")
-                    {
-                        columnNum = i;
-                        break;
-                    }
+                    columnNum = column.Index;
+                    break;
                 }
             }
+
             return columnNum;
         }
 
-        private int GetOtherEarningsColumn(DataTable dTable)
+        private int GetOtherEarningsColumn()
         {
             int columnNum = 0;
-            foreach (DataRow dr in dTable.Rows)
+            
+            foreach (DataGridViewColumn column in dataGridView2.Columns)
             {
-                for (int i = 0; i < dTable.Columns.Count; i++)
+                if (column.HeaderText == "بدلات أخرى")
                 {
-                    if (dr[i].ToString().Trim() == "بدلات أخرى")
-                    {
-                        columnNum = i;
-                        break;
-                    }
+                    columnNum = column.Index;
+                    break;
                 }
             }
+
             return columnNum;
         }
 

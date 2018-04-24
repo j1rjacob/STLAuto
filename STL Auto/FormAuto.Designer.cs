@@ -60,7 +60,9 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // statusStrip
@@ -128,6 +130,7 @@
             this.textBoxPayroll.Name = "textBoxPayroll";
             this.textBoxPayroll.Size = new System.Drawing.Size(184, 20);
             this.textBoxPayroll.TabIndex = 6;
+            this.textBoxPayroll.Text = "E:\\MaskRider\\mahmoud\\march 2018 payroll.xlsx";
             this.textBoxPayroll.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label5
@@ -188,6 +191,7 @@
             this.textBoxGosi.Name = "textBoxGosi";
             this.textBoxGosi.Size = new System.Drawing.Size(184, 20);
             this.textBoxGosi.TabIndex = 18;
+            this.textBoxGosi.Text = "E:\\MaskRider\\mahmoud\\gosi march.xlsx";
             this.textBoxGosi.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label3
@@ -216,6 +220,8 @@
             this.textBoxBig.Name = "textBoxBig";
             this.textBoxBig.Size = new System.Drawing.Size(184, 20);
             this.textBoxBig.TabIndex = 24;
+            this.textBoxBig.Text = "E:\\MaskRider\\mahmoud\\LATEST UPDATE PAYROLL\\BIG SALARIES ORIGINAL - UPDATED  April" +
+    " 02,2018.xlsx";
             this.textBoxBig.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // TextBoxPaymentDescription
@@ -344,11 +350,22 @@
             this.textBox5.Text = "N";
             this.textBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(424, 248);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView2.Size = new System.Drawing.Size(159, 112);
+            this.dataGridView2.TabIndex = 47;
+            this.dataGridView2.Visible = false;
+            // 
             // FormAuto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(610, 632);
+            this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.label14);
@@ -386,6 +403,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Excel Auto Big Salary";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -423,5 +441,6 @@
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.DataGridView dataGridView2;
     }
 }

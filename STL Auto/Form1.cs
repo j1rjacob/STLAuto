@@ -4,6 +4,7 @@ using STL_Auto.Util;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using Workbook = ExcelLibrary.SpreadSheet.Workbook;
 using Worksheet = ExcelLibrary.SpreadSheet.Worksheet;
@@ -190,6 +191,19 @@ namespace STL_Auto
                 throw;
             }
             
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            // Characters a α à¤•   
+            string a = "الرقم الوظيفي بالمنشأة";
+            byte[] name = Encoding.UTF8.GetBytes(a);
+            foreach (var n in name)
+            {
+                Console.WriteLine(n);
+            }
+            // Just for sake of pausing  
+            //Console.Read();
         }
     }
 }
