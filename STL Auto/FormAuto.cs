@@ -138,7 +138,6 @@ namespace STL_Auto
                 }
             }
             
-            Dictionary<string, string> employeeId = new Dictionary<string, string>();
             foreach (DataRow dr in dtBig.Rows)
             {
                 for (int i = 0; i < dtBig.Columns.Count; i++)
@@ -164,6 +163,8 @@ namespace STL_Auto
                     break;
                 }
             }
+
+            dataGridView3.DataSource = dtSmall;
             
             foreach (DataRow dr in dtSmall.Rows)
             {
@@ -172,7 +173,7 @@ namespace STL_Auto
                     if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
                     {
                         dtSmallSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i-3].ToString().Trim(), 0m, 0m, 0m, 0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString());
-                        Console.WriteLine($"{dr[i].ToString().Trim()} {dr[i - 3].ToString().Trim()} {dtSmall.Rows.IndexOf(dr).ToString()}");
+                        //Console.WriteLine($"{dr[i].ToString().Trim()} {dr[i - 3].ToString().Trim()} {dtSmall.Rows.IndexOf(dr).ToString()}");
                         //dtSmallSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i-5].ToString().Trim(), 0m, 0m, 0m, 0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString());
                         break;
                     }
@@ -343,7 +344,7 @@ namespace STL_Auto
             #endregion
 
             dataGridView1.DataSource = dtSmallSalaries;
-            var salaryAmountSmall = GetSSalariesSalaryAmntColumn(dtSmall);
+            var salaryAmountSmall = GetSSalariesSalaryAmntColumn();
 
             UpdateSmallSalaries(dtSmallSalaries, textBoxSmall.Text, salaryAmountSmall + 1);
         }
@@ -513,20 +514,19 @@ namespace STL_Auto
             return columnNum;
         }
 
-        private int GetSSalariesSalaryAmntColumn(DataTable dTable)
+        private int GetSSalariesSalaryAmntColumn()
         {
-            int columnNum = 0;
-            foreach (DataRow dr in dTable.Rows)
+            int columnNum = 0; 
+
+            foreach (DataGridViewColumn column in dataGridView3.Columns)
             {
-                for (int i = 0; i < dTable.Columns.Count; i++)
+                if (column.HeaderText == "Salary_Amount")
                 {
-                    if (dr[i].ToString().Trim() == "Salary_Amount")
-                    { 
-                        columnNum = i;
-                        break;
-                    }
+                    columnNum = column.Index;
+                    break;
                 }
             }
+
             return columnNum;
         }
 
@@ -543,6 +543,7 @@ namespace STL_Auto
                         ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
                         foreach (DataRow dr in dt.Rows)
                         {
+                            var i = 0;
                             if (Int64.TryParse(dr[0].ToString().Trim(), out value))
                             {
                                 DataRow[] row = dt.Select("Iqama ='" + dr[0] + "'");
@@ -565,11 +566,42 @@ namespace STL_Auto
                                 excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol+6].Value = "Riyadh";
                                 excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol+7].Value = "Riyadh";
                                 excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol+8].Value = "Riyadh";
+
+                                //#region PAYROLLPROOF
+                                //var fileinfo1 = new FileInfo(@"E:\MaskRider\App\STL Auto\STL Auto\bin\Debug\Template\PayrollProof.xlsx");
+                                //if (fileinfo.Exists)
+                                //{
+                                //    using (ExcelPackage excelPackage1 = new ExcelPackage(fileinfo))
+                                //    {
+                                //        ExcelWorksheet excelWorksheet1 = excelPackage.Workbook.Worksheets[1];
+                                //        excelWorksheet1.InsertRow(9 + i, 1);
+                                        
+                                //        var modelCells = excelWorksheet1.Cells["D1"];
+                                //        var modelRows = 10;
+                                //        string modelRange = "A9:N" + modelRows;
+                                //        var modelTable = excelWorksheet1.Cells[modelRange];
+
+                                //        // Assign borders
+                                //        modelTable.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                                //        modelTable.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                                //        modelTable.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                                //        modelTable.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                                //        excelWorksheet.Cells[9 + i, 5].Value = row[0]["Bank"];
+
+                                //        excelPackage1.Save();
+                                //    }
+                                    
+                                //}
+                                //#endregion
                             }
+                            //i++;
                         }
                         excelPackage.Save();
                     }
                 }
+
+                DeleteZeroBigRows(xPath);
             }
             catch (Exception ex)
             {
@@ -588,17 +620,26 @@ namespace STL_Auto
                     {
                         Int64 value;
                         ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[2];
+                        decimal tot = 0m;
+                        int rowNum =0;
                         foreach (DataRow dr in dt.Rows)
                         {
                             if (Int64.TryParse(dr[1].ToString().Trim(), out value))
                             {
                                 DataRow[] row = dt.Select("BatchNo ='" + dr[1] + "'");
-                                excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol + 7].Value = row[0]["Payroll"];
+                                excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol].Value = row[0]["Payroll"];
+                                excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol +1].Value = TextBoxPaymentDescription.Text;
+                                tot += Convert.ToDecimal(row[0]["Payroll"]);
+                                rowNum = Convert.ToInt32(row[0]["RowNum"]);
                             }
                         }
+                        excelWorksheet.Cells[rowNum + 4, salaryAmntCol].Value = tot;
+
                         excelPackage.Save();
                     }
                 }
+
+                DeleteZeroSmallRows(xPath);
             }
             catch (Exception ex)
             {
@@ -643,7 +684,7 @@ namespace STL_Auto
                 {
                     using (var package = new ExcelPackage(fileinfo))
                     {
-                        package.Workbook.Worksheets.Add("Halla");
+                        package.Workbook.Worksheets.Add("Halla"); //WorkAround for list...
                         var ws = package.Workbook.Worksheets.Select(x => x.Name);
                         foreach (var sheet in ws)
                         {
@@ -659,6 +700,48 @@ namespace STL_Auto
                 throw;
             }
             return wsName;
+        }
+
+        private void DeleteZeroBigRows(string xpath)
+        {
+            var fileinfo = new FileInfo(xpath);
+            if (fileinfo.Exists)
+            {
+                using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+                {
+                    ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
+                    excelWorksheet.Cells
+                        .Where(cell =>
+                            cell.Address.StartsWith("F")
+                            && cell.Value is double
+                            && (double)cell.Value == 00d)
+                        .Select(cell => cell.Start.Row)
+                        .ToList()
+                        .ForEach(r => excelWorksheet.Row(r).Hidden = true);
+                    excelPackage.Save();
+                }
+            }
+        }
+
+        private void DeleteZeroSmallRows(string xpath)
+        {
+            var fileinfo = new FileInfo(xpath);
+            if (fileinfo.Exists)
+            {
+                using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+                {
+                    ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[2];
+                    excelWorksheet.Cells
+                        .Where(cell =>
+                            cell.Address.StartsWith("H")
+                            && cell.Value is double
+                            && (double)cell.Value == 00d)
+                        .Select(cell => cell.Start.Row)
+                        .ToList()
+                        .ForEach(r => excelWorksheet.Row(r).Hidden = true);
+                    excelPackage.Save();
+                }
+            }
         }
     }
 }

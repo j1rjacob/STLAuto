@@ -1,7 +1,13 @@
 ﻿using ExcelLibrary.SpreadSheet;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using STL_Auto.Helpers;
+using STL_Auto.Models;
+using STL_Auto.Services;
 using STL_Auto.Util;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -205,5 +211,169 @@ namespace STL_Auto
             // Just for sake of pausing  
             //Console.Read();
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            var money = new Dictionary<string, Int32>();
+            var amount = Convert.ToInt32(329);
+
+            money.Add("500+", (int)amount/500);
+            amount %= 500;
+
+            money.Add("100+", (int)amount/100);
+            amount %= 100;
+
+            money.Add("50+", (int)amount/50);
+            amount %= 50;
+
+            money.Add("10+", (int)amount/10);
+            amount %= 10;
+
+            money.Add("5+", (int)amount/5);
+            amount %= 5;
+
+            money.Add("1+", (int)amount/1);
+
+            foreach (var m in money)
+            {
+                MessageBox.Show($"{m.Key} {m.Value}");
+            }
+        }
+        private void button7_Click(object sender, EventArgs e)
+        {
+            var fileinfo = new FileInfo(@"E:\MaskRider\App\STL Auto\STL Auto\bin\Debug\Template\PayrollProof.xlsx");
+            if (fileinfo.Exists)
+            {
+                using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+                {
+                    ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
+                    excelWorksheet.InsertRow(9, 15);
+                    var modelCells = excelWorksheet.Cells["D1"];
+                    var modelRows = 24;
+                    string modelRange = "A9:N" + modelRows;
+                    var modelTable = excelWorksheet.Cells[modelRange];
+
+                    // Assign borders
+                    modelTable.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    modelTable.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    modelTable.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    modelTable.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                    excelPackage.Save();
+                }
+            }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            //var dtBigSalaries = new MakeTable().BigSalaries();
+            //DataTable dtBig = null;
+
+            //var filePath = @"E:\MaskRider\mahmoud\LATEST UPDATE PAYROLL\BIG SALARIES ORIGINAL - UPDATED  April 02,2018.xlsx";
+            //var ctsB = GetDataTableData(GetWorkSheetName(filePath), filePath);
+
+            //foreach (var ct in ctsB)
+            //{
+            //    if (ct.ColoumnCount >= 13)
+            //    {
+            //        dtBig = ct.Table;
+            //        break;
+            //    }
+            //}
+
+            //foreach (DataRow dr in dtBig.Rows)
+            //{
+            //    for (int i = 0; i < dtBig.Columns.Count; i++)
+            //    {
+            //        if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
+            //        {
+            //            dtBigSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 1].ToString().Trim(), 0m, 0m, 0m, 0m, 0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString());
+            //            break;
+            //        }
+            //    }
+            //}
+
+            var fileinfo = new FileInfo(@"E:\MaskRider\mahmoud\LATEST UPDATE PAYROLL\Payroll 1189 format Org UPDATED April 01-2018 NEW.xlsx");
+            if (fileinfo.Exists)
+            {
+                using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+                {
+                    ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[2];
+                    //var sheet = excelPackage.Workbook.Worksheets[sheetname_orSheetIndex];
+                    excelWorksheet.Cells
+                        .Where(cell =>
+                            cell.Address.StartsWith("H")
+                            && cell.Value is double
+                            && (double)cell.Value == 00d)
+                        .Select(cell => cell.Start.Row)
+                        .ToList()
+                        .ForEach(r => excelWorksheet.Row(r).Hidden = true);
+
+                    //foreach (var o in objs)
+                    //{
+                    //    Console.WriteLine(o);
+                    //}
+
+                    //excelWorksheet.DeleteRow(1, 5, true);
+                    excelPackage.Save();
+                }
+            }
+        }
+
+        private List<CustomTable> GetDataTableData(List<string> workSheetName, string filePath)
+        {
+            var ct = new List<CustomTable>();
+            try
+            {
+                for (int i = 0; i < workSheetName.Count - 1; i++)
+                {
+                    var dtConnString =
+                        new ConnectionString()
+                            .GetConnectionString(Path.GetExtension(filePath), filePath);
+
+                    ct.Add(new CustomTable()
+                    {
+                        Table = new ExcelDataTable().GetDataTable(dtConnString, "[" + workSheetName[i] + "$]"),
+                        ColoumnCount = new ExcelDataTable().GetDataTable(dtConnString, "[" + workSheetName[i] + "$]").Columns.Count
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return ct;
+        }
+
+        private List<string> GetWorkSheetName(string path)
+        {
+            var wsName = new List<string>();
+            try
+            {
+                var fileinfo = new FileInfo(path);
+                if (fileinfo.Exists)
+                {
+                    using (var package = new ExcelPackage(fileinfo))
+                    {
+                        package.Workbook.Worksheets.Add("Halla"); //WorkAround for list...
+                        var ws = package.Workbook.Worksheets.Select(x => x.Name);
+                        foreach (var sheet in ws)
+                        {
+                            //Console.WriteLine(sheet);
+                            wsName.Add(sheet);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+            return wsName;
+        }
+
     }
 }
