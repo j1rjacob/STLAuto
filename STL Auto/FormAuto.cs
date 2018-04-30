@@ -257,7 +257,6 @@ namespace STL_Auto
                         row["BasicSalary"] = Convert.ToDecimal(dr[basicSalaryIndexGosi] == DBNull.Value ? 0 : dr[basicSalaryIndexGosi]);
                         row["HousingAllowance"] = Convert.ToDecimal(dr[housingAllowanceIndexGosi] ==  DBNull.Value ? 0 : dr[housingAllowanceIndexGosi]);
                         row["OtherEarnings"] = Convert.ToDecimal(dr[otherEarningsIndexGosi] == DBNull.Value ? 0 : dr[otherEarningsIndexGosi]);
-                        //Console.WriteLine($"{row["BatchNo"]}, {row["Aesthetic"]}, {row["BasicSalary"]}, {row["HousingAllowance"]}, {row["OtherEarnings"]}");
 
                         dtSmallSalaries.AcceptChanges();
                     }
@@ -778,12 +777,14 @@ namespace STL_Auto
                     //TODO Payroll Proof
                     int i = 4;
                     int ones=0, fives=0, tens=0, fifties=0, hundreds=0, fivehundreds = 0;
+                    decimal totalEarnings = 0m, deduc = 0m, netpay = 0m, creditCard = 0m, transfer = 0m, cash = 0m;
                     foreach (var dr in dtAll)
                     {
                         excelWorksheet.Cells[i, 1].Value = dr[0].ToString().Trim();
                         excelWorksheet.Cells[i, 2].Value = dr[10].ToString().Trim();
                         excelWorksheet.Cells[i, 3].Value = "STL";
                         excelWorksheet.Cells[i, 4].Value = dr[4].ToString().Trim();
+                        totalEarnings += Convert.ToDecimal(dr[4].ToString().Trim());
                         decimal deduction;
 
                         try
@@ -796,10 +797,15 @@ namespace STL_Auto
                         }
 
                         excelWorksheet.Cells[i, 5].Value = deduction;
+                        deduc += deduction;
                         excelWorksheet.Cells[i, 6].Value = dr[3].ToString().Trim();
+                        netpay += Convert.ToDecimal(dr[3].ToString().Trim());
                         excelWorksheet.Cells[i, 7].Value = dr[4].ToString().Trim();
-                        excelWorksheet.Cells[i, 8].Value = "0.00";
+                        creditCard += Convert.ToDecimal(dr[4].ToString().Trim());
+                        excelWorksheet.Cells[i, 8].Value = "0.00"; //TODO
+                        transfer += Convert.ToDecimal(0.00);
                         excelWorksheet.Cells[i, 9].Value = dr[5].ToString().Trim();
+                        cash += Convert.ToDecimal(dr[5].ToString().Trim());
 
                         var money = new SeparateMoney().Separate(Convert.ToDecimal(dr[5].ToString().Trim()));
 
@@ -819,6 +825,13 @@ namespace STL_Auto
 
                         i++;
                     }
+
+                    excelWorksheet.Cells[i, 4].Value = totalEarnings;
+                    excelWorksheet.Cells[i, 5].Value = deduc;
+                    excelWorksheet.Cells[i, 6].Value = netpay;
+                    excelWorksheet.Cells[i, 7].Value = creditCard;
+                    excelWorksheet.Cells[i, 8].Value = transfer;
+                    excelWorksheet.Cells[i, 9].Value = cash;
 
                     excelWorksheet.Cells[i, 10].Value = ones;
                     excelWorksheet.Cells[i, 11].Value = fives;
