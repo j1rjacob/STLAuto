@@ -86,13 +86,16 @@
             // 
             // buttonPayroll
             // 
+            this.buttonPayroll.BackColor = System.Drawing.Color.Green;
             this.buttonPayroll.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonPayroll.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonPayroll.ForeColor = System.Drawing.Color.White;
             this.buttonPayroll.Location = new System.Drawing.Point(120, 53);
             this.buttonPayroll.Name = "buttonPayroll";
             this.buttonPayroll.Size = new System.Drawing.Size(75, 23);
             this.buttonPayroll.TabIndex = 7;
             this.buttonPayroll.Text = "browse";
-            this.buttonPayroll.UseVisualStyleBackColor = true;
+            this.buttonPayroll.UseVisualStyleBackColor = false;
             this.buttonPayroll.Click += new System.EventHandler(this.buttonPayroll_Click);
             // 
             // textBoxPayroll
@@ -106,7 +109,7 @@
             // 
             // buttonCalculate
             // 
-            this.buttonCalculate.BackColor = System.Drawing.Color.Red;
+            this.buttonCalculate.BackColor = System.Drawing.Color.Green;
             this.buttonCalculate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonCalculate.Font = new System.Drawing.Font("Microsoft Sans Serif", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonCalculate.ForeColor = System.Drawing.SystemColors.ControlLightLight;
@@ -129,13 +132,16 @@
             // 
             // buttonGosi
             // 
+            this.buttonGosi.BackColor = System.Drawing.Color.Green;
             this.buttonGosi.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonGosi.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonGosi.ForeColor = System.Drawing.Color.White;
             this.buttonGosi.Location = new System.Drawing.Point(320, 56);
             this.buttonGosi.Name = "buttonGosi";
             this.buttonGosi.Size = new System.Drawing.Size(75, 23);
             this.buttonGosi.TabIndex = 19;
             this.buttonGosi.Text = "browse";
-            this.buttonGosi.UseVisualStyleBackColor = true;
+            this.buttonGosi.UseVisualStyleBackColor = false;
             this.buttonGosi.Click += new System.EventHandler(this.buttonGosi_Click);
             // 
             // textBoxGosi
@@ -158,13 +164,16 @@
             // 
             // buttonBig
             // 
+            this.buttonBig.BackColor = System.Drawing.Color.Green;
             this.buttonBig.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonBig.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonBig.ForeColor = System.Drawing.Color.White;
             this.buttonBig.Location = new System.Drawing.Point(528, 54);
             this.buttonBig.Name = "buttonBig";
             this.buttonBig.Size = new System.Drawing.Size(75, 23);
             this.buttonBig.TabIndex = 25;
             this.buttonBig.Text = "browse";
-            this.buttonBig.UseVisualStyleBackColor = true;
+            this.buttonBig.UseVisualStyleBackColor = false;
             this.buttonBig.Click += new System.EventHandler(this.buttonBig_Click);
             // 
             // textBoxBig
@@ -217,13 +226,16 @@
             // 
             // buttonSmall
             // 
+            this.buttonSmall.BackColor = System.Drawing.Color.Green;
             this.buttonSmall.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonSmall.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSmall.ForeColor = System.Drawing.Color.White;
             this.buttonSmall.Location = new System.Drawing.Point(728, 54);
             this.buttonSmall.Name = "buttonSmall";
             this.buttonSmall.Size = new System.Drawing.Size(75, 23);
             this.buttonSmall.TabIndex = 25;
             this.buttonSmall.Text = "browse";
-            this.buttonSmall.UseVisualStyleBackColor = true;
+            this.buttonSmall.UseVisualStyleBackColor = false;
             this.buttonSmall.Click += new System.EventHandler(this.buttonSmall_Click);
             // 
             // label4

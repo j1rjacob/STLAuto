@@ -43,12 +43,7 @@ namespace STL_Auto.Services
             creditCard.DataType = Type.GetType("System.Decimal");
             creditCard.ColumnName = "CreditCard";
             tablePayroll.Columns.Add(creditCard);
-
-            DataColumn HousingAllowance = new DataColumn();
-            HousingAllowance.DataType = Type.GetType("System.Decimal");
-            HousingAllowance.ColumnName = "HousingAllowance";
-            tablePayroll.Columns.Add(HousingAllowance);
-
+            
             DataColumn transfer = new DataColumn();
             transfer.DataType = Type.GetType("System.Decimal");
             transfer.ColumnName = "Transfer";
@@ -74,10 +69,10 @@ namespace STL_Auto.Services
             tens.ColumnName = "Tens";
             tablePayroll.Columns.Add(tens);
 
-            DataColumn fifteens = new DataColumn();
-            fifteens.DataType = Type.GetType("System.Int32");
-            fifteens.ColumnName = "Fifteens";
-            tablePayroll.Columns.Add(fifteens);
+            DataColumn fifty = new DataColumn();
+            fifty.DataType = Type.GetType("System.Int32");
+            fifty.ColumnName = "Fifty";
+            tablePayroll.Columns.Add(fifty);
 
             DataColumn hundreds = new DataColumn();
             hundreds.DataType = Type.GetType("System.Int32");

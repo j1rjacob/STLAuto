@@ -241,15 +241,16 @@ namespace STL_Auto
         }
         private void button7_Click(object sender, EventArgs e)
         {
+            var colNum = 20;
             var fileinfo = new FileInfo(@"E:\MaskRider\App\STL Auto\STL Auto\bin\Debug\Template\PayrollProof.xlsx");
             if (fileinfo.Exists)
             {
                 using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
                 {
                     ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
-                    excelWorksheet.InsertRow(9, 15);
-                    var modelCells = excelWorksheet.Cells["D1"];
-                    var modelRows = 24;
+                    excelWorksheet.InsertRow(9, colNum);
+                    //excelWorksheet.Cells["D1"];
+                    var modelRows = 9+ colNum;
                     string modelRange = "A9:N" + modelRows;
                     var modelTable = excelWorksheet.Cells[modelRange];
 

@@ -59,6 +59,11 @@ namespace STL_Auto.Services
             rowNum.ColumnName = "RowNum";
             newBigSalaries.Columns.Add(rowNum);
 
+            DataColumn empName = new DataColumn();
+            empName.DataType = Type.GetType("System.String");
+            empName.ColumnName = "Name";
+            newBigSalaries.Columns.Add(empName);
+
             DataColumn[] keys = new DataColumn[1];
             keys[0] = iqama;
             newBigSalaries.PrimaryKey = keys;
