@@ -20,7 +20,6 @@ namespace STL_Auto
         public FormAuto()
         {
             InitializeComponent();
-            //Application.CurrentCulture = new CultureInfo("ar-SA");
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("ar-SA");
         }
 
@@ -130,9 +129,6 @@ namespace STL_Auto
             {
                 var dtBigSalaries = new MakeTable().BigSalaries();
                 var dtSmallSalaries = new MakeTable().BigSalaries();
-                var dtAllSalaries = new MakeTable().BigSalaries();
-                var dtPayrollProff = new PayrollProof().Payroll();
-                var dsBigSalaries = new DataSet().Tables.Add(dtBigSalaries.TableName);
 
                 DataTable dtPayroll = null;
                 DataTable dtGosi = null;
@@ -140,7 +136,6 @@ namespace STL_Auto
                 DataTable dtSmall = null;
 
                 #region BigSalaries
-
                 var filePath = textBoxBig.Text;
                 var ctsB = GetDataTableData(GetWorkSheetName(filePath), filePath);
 
@@ -165,11 +160,9 @@ namespace STL_Auto
                         }
                     }
                 }
-
                 #endregion
 
                 #region SmallSalaries
-
                 var filePathS = textBoxSmall.Text;
                 var ctsS = GetDataTableData(GetWorkSheetName(filePathS), filePathS);
 
@@ -192,16 +185,13 @@ namespace STL_Auto
                         {
                             dtSmallSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 3].ToString().Trim(), 0m, 0m, 0m,
                                 0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString(), dr[i - 1].ToString().Trim());
-                            //dtSmallSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i-5].ToString().Trim(), 0m, 0m, 0m, 0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString());
                             break;
                         }
                     }
                 }
-
                 #endregion
 
                 #region Gosi
-
                 filePath = textBoxGosi.Text;
                 var ctsG = GetDataTableData(GetWorkSheetName(filePath), filePath);
 
@@ -291,11 +281,9 @@ namespace STL_Auto
                         }
                     }
                 }
-
                 #endregion
 
                 #region PayrollBigSalary
-
                 filePath = textBoxPayroll.Text;
                 var ctsPB = GetDataTableData(GetWorkSheetName(filePath), filePath);
 
@@ -327,7 +315,6 @@ namespace STL_Auto
                             {
                                 payrollPB.Add(row["Iqama"].ToString(), dr[netPayPayrollPB].ToString());
 
-                                //row["Payroll"] = Convert.ToDecimal(dr[netPayPayrollPB]);
                                 salaryBig = Convert.ToDecimal(dr[netPayPayrollPB]);
                                 row["Bank"] =
                                     Convert.ToDecimal(dr[netPayPayrollPB]) >= Convert.ToDecimal(row["Aesthetic"])
@@ -337,7 +324,6 @@ namespace STL_Auto
                                     (Convert.ToDecimal(row["Payroll"]) - Convert.ToDecimal(row["Aesthetic"])) < 0
                                         ? 0
                                         : (Convert.ToDecimal(row["Payroll"]) - Convert.ToDecimal(row["Aesthetic"]));
-                                //Console.WriteLine($"{batchId}, {row["Iqama"]}, {Convert.ToDecimal(dr[netPayPayroll])}, {Convert.ToDecimal(row["Aesthetic"])}");
                             }
                             else
                             {
@@ -345,19 +331,15 @@ namespace STL_Auto
                                 salaryBig = Convert.ToDecimal(dr[netPayPayrollPB]) +
                                             Convert.ToDecimal(firstSalary.Value);
 
-                                //Console.WriteLine($"{dr[netPayPayrollPB]} {firstSalary.Value}");
 
                                 payrollPB.Remove(firstSalary.Key);
                                 payrollPB.Add(firstSalary.Key, salaryBig.ToString());
-                                //Console.WriteLine(salary.ToString());
 
                                 Console.WriteLine($"Duplicate {firstSalary.Key} {salaryBig}");
 
-                                //row["Payroll"] = salary.ToString();
                                 row["Bank"] = Convert.ToDecimal(salaryBig) >= Convert.ToDecimal(row["Aesthetic"])
                                     ? Convert.ToDecimal(row["Aesthetic"])
                                     : Convert.ToDecimal(salaryBig);
-                                Console.WriteLine($"{row["Bank"]} {salaryBig} {row["Aesthetic"]}");
                                 row["Cash"] = (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"])) < 0
                                     ? 0
                                     : (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"]));
@@ -367,7 +349,6 @@ namespace STL_Auto
                         }
                     }
                 }
-
                 #endregion
 
                 dataGridView1.DataSource = dtBigSalaries;
@@ -376,7 +357,6 @@ namespace STL_Auto
                 UpdateBigSalaries(dtBigSalaries, textBoxBig.Text, salaryAmountBig + 1);
 
                 #region PayrollSmallSalary
-
                 filePath = textBoxPayroll.Text;
                 var ctsPS = GetDataTableData(GetWorkSheetName(filePath), filePath);
 
@@ -437,7 +417,6 @@ namespace STL_Auto
                         }
                     }
                 }
-
                 #endregion
 
                 dataGridView1.DataSource = dtSmallSalaries;
@@ -555,14 +534,12 @@ namespace STL_Auto
                     break;
                 }
             }
-
             return columnNum;
         }
 
         private int GetOtherEarningsColumn()
         {
             int columnNum = 0;
-
             foreach (DataGridViewColumn column in dataGridView2.Columns)
             {
                 if (column.HeaderText == "بدلات أخرى")
@@ -571,7 +548,6 @@ namespace STL_Auto
                     break;
                 }
             }
-
             return columnNum;
         }
 
@@ -625,28 +601,10 @@ namespace STL_Auto
             }
             return columnNum;
         }
-
-        private int GetSSalariesIDNumberColumn(DataTable dTable)
-        {
-            int columnNum = 0;
-            foreach (DataRow dr in dTable.Rows)
-            {
-                for (int i = 0; i < dTable.Columns.Count; i++)
-                {
-                    if (dr[i].ToString().Trim() == "ID Number")
-                    {
-                        columnNum = i;
-                        break;
-                    }
-                }
-            }
-            return columnNum;
-        }
-
+        
         private int GetSSalariesSalaryAmntColumn()
         {
             int columnNum = 0;
-
             foreach (DataGridViewColumn column in dataGridView3.Columns)
             {
                 if (column.HeaderText == "Salary_Amount")
@@ -655,7 +613,6 @@ namespace STL_Auto
                     break;
                 }
             }
-
             return columnNum;
         }
 
@@ -669,7 +626,7 @@ namespace STL_Auto
                     using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
                     {
                         Int64 value;
-                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
+                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1]; //todo make dynamic
                         foreach (DataRow dr in dt.Rows)
                         {
                             var i = 0;
@@ -677,7 +634,6 @@ namespace STL_Auto
                             {
                                 DataRow[] row = dt.Select("Iqama ='" + dr[0] + "'");
 
-                                //Console.WriteLine($"Junar {row[0]["Bank"]}");
                                 excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol].Value = row[0]["Bank"];
 
                                 if (row[0]["Bank"].ToString() != "0")
@@ -724,7 +680,7 @@ namespace STL_Auto
                     using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
                     {
                         Int64 value;
-                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[2];
+                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[2]; //todo make dynamic
                         decimal tot = 0m;
                         int rowNum = 0;
                         foreach (DataRow dr in dt.Rows)
@@ -742,7 +698,6 @@ namespace STL_Auto
                             }
                         }
                         excelWorksheet.Cells[rowNum + 4, salaryAmntCol].Value = tot;
-
                         excelPackage.Save();
                     }
                 }
@@ -777,7 +732,6 @@ namespace STL_Auto
                 Console.WriteLine(e);
                 throw;
             }
-
             return ct;
         }
 
@@ -791,11 +745,10 @@ namespace STL_Auto
                 {
                     using (var package = new ExcelPackage(fileinfo))
                     {
-                        package.Workbook.Worksheets.Add("Halla"); //WorkAround for list...
+                        package.Workbook.Worksheets.Add("Halla"); //WorkAround for list lol...
                         var ws = package.Workbook.Worksheets.Select(x => x.Name);
                         foreach (var sheet in ws)
                         {
-                            //Console.WriteLine(sheet);
                             wsName.Add(sheet);
                         }
                     }
@@ -819,7 +772,7 @@ namespace STL_Auto
                     ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
                     excelWorksheet.Cells
                         .Where(cell =>
-                            cell.Address.StartsWith("F")
+                            cell.Address.StartsWith("F") //todo make dynamic
                             && cell.Value is double
                             && (double)cell.Value == 00d)
                         .Select(cell => cell.Start.Row)
@@ -842,7 +795,7 @@ namespace STL_Auto
                         .Where(cell =>
                             cell.Address.StartsWith("H")
                             && cell.Value is double
-                            && (double)cell.Value == 00d)
+                            && (double)cell.Value == 00d) //todo make dynamic
                         .Select(cell => cell.Start.Row)
                         .ToList()
                         .ForEach(r => excelWorksheet.Row(r).Hidden = true);
@@ -861,7 +814,7 @@ namespace STL_Auto
                     ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
                     excelWorksheet.Cells
                         .Where(cell =>
-                            cell.Address.StartsWith("F")
+                            cell.Address.StartsWith("F") //todo make dynamic
                             && cell.Value is double
                             && (double)cell.Value == 00d)
                         .Select(cell => cell.Start.Row)
@@ -896,7 +849,7 @@ namespace STL_Auto
                     var dtAll = dtBigSalary.AsEnumerable().Union(dtSmallSalary.AsEnumerable(),
                         DataRowComparer.Default);
 
-                    //TODO Payroll Proof
+                    //Payroll Proof
                     int i = 4;
                     int ones = 0, fives = 0, tens = 0, fifties = 0, hundreds = 0, fivehundreds = 0;
                     decimal totalEarnings = 0m, deduc = 0m, netpay = 0m, creditCard = 0m, transfer = 0m, cash = 0m;
