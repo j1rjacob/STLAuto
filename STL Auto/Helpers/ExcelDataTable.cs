@@ -20,7 +20,6 @@ namespace STL_Auto.Helpers
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
                 Console.WriteLine(ex);
             }
             finally

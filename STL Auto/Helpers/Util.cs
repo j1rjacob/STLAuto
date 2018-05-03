@@ -17,7 +17,7 @@ namespace STL_Auto.Helpers
                 }
                 var ws = pck.Workbook.Worksheets.First();
                 DataTable tbl = new DataTable();
-                bool hasHeader = true; // adjust it accordingly( i've mentioned that this is a simple approach)
+                bool hasHeader = true; 
                 foreach (var firstRowCell in ws.Cells[1, 1, 1, ws.Dimension.End.Column])
                 {
                     tbl.Columns.Add(hasHeader ? firstRowCell.Text : string.Format("Column {0}", firstRowCell.Start.Column));

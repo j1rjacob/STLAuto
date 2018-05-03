@@ -620,13 +620,28 @@ namespace STL_Auto
         {
             try
             {
+                int tableNum = 0;
+                int counter = 1;
+                var filePath = textBoxBig.Text;
+                var ctsB = GetDataTableData(GetWorkSheetName(filePath), filePath);
+
+                foreach (var ct in ctsB)
+                {
+                    if (ct.ColoumnCount >= 13)
+                    {
+                        tableNum = counter;
+                        break;
+                    }
+                    counter++;
+                }
+
                 var fileinfo = new FileInfo(xPath);
                 if (fileinfo.Exists)
                 {
                     using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
                     {
                         Int64 value;
-                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1]; //todo make dynamic
+                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[tableNum]; //todo make dynamic
                         foreach (DataRow dr in dt.Rows)
                         {
                             var i = 0;
@@ -661,7 +676,6 @@ namespace STL_Auto
                         excelPackage.Save();
                     }
                 }
-
                 DeleteZeroBigRows(xPath);
             }
             catch (Exception ex)
@@ -674,13 +688,28 @@ namespace STL_Auto
         {
             try
             {
+                int tableNum = 0;
+                int counter = 1;
+                var filePathS = textBoxSmall.Text;
+                var ctsS = GetDataTableData(GetWorkSheetName(filePathS), filePathS);
+
+                foreach (var ct in ctsS)
+                {
+                    if (ct.ColoumnCount == 9)
+                    {
+                        tableNum = counter;
+                        break;
+                    }
+                    counter++;
+                }
+
                 var fileinfo = new FileInfo(xPath);
                 if (fileinfo.Exists)
                 {
                     using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
                     {
                         Int64 value;
-                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[2]; //todo make dynamic
+                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[tableNum]; //todo make dynamic
                         decimal tot = 0m;
                         int rowNum = 0;
                         foreach (DataRow dr in dt.Rows)
