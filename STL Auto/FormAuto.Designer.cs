@@ -49,6 +49,9 @@
             this.buttonSmall = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
+            this.textBoxSearch = new System.Windows.Forms.TextBox();
+            this.buttonSearch = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
@@ -69,7 +72,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 216);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 224);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(805, 200);
@@ -78,7 +81,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(133, 7);
+            this.label1.Location = new System.Drawing.Point(133, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 13);
             this.label1.TabIndex = 8;
@@ -90,7 +93,7 @@
             this.buttonPayroll.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonPayroll.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonPayroll.ForeColor = System.Drawing.Color.White;
-            this.buttonPayroll.Location = new System.Drawing.Point(120, 53);
+            this.buttonPayroll.Location = new System.Drawing.Point(120, 69);
             this.buttonPayroll.Name = "buttonPayroll";
             this.buttonPayroll.Size = new System.Drawing.Size(75, 23);
             this.buttonPayroll.TabIndex = 7;
@@ -100,7 +103,7 @@
             // 
             // textBoxPayroll
             // 
-            this.textBoxPayroll.Location = new System.Drawing.Point(8, 24);
+            this.textBoxPayroll.Location = new System.Drawing.Point(8, 40);
             this.textBoxPayroll.Name = "textBoxPayroll";
             this.textBoxPayroll.Size = new System.Drawing.Size(184, 20);
             this.textBoxPayroll.TabIndex = 6;
@@ -113,9 +116,9 @@
             this.buttonCalculate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonCalculate.Font = new System.Drawing.Font("Microsoft Sans Serif", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonCalculate.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.buttonCalculate.Location = new System.Drawing.Point(322, 141);
+            this.buttonCalculate.Location = new System.Drawing.Point(322, 152);
             this.buttonCalculate.Name = "buttonCalculate";
-            this.buttonCalculate.Size = new System.Drawing.Size(200, 65);
+            this.buttonCalculate.Size = new System.Drawing.Size(200, 38);
             this.buttonCalculate.TabIndex = 21;
             this.buttonCalculate.Text = "calculate";
             this.buttonCalculate.UseVisualStyleBackColor = false;
@@ -124,7 +127,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(344, 10);
+            this.label2.Location = new System.Drawing.Point(344, 26);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 20;
@@ -136,7 +139,7 @@
             this.buttonGosi.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonGosi.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonGosi.ForeColor = System.Drawing.Color.White;
-            this.buttonGosi.Location = new System.Drawing.Point(320, 56);
+            this.buttonGosi.Location = new System.Drawing.Point(320, 72);
             this.buttonGosi.Name = "buttonGosi";
             this.buttonGosi.Size = new System.Drawing.Size(75, 23);
             this.buttonGosi.TabIndex = 19;
@@ -146,7 +149,7 @@
             // 
             // textBoxGosi
             // 
-            this.textBoxGosi.Location = new System.Drawing.Point(208, 27);
+            this.textBoxGosi.Location = new System.Drawing.Point(208, 43);
             this.textBoxGosi.Name = "textBoxGosi";
             this.textBoxGosi.Size = new System.Drawing.Size(184, 20);
             this.textBoxGosi.TabIndex = 18;
@@ -156,7 +159,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(512, 8);
+            this.label3.Location = new System.Drawing.Point(512, 24);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(87, 13);
             this.label3.TabIndex = 26;
@@ -168,7 +171,7 @@
             this.buttonBig.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonBig.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonBig.ForeColor = System.Drawing.Color.White;
-            this.buttonBig.Location = new System.Drawing.Point(528, 54);
+            this.buttonBig.Location = new System.Drawing.Point(528, 70);
             this.buttonBig.Name = "buttonBig";
             this.buttonBig.Size = new System.Drawing.Size(75, 23);
             this.buttonBig.TabIndex = 25;
@@ -178,7 +181,7 @@
             // 
             // textBoxBig
             // 
-            this.textBoxBig.Location = new System.Drawing.Point(416, 25);
+            this.textBoxBig.Location = new System.Drawing.Point(416, 41);
             this.textBoxBig.Name = "textBoxBig";
             this.textBoxBig.Size = new System.Drawing.Size(184, 20);
             this.textBoxBig.TabIndex = 24;
@@ -188,7 +191,7 @@
             // 
             // TextBoxPaymentDescription
             // 
-            this.TextBoxPaymentDescription.Location = new System.Drawing.Point(330, 110);
+            this.TextBoxPaymentDescription.Location = new System.Drawing.Point(330, 121);
             this.TextBoxPaymentDescription.Name = "TextBoxPaymentDescription";
             this.TextBoxPaymentDescription.Size = new System.Drawing.Size(184, 20);
             this.TextBoxPaymentDescription.TabIndex = 31;
@@ -198,7 +201,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(408, 93);
+            this.label8.Location = new System.Drawing.Point(408, 104);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(104, 13);
             this.label8.TabIndex = 32;
@@ -207,7 +210,7 @@
             // dataGridView2
             // 
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(8, 96);
+            this.dataGridView2.Location = new System.Drawing.Point(8, 80);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView2.Size = new System.Drawing.Size(159, 112);
@@ -216,7 +219,7 @@
             // 
             // textBoxSmall
             // 
-            this.textBoxSmall.Location = new System.Drawing.Point(616, 25);
+            this.textBoxSmall.Location = new System.Drawing.Point(616, 41);
             this.textBoxSmall.Name = "textBoxSmall";
             this.textBoxSmall.Size = new System.Drawing.Size(184, 20);
             this.textBoxSmall.TabIndex = 24;
@@ -230,7 +233,7 @@
             this.buttonSmall.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonSmall.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSmall.ForeColor = System.Drawing.Color.White;
-            this.buttonSmall.Location = new System.Drawing.Point(728, 54);
+            this.buttonSmall.Location = new System.Drawing.Point(728, 70);
             this.buttonSmall.Name = "buttonSmall";
             this.buttonSmall.Size = new System.Drawing.Size(75, 23);
             this.buttonSmall.TabIndex = 25;
@@ -241,7 +244,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(712, 8);
+            this.label4.Location = new System.Drawing.Point(712, 24);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(97, 13);
             this.label4.TabIndex = 26;
@@ -250,18 +253,55 @@
             // dataGridView3
             // 
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Location = new System.Drawing.Point(584, 96);
+            this.dataGridView3.Location = new System.Drawing.Point(584, 80);
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView3.Size = new System.Drawing.Size(159, 112);
             this.dataGridView3.TabIndex = 48;
             this.dataGridView3.Visible = false;
             // 
+            // textBoxSearch
+            // 
+            this.textBoxSearch.Location = new System.Drawing.Point(280, 8);
+            this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.Size = new System.Drawing.Size(240, 20);
+            this.textBoxSearch.TabIndex = 49;
+            this.textBoxSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxSearch.Visible = false;
+            // 
+            // buttonSearch
+            // 
+            this.buttonSearch.BackColor = System.Drawing.Color.Green;
+            this.buttonSearch.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSearch.ForeColor = System.Drawing.Color.White;
+            this.buttonSearch.Location = new System.Drawing.Point(528, 5);
+            this.buttonSearch.Name = "buttonSearch";
+            this.buttonSearch.Size = new System.Drawing.Size(75, 23);
+            this.buttonSearch.TabIndex = 50;
+            this.buttonSearch.Text = "search";
+            this.buttonSearch.UseVisualStyleBackColor = false;
+            this.buttonSearch.Visible = false;
+            this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(242, 12);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(35, 13);
+            this.label5.TabIndex = 51;
+            this.label5.Text = "Name";
+            this.label5.Visible = false;
+            // 
             // FormAuto
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(811, 452);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.buttonSearch);
+            this.Controls.Add(this.textBoxSearch);
             this.Controls.Add(this.dataGridView3);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.label8);
@@ -316,5 +356,8 @@
         private System.Windows.Forms.Button buttonSmall;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView dataGridView3;
+        private System.Windows.Forms.TextBox textBoxSearch;
+        private System.Windows.Forms.Button buttonSearch;
+        private System.Windows.Forms.Label label5;
     }
 }
