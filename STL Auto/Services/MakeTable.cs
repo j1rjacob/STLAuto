@@ -64,6 +64,16 @@ namespace STL_Auto.Services
             empName.ColumnName = "Name"; //10
             newBigSalaries.Columns.Add(empName);
 
+            DataColumn Credit = new DataColumn();
+            Credit.DataType = Type.GetType("System.Decimal");
+            Credit.ColumnName = "Credit"; //11
+            newBigSalaries.Columns.Add(Credit);
+
+            DataColumn Transfer = new DataColumn();
+            Transfer.DataType = Type.GetType("System.Decimal");
+            Transfer.ColumnName = "Transfer"; //12
+            newBigSalaries.Columns.Add(Transfer);
+
             DataColumn[] keys = new DataColumn[1];
             keys[0] = iqama;
             newBigSalaries.PrimaryKey = keys;

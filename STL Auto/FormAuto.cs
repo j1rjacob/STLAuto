@@ -185,7 +185,7 @@ namespace STL_Auto
                             if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
                             {
                                 dtBigSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 1].ToString().Trim(), 0m, 0m, 0m, 0m,
-                                    0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[i + 1].ToString().Trim());
+                                    0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[i + 1].ToString().Trim(), 0m, 0m);
                                 break;
                             }
                         }
@@ -214,7 +214,7 @@ namespace STL_Auto
                             if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
                             {
                                 dtSmallSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 3].ToString().Trim(), 0m, 0m, 0m,
-                                    0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString(), dr[i - 1].ToString().Trim());
+                                    0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString(), dr[i - 1].ToString().Trim(), 0m, 0m);
                                 break;
                             }
                         }
@@ -350,10 +350,14 @@ namespace STL_Auto
                                         Convert.ToDecimal(dr[netPayPayrollPB]) >= Convert.ToDecimal(row["Aesthetic"])
                                             ? Convert.ToDecimal(row["Aesthetic"])
                                             : Convert.ToDecimal(dr[netPayPayrollPB]);
+                                    row["Transfer"] =
+                                        Convert.ToDecimal(dr[netPayPayrollPB]) >= Convert.ToDecimal(row["Aesthetic"])
+                                            ? Convert.ToDecimal(row["Aesthetic"])
+                                            : Convert.ToDecimal(dr[netPayPayrollPB]);
                                     row["Cash"] =
-                                        (Convert.ToDecimal(row["Payroll"]) - Convert.ToDecimal(row["Aesthetic"])) < 0
+                                        (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"])) < 0
                                             ? 0
-                                            : (Convert.ToDecimal(row["Payroll"]) - Convert.ToDecimal(row["Aesthetic"]));
+                                            : (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"]));
                                 }
                                 else
                                 {
@@ -365,9 +369,12 @@ namespace STL_Auto
                                     payrollPB.Remove(firstSalary.Key);
                                     payrollPB.Add(firstSalary.Key, salaryBig.ToString());
 
-                                    Console.WriteLine($"Duplicate {firstSalary.Key} {salaryBig}");
+                                    //Console.WriteLine($"Duplicate {firstSalary.Key} {salaryBig}");
 
                                     row["Bank"] = Convert.ToDecimal(salaryBig) >= Convert.ToDecimal(row["Aesthetic"])
+                                        ? Convert.ToDecimal(row["Aesthetic"])
+                                        : Convert.ToDecimal(salaryBig);
+                                    row["Transfer"] = Convert.ToDecimal(salaryBig) >= Convert.ToDecimal(row["Aesthetic"])
                                         ? Convert.ToDecimal(row["Aesthetic"])
                                         : Convert.ToDecimal(salaryBig);
                                     row["Cash"] = (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"])) < 0
@@ -417,14 +424,19 @@ namespace STL_Auto
                                 {
                                     payroll.Add(row["Iqama"].ToString(), dr[netPayPayrollSB].ToString());
                                     row["Payroll"] = Convert.ToDecimal(dr[netPayPayrollSB]);
+                                    var sal = Convert.ToDecimal(dr[netPayPayrollSB]);
                                     row["Bank"] =
                                         Convert.ToDecimal(dr[netPayPayrollSB]) >= Convert.ToDecimal(row["Aesthetic"])
                                             ? Convert.ToDecimal(row["Aesthetic"])
                                             : Convert.ToDecimal(dr[netPayPayrollSB]);
+                                    row["Credit"] =
+                                        Convert.ToDecimal(dr[netPayPayrollSB]) >= Convert.ToDecimal(row["Aesthetic"])
+                                            ? Convert.ToDecimal(row["Aesthetic"])
+                                            : Convert.ToDecimal(dr[netPayPayrollSB]);
                                     row["Cash"] =
-                                        (Convert.ToDecimal(row["Payroll"]) - Convert.ToDecimal(row["Aesthetic"])) < 0
+                                        (Convert.ToDecimal(sal) - Convert.ToDecimal(row["Aesthetic"])) < 0
                                             ? 0
-                                            : (Convert.ToDecimal(row["Payroll"]) - Convert.ToDecimal(row["Aesthetic"]));
+                                            : (Convert.ToDecimal(sal) - Convert.ToDecimal(row["Aesthetic"]));
                                 }
                                 else
                                 {
@@ -433,12 +445,15 @@ namespace STL_Auto
                                                  Convert.ToDecimal(firstSalary.Value);
                                     payroll.Remove(firstSalary.Key);
                                     payroll.Add(firstSalary.Key, salary.ToString());
-                                    Console.WriteLine($"Duplicate {firstSalary.Key} {salary}");
+                                    //Console.WriteLine($"Duplicate {firstSalary.Key} {salary}");
                                     row["Payroll"] = salary;
                                     row["Bank"] = Convert.ToDecimal(salary) >= Convert.ToDecimal(row["Aesthetic"])
                                         ? Convert.ToDecimal(row["Aesthetic"])
                                         : Convert.ToDecimal(salary);
-                                    Console.WriteLine($"{row["Bank"]} {salary} {dr[netPayPayrollSB]}");
+                                    row["Credit"] = Convert.ToDecimal(salary) >= Convert.ToDecimal(row["Aesthetic"])
+                                        ? Convert.ToDecimal(row["Aesthetic"])
+                                        : Convert.ToDecimal(salary);
+                                    //Console.WriteLine($"{row["Bank"]} {salary} {dr[netPayPayrollSB]}");
                                     row["Cash"] = (Convert.ToDecimal(salary) - Convert.ToDecimal(row["Aesthetic"])) < 0
                                         ? 0
                                         : (Convert.ToDecimal(salary) - Convert.ToDecimal(row["Aesthetic"]));
@@ -769,14 +784,16 @@ namespace STL_Auto
                                     excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol + 2].Value = row[0]["HousingAllowance"];
                                     excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol + 3].Value = row[0]["OtherEarnings"];
                                     decimal deduction;
+
                                     try
                                     {
                                         deduction = (Convert.ToDecimal(row[0]["BasicSalary"]) + Convert.ToDecimal(row[0]["HousingAllowance"]) + Convert.ToDecimal(row[0]["OtherEarnings"])) - Convert.ToDecimal(row[0]["Bank"]);
                                     }
-                                    catch (Exception e)
+                                    catch (Exception)
                                     {
                                         deduction = 0m;
                                     }
+
                                     excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol + 4].Value = deduction;
                                     excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol + 5].Value = TextBoxPaymentDescription.Text;
                                     excelWorksheet.Cells[Convert.ToInt32(row[0]["RowNum"]) + 2, salaryAmntCol + 6].Value = "Riyadh";
@@ -971,7 +988,7 @@ namespace STL_Auto
                         ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
                         excelWorksheet.Cells
                             .Where(cell =>
-                                cell.Address.StartsWith("D")
+                                cell.Address.StartsWith("F")
                                 && cell.Value is double
                                 && (double)cell.Value == 00d)
                             .Select(cell => cell.Start.Row)
@@ -1012,7 +1029,7 @@ namespace STL_Auto
                         modelTable.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
 
                         var dtAll = dtBigSalary.AsEnumerable().Union(dtSmallSalary.AsEnumerable(),
-                            DataRowComparer.Default);
+                                    DataRowComparer.Default);
 
                         //Payroll Proof
                         int i = 4;
@@ -1023,15 +1040,14 @@ namespace STL_Auto
                             excelWorksheet.Cells[i, 1].Value = dr[0].ToString().Trim();
                             excelWorksheet.Cells[i, 2].Value = dr[10].ToString().Trim();
                             excelWorksheet.Cells[i, 3].Value = "STL";
-                            excelWorksheet.Cells[i, 6].Value = Convert.ToDecimal(dr[6].ToString().Trim());
-                            netpay += Convert.ToDecimal(dr[6].ToString().Trim());
+                            excelWorksheet.Cells[i, 4].Value = Convert.ToDecimal(dr[6].ToString().Trim());
+                            totalEarnings += Convert.ToDecimal(dr[6].ToString().Trim());
                             //Console.WriteLine($"totalearnings  {dr[4].ToString().Trim()}");
-                            if (dr[4].ToString().Trim() != "0.00")
+                            if (dr[6].ToString().Trim() != "0.00")
                             {
-                                excelWorksheet.Cells[i, 4].Value = Convert.ToDecimal(dr[4].ToString().Trim());
-                                totalEarnings += Convert.ToDecimal(dr[4].ToString().Trim());
+                                excelWorksheet.Cells[i, 6].Value = Convert.ToDecimal(dr[4].ToString().Trim());
+                                netpay += Convert.ToDecimal(dr[4].ToString().Trim());
                                 decimal deduction;
-
                                 try
                                 {
                                     deduction = (Convert.ToDecimal(dr[6].ToString().Trim()) + Convert.ToDecimal(dr[7].ToString().Trim()) + Convert.ToDecimal(dr[8].ToString().Trim())) - Convert.ToDecimal(dr[4].ToString().Trim());
@@ -1044,10 +1060,13 @@ namespace STL_Auto
                                 excelWorksheet.Cells[i, 5].Value = Convert.ToDecimal(deduction);
                                 deduc += deduction;
 
-                                excelWorksheet.Cells[i, 7].Value = Convert.ToDecimal(0);
-                                creditCard += Convert.ToDecimal(0);
-                                excelWorksheet.Cells[i, 8].Value = Convert.ToDecimal("0.00"); //TODO
-                                transfer += Convert.ToDecimal(0.00);
+                                
+                                excelWorksheet.Cells[i, 7].Value = Convert.ToDecimal(dr[11].ToString().Trim());
+                                creditCard += Convert.ToDecimal(dr[11].ToString().Trim());
+                                excelWorksheet.Cells[i, 8].Value = Convert.ToDecimal(dr[12].ToString().Trim()); 
+                                transfer += Convert.ToDecimal(dr[12].ToString().Trim());
+                                
+                                
                                 excelWorksheet.Cells[i, 9].Value = Convert.ToDecimal(dr[5].ToString().Trim());
                                 cash += Convert.ToDecimal(dr[5].ToString().Trim());
 
