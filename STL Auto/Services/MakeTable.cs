@@ -74,6 +74,11 @@ namespace STL_Auto.Services
             Transfer.ColumnName = "Transfer"; //12
             newBigSalaries.Columns.Add(Transfer);
 
+            DataColumn Company = new DataColumn();
+            Company.DataType = Type.GetType("System.String");
+            Company.ColumnName = "Company"; //13
+            newBigSalaries.Columns.Add(Company);
+
             DataColumn[] keys = new DataColumn[1];
             keys[0] = iqama;
             newBigSalaries.PrimaryKey = keys;

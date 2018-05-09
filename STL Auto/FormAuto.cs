@@ -185,7 +185,7 @@ namespace STL_Auto
                             if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
                             {
                                 dtBigSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 1].ToString().Trim(), 0m, 0m, 0m, 0m,
-                                    0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[i + 1].ToString().Trim(), 0m, 0m);
+                                    0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[i + 1].ToString().Trim(), 0m, 0m,"");
                                 break;
                             }
                         }
@@ -214,7 +214,7 @@ namespace STL_Auto
                             if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
                             {
                                 dtSmallSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 3].ToString().Trim(), 0m, 0m, 0m,
-                                    0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString(), dr[i - 1].ToString().Trim(), 0m, 0m);
+                                    0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString(), dr[i - 1].ToString().Trim(), 0m, 0m,"");
                                 break;
                             }
                         }
@@ -327,6 +327,7 @@ namespace STL_Auto
                     }
 
                     var netPayPayrollPB = GetPayrollNetPay(dtPayroll);
+                    var companyPayrollPB = GetPayrollCompany(dtPayroll);
                     var batchIDPayrollPB = GetPayrollBatchIdColumn(dtPayroll);
 
                     Int64 batchIdPB;
@@ -369,7 +370,6 @@ namespace STL_Auto
                                     payrollPB.Remove(firstSalary.Key);
                                     payrollPB.Add(firstSalary.Key, salaryBig.ToString());
 
-                                    //Console.WriteLine($"Duplicate {firstSalary.Key} {salaryBig}");
 
                                     row["Bank"] = Convert.ToDecimal(salaryBig) >= Convert.ToDecimal(row["Aesthetic"])
                                         ? Convert.ToDecimal(row["Aesthetic"])
@@ -382,6 +382,7 @@ namespace STL_Auto
                                         : (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"]));
                                 }
                                 row["Payroll"] = salaryBig;
+                                row["Company"] = dr[companyPayrollPB];
                                 dtBigSalaries.AcceptChanges();
                             }
                         }
@@ -389,6 +390,7 @@ namespace STL_Auto
                     #endregion
 
                     //dataGridView1.DataSource = dtBigSalaries;
+
                     var salaryAmountBig = GetBSalariesSalaryAmntColumn(dtBig);
 
                     UpdateBigSalaries(dtBigSalaries, textBoxBig.Text, salaryAmountBig + 1);
@@ -407,6 +409,7 @@ namespace STL_Auto
                     }
 
                     var netPayPayrollSB = GetPayrollNetPay(dtPayroll);
+                    var companyPayrollSB = GetPayrollCompany(dtPayroll);
                     var batchIDPayrollSB = GetPayrollBatchIdColumn(dtPayroll);
 
                     Int64 batchIdSB;
@@ -458,6 +461,7 @@ namespace STL_Auto
                                         ? 0
                                         : (Convert.ToDecimal(salary) - Convert.ToDecimal(row["Aesthetic"]));
                                 }
+                                row["Company"] = dr[companyPayrollSB];
                                 dtSmallSalaries.AcceptChanges();
                             }
                         }
@@ -478,7 +482,7 @@ namespace STL_Auto
                     ShadeBorder(textBoxSmall.Text, dtBigSalaries.Rows.Count + dtSmallSalaries.Rows.Count - 3, dtBigSalaries,
                         dtSmallSalaries);
 
-                    Summary(textBoxSmall.Text, dtSmallSalaries);
+                    Summary(textBoxSmall.Text, dtAll);
 
                     buttonCalculate.BackColor = Color.SaddleBrown;
 
@@ -660,6 +664,30 @@ namespace STL_Auto
                     for (int i = 0; i < dTable.Columns.Count; i++)
                     {
                         if (dr[i].ToString().Trim() == "Net Pay")
+                        {
+                            columnNum = i;
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return columnNum;
+        }
+
+        private int GetPayrollCompany(DataTable dTable)
+        {
+            int columnNum = 0;
+            try
+            {
+                foreach (DataRow dr in dTable.Rows)
+                {
+                    for (int i = 0; i < dTable.Columns.Count; i++)
+                    {
+                        if (dr[i].ToString().Trim() == "Project")
                         {
                             columnNum = i;
                             break;
@@ -1015,6 +1043,7 @@ namespace STL_Auto
                 var fileinfo = new FileInfo(path + "\\PayrollProof.xlsx");
                 if (fileinfo.Exists)
                 {
+                    int CashCount = 0;
                     using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
                     {
                         ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
@@ -1042,15 +1071,18 @@ namespace STL_Auto
                             excelWorksheet.Cells[i, 3].Value = "STL";
                             excelWorksheet.Cells[i, 4].Value = Convert.ToDecimal(dr[6].ToString().Trim());
                             totalEarnings += Convert.ToDecimal(dr[6].ToString().Trim());
-                            //Console.WriteLine($"totalearnings  {dr[4].ToString().Trim()}");
-                            if (dr[6].ToString().Trim() != "0.00")
+
+                            if (dr[6].ToString().Trim() != "0")
                             {
                                 excelWorksheet.Cells[i, 6].Value = Convert.ToDecimal(dr[4].ToString().Trim());
                                 netpay += Convert.ToDecimal(dr[4].ToString().Trim());
                                 decimal deduction;
                                 try
                                 {
-                                    deduction = (Convert.ToDecimal(dr[6].ToString().Trim()) + Convert.ToDecimal(dr[7].ToString().Trim()) + Convert.ToDecimal(dr[8].ToString().Trim())) - Convert.ToDecimal(dr[4].ToString().Trim());
+                                    deduction = (Convert.ToDecimal(dr[6].ToString().Trim()) +
+                                                 Convert.ToDecimal(dr[7].ToString().Trim()) +
+                                                 Convert.ToDecimal(dr[8].ToString().Trim())) -
+                                                Convert.ToDecimal(dr[4].ToString().Trim());
                                 }
                                 catch (Exception)
                                 {
@@ -1060,15 +1092,19 @@ namespace STL_Auto
                                 excelWorksheet.Cells[i, 5].Value = Convert.ToDecimal(deduction);
                                 deduc += deduction;
 
-                                
+
                                 excelWorksheet.Cells[i, 7].Value = Convert.ToDecimal(dr[11].ToString().Trim());
                                 creditCard += Convert.ToDecimal(dr[11].ToString().Trim());
-                                excelWorksheet.Cells[i, 8].Value = Convert.ToDecimal(dr[12].ToString().Trim()); 
+                                excelWorksheet.Cells[i, 8].Value = Convert.ToDecimal(dr[12].ToString().Trim());
                                 transfer += Convert.ToDecimal(dr[12].ToString().Trim());
-                                
-                                
+
                                 excelWorksheet.Cells[i, 9].Value = Convert.ToDecimal(dr[5].ToString().Trim());
                                 cash += Convert.ToDecimal(dr[5].ToString().Trim());
+
+                                if (dr[5].ToString().Trim() != "0.00")
+                                {
+                                    CashCount++;
+                                }
 
                                 var money = new SeparateMoney().Separate(Convert.ToDecimal(dr[5].ToString().Trim()));
 
@@ -1086,7 +1122,22 @@ namespace STL_Auto
                                 hundreds += Convert.ToInt32(money["100+"]);
                                 fivehundreds += Convert.ToInt32(money["500+"]);
                             }
+                            else
+                            {
+                                excelWorksheet.Cells[i, 4].Value = 0m;
+                                excelWorksheet.Cells[i, 5].Value = 0m;
+                                excelWorksheet.Cells[i, 6].Value = 0m;
+                                excelWorksheet.Cells[i, 7].Value = 0m;
+                                excelWorksheet.Cells[i, 8].Value = 0m;
+                                excelWorksheet.Cells[i, 9].Value = 0m;
 
+                                excelWorksheet.Cells[i, 10].Value = 0;
+                                excelWorksheet.Cells[i, 11].Value = 0;
+                                excelWorksheet.Cells[i, 12].Value = 0;
+                                excelWorksheet.Cells[i, 13].Value = 0;
+                                excelWorksheet.Cells[i, 14].Value = 0;
+                                excelWorksheet.Cells[i, 15].Value = 0;
+                            }
                             i++;
                         }
 
@@ -1109,6 +1160,7 @@ namespace STL_Auto
                         excelPackage.Save();
                     }
                     DeleteZeroPayrollProofRows(path + "\\PayrollProof.xlsx");
+                    Console.WriteLine($"Cash Count {CashCount}");
                 }
             }
             catch (Exception e)
@@ -1130,11 +1182,26 @@ namespace STL_Auto
                 {
                     //throw new NotImplementedException();
                 }
+
+                var query = dtSummary.AsEnumerable()
+                    .GroupBy(r => new { Company = r.Field<string>("Company") })
+                    .Select(grp => new
+                    {
+                        Company = grp.Key.Company,
+                        Count = grp.Count()
+                    });
+
+                foreach (var item in query)
+                {
+                    if (item.Company != "")
+                    {
+                        Console.WriteLine("Company: {0}, Count: {1}", item.Company, item.Count);
+                    }
+                }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
-                //throw;
             }
         }
     }
