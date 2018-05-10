@@ -1069,43 +1069,45 @@ namespace STL_Auto
                             excelWorksheet.Cells[i, 1].Value = dr[0].ToString().Trim();
                             excelWorksheet.Cells[i, 2].Value = dr[10].ToString().Trim();
                             excelWorksheet.Cells[i, 3].Value = "STL";
-                            excelWorksheet.Cells[i, 4].Value = Convert.ToDecimal(dr[6].ToString().Trim());
-                            totalEarnings += Convert.ToDecimal(dr[6].ToString().Trim());
+                            excelWorksheet.Cells[i, 6].Value = Convert.ToDecimal(dr[4].ToString().Trim());
+                            netpay += Convert.ToDecimal(dr[4].ToString().Trim());
 
-                            if (dr[6].ToString().Trim() != "0")
+                            //Console.WriteLine(dr[4].ToString().Trim());
+
+                            if (dr[4].ToString().Trim() != "0")
                             {
-                                excelWorksheet.Cells[i, 6].Value = Convert.ToDecimal(dr[4].ToString().Trim());
-                                netpay += Convert.ToDecimal(dr[4].ToString().Trim());
+                                excelWorksheet.Cells[i, 4].Value = Convert.ToDecimal(dr[6].ToString().Trim());
+                                totalEarnings += Convert.ToDecimal(dr[6].ToString().Trim());
+                                
                                 decimal deduction;
                                 try
                                 {
                                     deduction = (Convert.ToDecimal(dr[6].ToString().Trim()) +
                                                  Convert.ToDecimal(dr[7].ToString().Trim()) +
                                                  Convert.ToDecimal(dr[8].ToString().Trim())) -
-                                                Convert.ToDecimal(dr[4].ToString().Trim());
+                                                 Convert.ToDecimal(dr[4].ToString().Trim());
                                 }
                                 catch (Exception)
                                 {
                                     deduction = 0m;
                                 }
 
-                                excelWorksheet.Cells[i, 5].Value = Convert.ToDecimal(deduction);
                                 deduc += deduction;
-
+                                excelWorksheet.Cells[i, 5].Value = Convert.ToDecimal(deduction);
 
                                 excelWorksheet.Cells[i, 7].Value = Convert.ToDecimal(dr[11].ToString().Trim());
                                 creditCard += Convert.ToDecimal(dr[11].ToString().Trim());
                                 excelWorksheet.Cells[i, 8].Value = Convert.ToDecimal(dr[12].ToString().Trim());
                                 transfer += Convert.ToDecimal(dr[12].ToString().Trim());
-
-                                excelWorksheet.Cells[i, 9].Value = Convert.ToDecimal(dr[5].ToString().Trim());
-                                cash += Convert.ToDecimal(dr[5].ToString().Trim());
-
-                                if (dr[5].ToString().Trim() != "0.00")
+                                
+                                if (dr[5].ToString().Trim() != "0.00" && dr[5].ToString().Trim() != "0")
                                 {
                                     CashCount++;
                                 }
 
+                                excelWorksheet.Cells[i, 9].Value = Convert.ToDecimal(dr[5].ToString().Trim());
+                                cash += Convert.ToDecimal(dr[5].ToString().Trim());
+                                
                                 var money = new SeparateMoney().Separate(Convert.ToDecimal(dr[5].ToString().Trim()));
 
                                 excelWorksheet.Cells[i, 10].Value = money["1+"];
@@ -1159,7 +1161,7 @@ namespace STL_Auto
 
                         excelPackage.Save();
                     }
-                    DeleteZeroPayrollProofRows(path + "\\PayrollProof.xlsx");
+                    //DeleteZeroPayrollProofRows(path + "\\PayrollProof.xlsx");
                     Console.WriteLine($"Cash Count {CashCount}");
                 }
             }
@@ -1195,7 +1197,7 @@ namespace STL_Auto
                 {
                     if (item.Company != "")
                     {
-                        Console.WriteLine("Company: {0}, Count: {1}", item.Company, item.Count);
+                        //Console.WriteLine("Company: {0}, Count: {1}", item.Company, item.Count);
                     }
                 }
             }
