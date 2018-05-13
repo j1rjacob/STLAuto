@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STLx", "STLx\STLx.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STLx.Test", "STLx.Test\STLx.Test.csproj", "{AF66E404-0DB7-4239-B018-62A4CC980DC3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STLx.Data", "STLx.Data\STLx.Data.csproj", "{E565C708-EE8F-4AFB-AD5F-32FDB8721074}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AF66E404-0DB7-4239-B018-62A4CC980DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF66E404-0DB7-4239-B018-62A4CC980DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF66E404-0DB7-4239-B018-62A4CC980DC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E565C708-EE8F-4AFB-AD5F-32FDB8721074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E565C708-EE8F-4AFB-AD5F-32FDB8721074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E565C708-EE8F-4AFB-AD5F-32FDB8721074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E565C708-EE8F-4AFB-AD5F-32FDB8721074}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿namespace STLx
 {
-    partial class FormWithBank
+    partial class WithoutBank
     {
         /// <summary>
         /// Required designer variable.
@@ -28,42 +28,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormWithBank));
-            this.label5 = new System.Windows.Forms.Label();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WithoutBank));
+            this.textBoxBWAccount = new System.Windows.Forms.TextBox();
+            this.textBoxBankAcct = new System.Windows.Forms.TextBox();
             this.ButtonDelete = new System.Windows.Forms.Button();
             this.ButtonSave = new System.Windows.Forms.Button();
             this.ButtonEdit = new System.Windows.Forms.Button();
             this.ButtonNew = new System.Windows.Forms.Button();
             this.ButtonSearch = new System.Windows.Forms.Button();
             this.TextBoxBatchNo = new System.Windows.Forms.TextBox();
-            this.TextBoxBankAcctNo = new System.Windows.Forms.TextBox();
+            this.TextBoxProject = new System.Windows.Forms.TextBox();
             this.TextBoxName = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.TextBoxSearch = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.TextBoxIqama = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBoxBankCode = new System.Windows.Forms.TextBox();
-            this.textBoxProject = new System.Windows.Forms.TextBox();
-            this.textBoxAddress1 = new System.Windows.Forms.TextBox();
-            this.textBoxAddress2 = new System.Windows.Forms.TextBox();
-            this.textBoxAddress3 = new System.Windows.Forms.TextBox();
+            this.errorProviderWOBank = new System.Windows.Forms.ErrorProvider(this.components);
+            this.dataGridViewWOBank = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderWOBank)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWOBank)).BeginInit();
             this.SuspendLayout();
             // 
-            // label5
+            // textBoxBWAccount
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(405, 83);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(112, 22);
-            this.label5.TabIndex = 132;
-            this.label5.Text = "ADDRESS 2";
+            this.textBoxBWAccount.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.textBoxBWAccount.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxBWAccount.Location = new System.Drawing.Point(160, 232);
+            this.textBoxBWAccount.Name = "textBoxBWAccount";
+            this.textBoxBWAccount.Size = new System.Drawing.Size(216, 27);
+            this.textBoxBWAccount.TabIndex = 5;
+            this.textBoxBWAccount.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxBWAccount_Validating);
+            this.textBoxBWAccount.Validated += new System.EventHandler(this.textBoxBWAccount_Validated);
+            // 
+            // textBoxBankAcct
+            // 
+            this.textBoxBankAcct.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.textBoxBankAcct.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxBankAcct.Location = new System.Drawing.Point(160, 170);
+            this.textBoxBankAcct.Name = "textBoxBankAcct";
+            this.textBoxBankAcct.Size = new System.Drawing.Size(216, 27);
+            this.textBoxBankAcct.TabIndex = 3;
+            this.textBoxBankAcct.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxBankAcct_Validating);
+            this.textBoxBankAcct.Validated += new System.EventHandler(this.textBoxBankAcct_Validated);
             // 
             // ButtonDelete
             // 
@@ -71,10 +82,10 @@
             this.ButtonDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ButtonDelete.BackgroundImage")));
             this.ButtonDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ButtonDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonDelete.Location = new System.Drawing.Point(520, 320);
+            this.ButtonDelete.Location = new System.Drawing.Point(512, 273);
             this.ButtonDelete.Name = "ButtonDelete";
             this.ButtonDelete.Size = new System.Drawing.Size(136, 56);
-            this.ButtonDelete.TabIndex = 125;
+            this.ButtonDelete.TabIndex = 151;
             this.ButtonDelete.Text = "DELETE";
             this.ButtonDelete.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ButtonDelete.UseVisualStyleBackColor = true;
@@ -86,10 +97,10 @@
             this.ButtonSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ButtonSave.BackgroundImage")));
             this.ButtonSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ButtonSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonSave.Location = new System.Drawing.Point(376, 320);
+            this.ButtonSave.Location = new System.Drawing.Point(368, 273);
             this.ButtonSave.Name = "ButtonSave";
             this.ButtonSave.Size = new System.Drawing.Size(136, 56);
-            this.ButtonSave.TabIndex = 126;
+            this.ButtonSave.TabIndex = 152;
             this.ButtonSave.Text = "SAVE";
             this.ButtonSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ButtonSave.UseVisualStyleBackColor = true;
@@ -101,10 +112,10 @@
             this.ButtonEdit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ButtonEdit.BackgroundImage")));
             this.ButtonEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ButtonEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonEdit.Location = new System.Drawing.Point(232, 320);
+            this.ButtonEdit.Location = new System.Drawing.Point(224, 273);
             this.ButtonEdit.Name = "ButtonEdit";
             this.ButtonEdit.Size = new System.Drawing.Size(136, 56);
-            this.ButtonEdit.TabIndex = 127;
+            this.ButtonEdit.TabIndex = 153;
             this.ButtonEdit.Text = "EDIT";
             this.ButtonEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ButtonEdit.UseVisualStyleBackColor = true;
@@ -116,10 +127,10 @@
             this.ButtonNew.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ButtonNew.BackgroundImage")));
             this.ButtonNew.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ButtonNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonNew.Location = new System.Drawing.Point(88, 320);
+            this.ButtonNew.Location = new System.Drawing.Point(80, 273);
             this.ButtonNew.Name = "ButtonNew";
             this.ButtonNew.Size = new System.Drawing.Size(136, 56);
-            this.ButtonNew.TabIndex = 128;
+            this.ButtonNew.TabIndex = 154;
             this.ButtonNew.Text = "NEW";
             this.ButtonNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ButtonNew.UseVisualStyleBackColor = true;
@@ -131,10 +142,10 @@
             this.ButtonSearch.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ButtonSearch.BackgroundImage")));
             this.ButtonSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ButtonSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonSearch.Location = new System.Drawing.Point(584, 8);
+            this.ButtonSearch.Location = new System.Drawing.Point(560, 8);
             this.ButtonSearch.Name = "ButtonSearch";
             this.ButtonSearch.Size = new System.Drawing.Size(151, 56);
-            this.ButtonSearch.TabIndex = 129;
+            this.ButtonSearch.TabIndex = 155;
             this.ButtonSearch.Text = "SEARCH";
             this.ButtonSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ButtonSearch.UseVisualStyleBackColor = true;
@@ -144,233 +155,188 @@
             // 
             this.TextBoxBatchNo.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.TextBoxBatchNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextBoxBatchNo.Location = new System.Drawing.Point(160, 114);
+            this.TextBoxBatchNo.Location = new System.Drawing.Point(160, 106);
             this.TextBoxBatchNo.Name = "TextBoxBatchNo";
             this.TextBoxBatchNo.Size = new System.Drawing.Size(216, 27);
-            this.TextBoxBatchNo.TabIndex = 101;
+            this.TextBoxBatchNo.TabIndex = 1;
+            this.TextBoxBatchNo.Validating += new System.ComponentModel.CancelEventHandler(this.TextBoxBatchNo_Validating);
+            this.TextBoxBatchNo.Validated += new System.EventHandler(this.TextBoxBatchNo_Validated);
             // 
-            // TextBoxBankAcctNo
+            // TextBoxProject
             // 
-            this.TextBoxBankAcctNo.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.TextBoxBankAcctNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextBoxBankAcctNo.Location = new System.Drawing.Point(160, 209);
-            this.TextBoxBankAcctNo.Name = "TextBoxBankAcctNo";
-            this.TextBoxBankAcctNo.Size = new System.Drawing.Size(216, 27);
-            this.TextBoxBankAcctNo.TabIndex = 104;
+            this.TextBoxProject.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.TextBoxProject.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TextBoxProject.Location = new System.Drawing.Point(160, 201);
+            this.TextBoxProject.Name = "TextBoxProject";
+            this.TextBoxProject.Size = new System.Drawing.Size(216, 27);
+            this.TextBoxProject.TabIndex = 4;
+            this.TextBoxProject.Validating += new System.ComponentModel.CancelEventHandler(this.TextBoxProject_Validating);
+            this.TextBoxProject.Validated += new System.EventHandler(this.TextBoxProject_Validated);
             // 
             // TextBoxName
             // 
             this.TextBoxName.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.TextBoxName.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextBoxName.Location = new System.Drawing.Point(160, 145);
+            this.TextBoxName.Location = new System.Drawing.Point(160, 137);
             this.TextBoxName.Name = "TextBoxName";
             this.TextBoxName.Size = new System.Drawing.Size(216, 27);
-            this.TextBoxName.TabIndex = 102;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(46, 275);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(112, 22);
-            this.label9.TabIndex = 122;
-            this.label9.Text = "ADDRESS 1";
+            this.TextBoxName.TabIndex = 2;
+            this.TextBoxName.Validating += new System.ComponentModel.CancelEventHandler(this.TextBoxName_Validating);
+            this.TextBoxName.Validated += new System.EventHandler(this.TextBoxName_Validated);
             // 
             // TextBoxSearch
             // 
             this.TextBoxSearch.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.TextBoxSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextBoxSearch.Location = new System.Drawing.Point(184, 8);
+            this.TextBoxSearch.Location = new System.Drawing.Point(160, 8);
             this.TextBoxSearch.Name = "TextBoxSearch";
             this.TextBoxSearch.Size = new System.Drawing.Size(384, 27);
-            this.TextBoxSearch.TabIndex = 124;
+            this.TextBoxSearch.TabIndex = 150;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(63, 242);
+            this.label7.Location = new System.Drawing.Point(24, 234);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(95, 22);
-            this.label7.TabIndex = 121;
-            this.label7.Text = "PROJECT";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(406, 115);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(112, 22);
-            this.label8.TabIndex = 117;
-            this.label8.Text = "ADDRESS 3";
+            this.label7.Size = new System.Drawing.Size(134, 22);
+            this.label7.TabIndex = 147;
+            this.label7.Text = "BW ACCOUNT";
             // 
             // TextBoxIqama
             // 
             this.TextBoxIqama.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.TextBoxIqama.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextBoxIqama.Location = new System.Drawing.Point(160, 82);
+            this.TextBoxIqama.Location = new System.Drawing.Point(160, 74);
             this.TextBoxIqama.Name = "TextBoxIqama";
             this.TextBoxIqama.Size = new System.Drawing.Size(216, 27);
-            this.TextBoxIqama.TabIndex = 100;
+            this.TextBoxIqama.TabIndex = 0;
+            this.TextBoxIqama.Validating += new System.ComponentModel.CancelEventHandler(this.TextBoxIqama_Validating);
+            this.TextBoxIqama.Validated += new System.EventHandler(this.TextBoxIqama_Validated);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(12, 212);
+            this.label6.Location = new System.Drawing.Point(63, 204);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(146, 22);
-            this.label6.TabIndex = 115;
-            this.label6.Text = "BANK ACCT NO";
+            this.label6.Size = new System.Drawing.Size(95, 22);
+            this.label6.TabIndex = 145;
+            this.label6.Text = "PROJECT";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(41, 180);
+            this.label4.Location = new System.Drawing.Point(12, 172);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(116, 22);
-            this.label4.TabIndex = 112;
-            this.label4.Text = "BANK CODE";
+            this.label4.Size = new System.Drawing.Size(146, 22);
+            this.label4.TabIndex = 142;
+            this.label4.Text = "BANK ACCT NO";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(97, 146);
+            this.label3.Location = new System.Drawing.Point(97, 138);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(61, 22);
-            this.label3.TabIndex = 114;
+            this.label3.TabIndex = 144;
             this.label3.Text = "NAME";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(54, 117);
+            this.label2.Location = new System.Drawing.Point(54, 109);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(104, 22);
-            this.label2.TabIndex = 113;
+            this.label2.TabIndex = 143;
             this.label2.Text = "BATCH NO";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(92, 84);
+            this.label1.Location = new System.Drawing.Point(92, 76);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 22);
-            this.label1.TabIndex = 123;
+            this.label1.TabIndex = 149;
             this.label1.Text = "IQAMA";
             // 
-            // textBoxBankCode
+            // errorProviderWOBank
             // 
-            this.textBoxBankCode.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxBankCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxBankCode.Location = new System.Drawing.Point(160, 178);
-            this.textBoxBankCode.Name = "textBoxBankCode";
-            this.textBoxBankCode.Size = new System.Drawing.Size(216, 27);
-            this.textBoxBankCode.TabIndex = 133;
+            this.errorProviderWOBank.ContainerControl = this;
             // 
-            // textBoxProject
+            // dataGridViewWOBank
             // 
-            this.textBoxProject.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxProject.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxProject.Location = new System.Drawing.Point(160, 240);
-            this.textBoxProject.Name = "textBoxProject";
-            this.textBoxProject.Size = new System.Drawing.Size(216, 27);
-            this.textBoxProject.TabIndex = 134;
+            this.dataGridViewWOBank.AllowUserToAddRows = false;
+            this.dataGridViewWOBank.AllowUserToDeleteRows = false;
+            this.dataGridViewWOBank.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewWOBank.Location = new System.Drawing.Point(8, 336);
+            this.dataGridViewWOBank.Name = "dataGridViewWOBank";
+            this.dataGridViewWOBank.ReadOnly = true;
+            this.dataGridViewWOBank.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewWOBank.Size = new System.Drawing.Size(704, 150);
+            this.dataGridViewWOBank.TabIndex = 159;
+            this.dataGridViewWOBank.SelectionChanged += new System.EventHandler(this.dataGridViewWOBank_SelectionChanged);
             // 
-            // textBoxAddress1
-            // 
-            this.textBoxAddress1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxAddress1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxAddress1.Location = new System.Drawing.Point(160, 272);
-            this.textBoxAddress1.Name = "textBoxAddress1";
-            this.textBoxAddress1.Size = new System.Drawing.Size(216, 27);
-            this.textBoxAddress1.TabIndex = 135;
-            // 
-            // textBoxAddress2
-            // 
-            this.textBoxAddress2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxAddress2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxAddress2.Location = new System.Drawing.Point(520, 80);
-            this.textBoxAddress2.Name = "textBoxAddress2";
-            this.textBoxAddress2.Size = new System.Drawing.Size(216, 27);
-            this.textBoxAddress2.TabIndex = 136;
-            // 
-            // textBoxAddress3
-            // 
-            this.textBoxAddress3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxAddress3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxAddress3.Location = new System.Drawing.Point(520, 112);
-            this.textBoxAddress3.Name = "textBoxAddress3";
-            this.textBoxAddress3.Size = new System.Drawing.Size(216, 27);
-            this.textBoxAddress3.TabIndex = 137;
-            // 
-            // FormWithBank
+            // WithoutBank
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(744, 384);
-            this.Controls.Add(this.textBoxAddress3);
-            this.Controls.Add(this.textBoxAddress2);
-            this.Controls.Add(this.textBoxAddress1);
-            this.Controls.Add(this.textBoxProject);
-            this.Controls.Add(this.textBoxBankCode);
-            this.Controls.Add(this.label5);
+            this.ClientSize = new System.Drawing.Size(723, 492);
+            this.Controls.Add(this.dataGridViewWOBank);
+            this.Controls.Add(this.textBoxBWAccount);
+            this.Controls.Add(this.textBoxBankAcct);
             this.Controls.Add(this.ButtonDelete);
             this.Controls.Add(this.ButtonSave);
             this.Controls.Add(this.ButtonEdit);
             this.Controls.Add(this.ButtonNew);
             this.Controls.Add(this.ButtonSearch);
             this.Controls.Add(this.TextBoxBatchNo);
-            this.Controls.Add(this.TextBoxBankAcctNo);
+            this.Controls.Add(this.TextBoxProject);
             this.Controls.Add(this.TextBoxName);
-            this.Controls.Add(this.label9);
             this.Controls.Add(this.TextBoxSearch);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.label8);
             this.Controls.Add(this.TextBoxIqama);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "FormWithBank";
-            this.Text = "With Bank Account";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "WithoutBank";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "WithoutBank";
+            this.Load += new System.EventHandler(this.WithoutBank_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderWOBank)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWOBank)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBoxBWAccount;
+        private System.Windows.Forms.TextBox textBoxBankAcct;
         private System.Windows.Forms.Button ButtonDelete;
         private System.Windows.Forms.Button ButtonSave;
         private System.Windows.Forms.Button ButtonEdit;
         private System.Windows.Forms.Button ButtonNew;
         public System.Windows.Forms.Button ButtonSearch;
         private System.Windows.Forms.TextBox TextBoxBatchNo;
-        private System.Windows.Forms.TextBox TextBoxBankAcctNo;
+        private System.Windows.Forms.TextBox TextBoxProject;
         private System.Windows.Forms.TextBox TextBoxName;
-        private System.Windows.Forms.Label label9;
         public System.Windows.Forms.TextBox TextBoxSearch;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox TextBoxIqama;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxBankCode;
-        private System.Windows.Forms.TextBox textBoxProject;
-        private System.Windows.Forms.TextBox textBoxAddress1;
-        private System.Windows.Forms.TextBox textBoxAddress2;
-        private System.Windows.Forms.TextBox textBoxAddress3;
+        private System.Windows.Forms.ErrorProvider errorProviderWOBank;
+        private System.Windows.Forms.DataGridView dataGridViewWOBank;
     }
 }
-
