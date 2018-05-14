@@ -5,21 +5,20 @@ using System.Windows.Forms;
 
 namespace STLx
 {
-    public partial class FormWithBank : Form
+    public partial class WBank : Form
     {
         private bool _save;
-        
-        public FormWithBank()
+        public WBank()
         {
             InitializeComponent();
         }
 
-        private void FormWithBank_Load(object sender, EventArgs e)
+        private void WBank_Load(object sender, EventArgs e)
         {
             ResetControls();
             BindEmployeeWithDataGrid();
         }
-        
+
         private void ButtonNew_Click(object sender, EventArgs e)
         {
             TextBoxIqama.Enabled = true;
@@ -31,7 +30,7 @@ namespace STLx
             textBoxAddress1.Enabled = true;
             textBoxAddress2.Enabled = true;
             textBoxAddress3.Enabled = true;
-            ComboBoxStatus.Enabled = true;
+            ComboBoxStatusW.Enabled = true;
             ButtonEdit.Enabled = false;
             ButtonSave.Enabled = true;
             ButtonDelete.Enabled = false;
@@ -44,7 +43,7 @@ namespace STLx
             textBoxAddress1.Text = "";
             textBoxAddress2.Text = "";
             textBoxAddress3.Text = "";
-            ComboBoxStatus.Text = "";
+            ComboBoxStatusW.Text = "";
             TextBoxIqama.Focus();
         }
 
@@ -59,7 +58,7 @@ namespace STLx
             textBoxAddress1.Enabled = true;
             textBoxAddress2.Enabled = true;
             textBoxAddress3.Enabled = true;
-            ComboBoxStatus.Enabled = true;
+            ComboBoxStatusW.Enabled = true;
             ButtonNew.Enabled = false;
             ButtonEdit.Enabled = false;
             ButtonSave.Enabled = true;
@@ -117,13 +116,13 @@ namespace STLx
                     emp.Iqama = TextBoxIqama.Text;
                     emp.BatchNo = TextBoxBatchNo.Text;
                     emp.Name = TextBoxName.Text;
-                    emp.BankCode = textBoxBankCode.Text; 
+                    emp.BankCode = textBoxBankCode.Text;
                     emp.BankAccountNo = TextBoxBankAcctNo.Text;
                     emp.Project = textBoxProject.Text;
                     emp.EmployeeAddress1 = textBoxAddress1.Text;
                     emp.EmployeeAddress2 = textBoxAddress2.Text;
                     emp.EmployeeAddress3 = textBoxAddress3.Text;
-                    emp.Status = "Yes".Equals(ComboBoxStatus.Text);
+                    emp.Status = "Yes".Equals(ComboBoxStatusW.Text);
                     _context.SaveChanges();
                     ResetControls();
                     MessageBox.Show("Employee was updated");
@@ -167,37 +166,6 @@ namespace STLx
             }
         }
         
-        private void ResetControls()
-        {
-            TextBoxIqama.Enabled = false;
-            TextBoxBatchNo.Enabled = false;
-            TextBoxName.Enabled = false;
-            textBoxBankCode.Enabled = false;
-            TextBoxBankAcctNo.Enabled = false;
-            textBoxProject.Enabled = false;
-            textBoxAddress1.Enabled = false;
-            textBoxAddress2.Enabled = false;
-            textBoxAddress3.Enabled = false;
-            ComboBoxStatus.Enabled = false;
-            TextBoxSearch.Text = "";
-            TextBoxIqama.Text = "";
-            TextBoxBatchNo.Text = "";
-            TextBoxName.Text = "";
-            textBoxBankCode.Text = "";
-            TextBoxBankAcctNo.Text = "";
-            textBoxProject.Text = "";
-            textBoxAddress1.Text = "";
-            textBoxAddress2.Text = "";
-            textBoxAddress3.Text = "";
-            ComboBoxStatus.Text = "";
-            ButtonNew.Enabled = true;
-            ButtonEdit.Enabled = false;
-            ButtonSave.Enabled = false;
-            ButtonDelete.Enabled = false;
-            _save = true;
-            BindEmployeeWithDataGrid();
-        }
-
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Escape || keyData == Keys.F5)
@@ -338,20 +306,20 @@ namespace STLx
         private void ComboBoxStatus_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             bool cancel = false;
-            if (string.IsNullOrEmpty(this.ComboBoxStatus.Text))
+            if (string.IsNullOrEmpty(this.ComboBoxStatusW.Text))
             {
                 cancel = true;
-                this.errorProviderWithBank.SetError(this.ComboBoxStatus, "You must provide Status!");
+                this.errorProviderWithBank.SetError(this.ComboBoxStatusW, "You must provide Status!");
             }
             e.Cancel = cancel;
         }
         private void ComboBoxStatus_Validated(object sender, EventArgs e)
         {
-            this.errorProviderWithBank.SetError(this.ComboBoxStatus, string.Empty);
+            this.errorProviderWithBank.SetError(this.ComboBoxStatusW, string.Empty);
         }
         #endregion
 
-        private void BindEmployeeWithDataGrid()
+        private void ResetControls()
         {
             TextBoxIqama.Enabled = false;
             TextBoxBatchNo.Enabled = false;
@@ -362,7 +330,7 @@ namespace STLx
             textBoxAddress1.Enabled = false;
             textBoxAddress2.Enabled = false;
             textBoxAddress3.Enabled = false;
-            ComboBoxStatus.Enabled = false;
+            ComboBoxStatusW.Enabled = false;
             TextBoxSearch.Text = "";
             TextBoxIqama.Text = "";
             TextBoxBatchNo.Text = "";
@@ -373,7 +341,7 @@ namespace STLx
             textBoxAddress1.Text = "";
             textBoxAddress2.Text = "";
             textBoxAddress3.Text = "";
-            ComboBoxStatus.Text = "";
+            ComboBoxStatusW.Text = "";
             ButtonNew.Enabled = true;
             ButtonEdit.Enabled = false;
             ButtonSave.Enabled = false;
@@ -381,7 +349,24 @@ namespace STLx
             _save = true;
             BindEmployeeWithDataGrid();
         }
-        
+
+        private void BindEmployeeWithDataGrid()
+        {
+            try
+            {
+                using (var _context = new STLxEntities())
+                {
+                    var source = _context.WithBankAccounts.Where(e => e.BatchNo.Contains(TextBoxSearch.Text) &&
+                                                                         e.Status != false);
+                    dataGridViewWBank.DataSource = source.ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+
         private void dataGridViewWBank_SelectionChanged(object sender, EventArgs e)
         {
             try

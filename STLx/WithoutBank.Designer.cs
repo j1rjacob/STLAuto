@@ -50,6 +50,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.errorProviderWOBank = new System.Windows.Forms.ErrorProvider(this.components);
             this.dataGridViewWOBank = new System.Windows.Forms.DataGridView();
+            this.label5 = new System.Windows.Forms.Label();
+            this.ComboBoxStatus = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderWOBank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWOBank)).BeginInit();
             this.SuspendLayout();
@@ -281,11 +283,34 @@
             this.dataGridViewWOBank.TabIndex = 159;
             this.dataGridViewWOBank.SelectionChanged += new System.EventHandler(this.dataGridViewWOBank_SelectionChanged);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(396, 74);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(83, 22);
+            this.label5.TabIndex = 149;
+            this.label5.Text = "STATUS";
+            // 
+            // ComboBoxStatus
+            // 
+            this.ComboBoxStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ComboBoxStatus.FormattingEnabled = true;
+            this.ComboBoxStatus.Items.AddRange(new object[] {
+            "YES",
+            "NO"});
+            this.ComboBoxStatus.Location = new System.Drawing.Point(482, 70);
+            this.ComboBoxStatus.Name = "ComboBoxStatus";
+            this.ComboBoxStatus.Size = new System.Drawing.Size(216, 28);
+            this.ComboBoxStatus.TabIndex = 160;
+            // 
             // WithoutBank
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(723, 492);
+            this.Controls.Add(this.ComboBoxStatus);
             this.Controls.Add(this.dataGridViewWOBank);
             this.Controls.Add(this.textBoxBWAccount);
             this.Controls.Add(this.textBoxBankAcct);
@@ -303,6 +328,7 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -338,5 +364,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ErrorProvider errorProviderWOBank;
         private System.Windows.Forms.DataGridView dataGridViewWOBank;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox ComboBoxStatus;
     }
 }

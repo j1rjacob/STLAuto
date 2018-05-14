@@ -7,7 +7,6 @@ namespace STLx
 {
     public partial class WithoutBank : Form
     {
-        private string _empId;
         private bool _save;
        
         public WithoutBank()
@@ -29,23 +28,29 @@ namespace STLx
             textBoxBankAcct.Enabled = true;
             TextBoxProject.Enabled = true;
             textBoxBWAccount.Enabled = true;
+            ComboBoxStatus.Enabled = true;
             ButtonEdit.Enabled = false;
             ButtonSave.Enabled = true;
             ButtonDelete.Enabled = false;
             TextBoxIqama.Text = "";
             TextBoxBatchNo.Text = "";
-            _empId = "";
+            TextBoxName.Text = "";
+            textBoxBankAcct.Text = "";
+            TextBoxProject.Text = "";
+            textBoxBWAccount.Text = "";
+            ComboBoxStatus.Text = "";
             TextBoxIqama.Focus();
         }
 
         private void ButtonEdit_Click(object sender, EventArgs e)
         {
-            TextBoxIqama.Enabled = true;
+            TextBoxIqama.Enabled = false;
             TextBoxBatchNo.Enabled = true;
             TextBoxName.Enabled = true;
             textBoxBankAcct.Enabled = true;
             TextBoxProject.Enabled = true;
             textBoxBWAccount.Enabled = true;
+            ComboBoxStatus.Enabled = true;
             ButtonNew.Enabled = false;
             ButtonEdit.Enabled = false;
             ButtonSave.Enabled = true;
@@ -75,9 +80,11 @@ namespace STLx
             {
                 using (var _context = new STLxEntities())
                 {
-                    var emp = _context.WithoutBankAccounts.First(j => j.BatchNo == TextBoxSearch.Text.Trim());
-                    _context.WithoutBankAccounts.Remove(emp);
+                    var emp = _context.WithoutBankAccounts.First(i => i.BatchNo == TextBoxBatchNo.Text);
+                    emp.IsDelete = true;
                     _context.SaveChanges();
+                    BindEmployeeWithDataGrid();
+                    MessageBox.Show("Employee was deleted");
                 }
             }
             catch (Exception)
@@ -97,19 +104,22 @@ namespace STLx
             {
                 using (var _context = new STLxEntities())
                 {
-                    var emp = _context.WithoutBankAccounts.First(e => e.BatchNo == TextBoxBatchNo.Text);
+                    var emp = _context.WithoutBankAccounts.First(e => e.Iqama == TextBoxIqama.Text);
                     emp.Iqama = TextBoxIqama.Text;
                     emp.BatchNo = TextBoxBatchNo.Text;
                     emp.Name = TextBoxName.Text;
                     emp.BackAccountNo = textBoxBankAcct.Text;
                     emp.Project = TextBoxProject.Text;
                     emp.BWAccount = textBoxBWAccount.Text;
+                    emp.Status = "Yes".Equals(ComboBoxStatus.Text); 
                     _context.SaveChanges();
+                    ResetControls();
+                    MessageBox.Show("Employee was updated");
                 }
             }
             catch (Exception)
             {
-                MessageBox.Show("Error on deleting employee.");
+                MessageBox.Show("Error on editing employee.");
             }
         }
 
@@ -132,6 +142,7 @@ namespace STLx
                     };
                     _context.WithoutBankAccounts.Add(emp);
                     _context.SaveChanges();
+                    ResetControls();
                     MessageBox.Show("Employee Save");
                 }
             }
@@ -149,6 +160,7 @@ namespace STLx
             textBoxBankAcct.Enabled = false;
             TextBoxProject.Enabled = false;
             textBoxBWAccount.Enabled = false;
+            ComboBoxStatus.Enabled = false;
             TextBoxSearch.Text = "";
             TextBoxIqama.Text = "";
             TextBoxBatchNo.Text = "";
@@ -156,6 +168,7 @@ namespace STLx
             textBoxBankAcct.Text = "";
             TextBoxProject.Text = "";
             textBoxBWAccount.Text = "";
+            ComboBoxStatus.Text = "";
             ButtonNew.Enabled = true;
             ButtonEdit.Enabled = false;
             ButtonSave.Enabled = false;
@@ -267,7 +280,8 @@ namespace STLx
             {
                 using (var _context = new STLxEntities())
                 {
-                    var source = _context.WithoutBankAccounts.Where(e => e.BatchNo.Contains(TextBoxSearch.Text));
+                    var source = _context.WithoutBankAccounts.Where(e => e.BatchNo.Contains(TextBoxSearch.Text) && 
+                                                                         e.Status != false);
                     dataGridViewWOBank.DataSource = source.ToList();
                 }
             }
@@ -295,8 +309,7 @@ namespace STLx
                         textBoxBankAcct.Text = source.BackAccountNo;
                         TextBoxProject.Text = source.Project;
                         textBoxBWAccount.Text = source.BWAccount;
-
-                        _empId = source.Iqama; ;
+                        
                         ButtonEdit.Enabled = true;
                         ButtonDelete.Enabled = true;
                     }

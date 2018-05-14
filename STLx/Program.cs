@@ -13,7 +13,7 @@ namespace STLx
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WithoutBank());
+            Application.Run(new MainMenuForm());
         }
     }
 }
