@@ -122,7 +122,7 @@ namespace STLx
                     emp.EmployeeAddress1 = textBoxAddress1.Text;
                     emp.EmployeeAddress2 = textBoxAddress2.Text;
                     emp.EmployeeAddress3 = textBoxAddress3.Text;
-                    emp.Status = "Yes".Equals(ComboBoxStatusW.Text);
+                    emp.Status = "YES".Equals(ComboBoxStatusW.Text);
                     _context.SaveChanges();
                     ResetControls();
                     MessageBox.Show("Employee was updated");
@@ -357,7 +357,8 @@ namespace STLx
                 using (var _context = new STLxEntities())
                 {
                     var source = _context.WithBankAccounts.Where(e => e.BatchNo.Contains(TextBoxSearch.Text) &&
-                                                                         e.Status != false);
+                                                                         e.Status != false &&
+                                                                         e.IsDelete != true);
                     dataGridViewWBank.DataSource = source.ToList();
                 }
             }

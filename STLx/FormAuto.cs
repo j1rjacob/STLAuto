@@ -178,7 +178,7 @@ namespace STLx
                         }
                     }
 
-                    foreach (DataRow dr in dtBig.Rows)
+                    foreach (DataRow dr in dtBig.Rows) //TODO: get data from dbase not in excel wbank
                     {
                         for (int i = 0; i < dtBig.Columns.Count; i++)
                         {
@@ -207,7 +207,7 @@ namespace STLx
 
                     dataGridView3.DataSource = dtSmall;
 
-                    foreach (DataRow dr in dtSmall.Rows)
+                    foreach (DataRow dr in dtSmall.Rows) //TODO: get data from dbase not in excel wobank
                     {
                         for (int i = 0; i < dtSmall.Columns.Count; i++)
                         {
@@ -247,7 +247,7 @@ namespace STLx
                     Int64 emplIdValueGosi;
 
                     //BIG
-                    foreach (DataRow dr in dtGosi.Rows)
+                    foreach (DataRow dr in dtGosi.Rows) //TODO: compare batch no or iqama 
                     {
                         if (Int64.TryParse(dr[empIdIndexGosi].ToString().Trim(), out emplIdValueGosi))
                         {
@@ -280,8 +280,8 @@ namespace STLx
                         }
                     }
 
-                    //SMALL
-                    foreach (DataRow dr in dtGosi.Rows)
+                    //SMALL 
+                    foreach (DataRow dr in dtGosi.Rows) //TODO: compare batch no or iqama
                     {
                         if (Int64.TryParse(dr[empIdIndexGosi].ToString().Trim(), out emplIdValueGosi))
                         {
@@ -366,10 +366,8 @@ namespace STLx
                                     salaryBig = Convert.ToDecimal(dr[netPayPayrollPB]) +
                                                 Convert.ToDecimal(firstSalary.Value);
 
-
                                     payrollPB.Remove(firstSalary.Key);
                                     payrollPB.Add(firstSalary.Key, salaryBig.ToString());
-
 
                                     row["Bank"] = Convert.ToDecimal(salaryBig) >= Convert.ToDecimal(row["Aesthetic"])
                                         ? Convert.ToDecimal(row["Aesthetic"])
@@ -448,15 +446,17 @@ namespace STLx
                                                  Convert.ToDecimal(firstSalary.Value);
                                     payroll.Remove(firstSalary.Key);
                                     payroll.Add(firstSalary.Key, salary.ToString());
-                                    //Console.WriteLine($"Duplicate {firstSalary.Key} {salary}");
+
                                     row["Payroll"] = salary;
+
                                     row["Bank"] = Convert.ToDecimal(salary) >= Convert.ToDecimal(row["Aesthetic"])
                                         ? Convert.ToDecimal(row["Aesthetic"])
                                         : Convert.ToDecimal(salary);
+
                                     row["Credit"] = Convert.ToDecimal(salary) >= Convert.ToDecimal(row["Aesthetic"])
                                         ? Convert.ToDecimal(row["Aesthetic"])
                                         : Convert.ToDecimal(salary);
-                                    //Console.WriteLine($"{row["Bank"]} {salary} {dr[netPayPayrollSB]}");
+
                                     row["Cash"] = (Convert.ToDecimal(salary) - Convert.ToDecimal(row["Aesthetic"])) < 0
                                         ? 0
                                         : (Convert.ToDecimal(salary) - Convert.ToDecimal(row["Aesthetic"]));
@@ -467,8 +467,6 @@ namespace STLx
                         }
                     }
                     #endregion
-
-                    //dataGridView1.DataSource = dtSmallSalaries;
 
                     var dtAll = (dtBigSalaries.AsEnumerable().Union(dtSmallSalaries.AsEnumerable(),
                         DataRowComparer.Default)).CopyToDataTable();
@@ -1072,8 +1070,6 @@ namespace STLx
                             excelWorksheet.Cells[i, 6].Value = Convert.ToDecimal(dr[4].ToString().Trim());
                             netpay += Convert.ToDecimal(dr[4].ToString().Trim());
 
-                            //Console.WriteLine(dr[4].ToString().Trim());
-
                             if (dr[4].ToString().Trim() != "0")
                             {
                                 excelWorksheet.Cells[i, 4].Value = Convert.ToDecimal(dr[6].ToString().Trim());
@@ -1162,7 +1158,7 @@ namespace STLx
                         excelPackage.Save();
                     }
                     //DeleteZeroPayrollProofRows(path + "\\PayrollProof.xlsx");
-                    Console.WriteLine($"Cash Count {CashCount}");
+                    //Console.WriteLine($"Cash Count {CashCount}");
                 }
             }
             catch (Exception e)
@@ -1190,15 +1186,98 @@ namespace STLx
                     .Select(grp => new
                     {
                         Company = grp.Key.Company,
-                        Count = grp.Count()
+                        Count = grp.Count(),
+                        TotalCash = grp.Sum(c => c.Field<decimal>("Cash")),
+                        Transfer = grp.Sum(c => c.Field<decimal>("Transfer")),
+                        Credit = grp.Sum(c => c.Field<decimal>("Credit"))
                     });
 
+                var queryCashCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<decimal>("Cash") != 0m);
+                var queryPayrollCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<decimal>("Credit") != 0m);
+                var queryTransferCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<decimal>("Transfer") != 0m);
+                var queryKTCCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("KTC"));
+                var queryRFPBCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("RFPB"));
+                var querySIPCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("SIP"));
+                var queryTDFCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("TDF"));
+                var queryTMFCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("TMF"));
+
+                //foreach (var item in queryCashCount.ToList())
+                //{
+                //    Console.WriteLine(item[5]); //Cash Count
+                //}
+
+                decimal cash = 0m;
                 foreach (var item in query)
                 {
                     if (item.Company != "")
                     {
-                        //Console.WriteLine("Company: {0}, Count: {1}", item.Company, item.Count);
+                        //Console.WriteLine("Company:, {0}, Count:, {1}, Cash:, {2}, Transfer, {3}, Credit, {4}", item.Company, item.Count, item.TotalCash, item.Transfer, item.Credit);
+                        cash += item.TotalCash;
                     }
+                }
+
+                //Write to Excel
+                try
+                {
+                    var path1 = Path.GetDirectoryName(textBoxSmall.Text);
+
+                    var fileinfo1 = new FileInfo(path1 + "\\Summary.xlsx");
+                    if (fileinfo1.Exists)
+                    {
+                        int CashCount = 0;
+                        using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+                        {
+                            ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
+                            
+                            //Cash
+                            excelWorksheet.Cells[4, 2].Value = cash;
+                            excelWorksheet.Cells[4, 3].Value = 0m;
+                            excelWorksheet.Cells[4, 4].Value = cash;
+                            excelWorksheet.Cells[4, 5].Value = queryCashCount.Count(); 
+
+                            //Credit
+                            excelWorksheet.Cells[5, 2].Value = cash;
+                            excelWorksheet.Cells[5, 3].Value = 0m;
+                            excelWorksheet.Cells[5, 4].Value = cash;
+                            excelWorksheet.Cells[5, 5].Value = queryPayrollCount.Count();
+
+                            //Transfer
+                            excelWorksheet.Cells[6, 2].Value = cash;
+                            excelWorksheet.Cells[6, 3].Value = 0m;
+                            excelWorksheet.Cells[6, 4].Value = cash;
+                            excelWorksheet.Cells[6, 5].Value = queryTransferCount.Count();
+
+                            //KTC
+                            excelWorksheet.Cells[12, 7].Value = queryKTCCount.Count();
+
+                            //RFPB
+                            excelWorksheet.Cells[14, 7].Value = queryRFPBCount.Count();
+
+                            //SIP
+                            excelWorksheet.Cells[16, 7].Value = querySIPCount.Count();
+
+                            //TDF
+                            excelWorksheet.Cells[18, 7].Value = queryTDFCount.Count();
+
+                            //TMF
+                            excelWorksheet.Cells[20, 7].Value = queryTMFCount.Count();
+
+                            excelPackage.Save();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw;
                 }
             }
             catch (Exception e)

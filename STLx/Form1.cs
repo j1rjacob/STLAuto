@@ -123,7 +123,7 @@ namespace STLx
                     emp.EmployeeAddress1 = textBoxAddress1.Text;
                     emp.EmployeeAddress2 = textBoxAddress2.Text;
                     emp.EmployeeAddress3 = textBoxAddress3.Text;
-                    emp.Status = "Yes".Equals(ComboBoxStatus.Text);
+                    emp.Status = "YES".Equals(ComboBoxStatus.Text);
                     _context.SaveChanges();
                     ResetControls();
                     MessageBox.Show("Employee was updated");

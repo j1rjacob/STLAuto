@@ -50,6 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Company.cs">
+      <DependentUpon>ModelStl.tt</DependentUpon>
+    </Compile>
     <Compile Include="ModelStl.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

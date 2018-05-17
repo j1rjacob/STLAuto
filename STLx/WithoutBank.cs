@@ -111,7 +111,7 @@ namespace STLx
                     emp.BackAccountNo = textBoxBankAcct.Text;
                     emp.Project = TextBoxProject.Text;
                     emp.BWAccount = textBoxBWAccount.Text;
-                    emp.Status = "Yes".Equals(ComboBoxStatus.Text); 
+                    emp.Status = "YES".Equals(ComboBoxStatus.Text); 
                     _context.SaveChanges();
                     ResetControls();
                     MessageBox.Show("Employee was updated");
@@ -281,7 +281,8 @@ namespace STLx
                 using (var _context = new STLxEntities())
                 {
                     var source = _context.WithoutBankAccounts.Where(e => e.BatchNo.Contains(TextBoxSearch.Text) && 
-                                                                         e.Status != false);
+                                                                         e.Status != false &&
+                                                                         e.IsDelete != true);
                     dataGridViewWOBank.DataSource = source.ToList();
                 }
             }

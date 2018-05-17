@@ -27,5 +27,6 @@ namespace STLx.Data
     
         public virtual DbSet<WithBankAccount> WithBankAccounts { get; set; }
         public virtual DbSet<WithoutBankAccount> WithoutBankAccounts { get; set; }
+        public virtual DbSet<Company> Companies { get; set; }
     }
 }

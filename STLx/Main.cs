@@ -16,21 +16,24 @@ namespace STLx
         {
             var withbank = new WBank();
             withbank.Show();
-            //FormProvider.MainMenu.Hide();
         }
 
         private void metroTileWithout_Click(object sender, System.EventArgs e)
         {
             var wobank = new WithoutBank();
             wobank.Show();
-            //FormProvider.MainMenu.Hide();
         }
 
         private void metroTileAuto_Click(object sender, System.EventArgs e)
         {
             var fAuto = new FormAuto();
             fAuto.Show();
-            //FormProvider.MainMenu.Hide();
+        }
+
+        private void metroTileCompany_Click(object sender, System.EventArgs e)
+        {
+            var company = new Company();
+            company.Show();
         }
     }
 }

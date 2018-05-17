@@ -7,6 +7,7 @@
       <Diagram DiagramId="7cbddeb197a84f20bacaef0665d1fc30" Name="Diagram1">
         <EntityTypeShape EntityType="STLxModel.WithBankAccount" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="STLxModel.WithoutBankAccount" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="STLxModel.Company" Width="1.5" PointX="4.875" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
