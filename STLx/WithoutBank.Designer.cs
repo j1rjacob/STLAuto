@@ -334,7 +334,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "WithoutBank";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "WithoutBank";
+            this.Text = "Without Bank Accounts";
             this.Load += new System.EventHandler(this.WithoutBank_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderWOBank)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWOBank)).EndInit();

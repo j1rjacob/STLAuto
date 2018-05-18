@@ -4,6 +4,7 @@ using STL_Auto.Helpers;
 using STL_Auto.Models;
 using STL_Auto.Services;
 using STL_Auto.Util;
+using STLx.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -1208,12 +1209,87 @@ namespace STLx
                              .Where(r => r.Field<string>("Company").Contains("TDF"));
                 var queryTMFCount = dtSummary.AsEnumerable()
                              .Where(r => r.Field<string>("Company").Contains("TMF"));
-
-                //foreach (var item in queryCashCount.ToList())
-                //{
-                //    Console.WriteLine(item[5]); //Cash Count
-                //}
-
+                var queryAdhumCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("100088G"));
+                var queryAlamCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("100094G"));
+                var queryBacs1Count = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("2A3G"));
+                var queryBacs2Count = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("2B1G"));
+                var queryDogusCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("1B3C"));
+                var queryDriversCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("999913"));
+                var queryEnergyCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("PS02G"));
+                var queryFccCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("0905G"));
+                var queryHairCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("900002"));
+                var queryHO1Count = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("999999"));
+                var queryHO2Count = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("999998"));
+                var queryHOEngCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("999999E"));
+                var queryHOHailCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("111"));
+                var queryKAUSTCivilCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("8457C"));
+                var queryKAUSTElecCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("8457E"));
+                var queryKAUSTGenCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("8457G"));
+                var queryKAUSTMechCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("8457M"));
+                var queryKAUSTRiyadhCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("8457R"));
+                var queryMAACount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("999990"));
+                var queryMidnabhCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("100093"));
+                var queryMiskCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("064PG"));
+                var queryPACount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("100090G"));
+                var queryQunCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("100087G"));
+                var queryRabiCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("100089G"));
+                var queryRafhaCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("100083"));
+                var queryRiyadhMetro1Count = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("1B3000G"));
+                var queryRiyadhMetro2Count = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("S-4G1G"));
+                var queryRiyadhMetro3Count = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("S-4C2G"));
+                var querySabbCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("100095G"));
+                var querySharmaCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("100096G"));
+                var querySTCABQAIQCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("32100G"));
+                var querySTCASIASIYAHCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("34600G"));
+                var querySTCBALADCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("40100G"));
+                var querySTCNOZHAHCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("21900G"));
+                var querySTCQURAYYATCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("41100G"));
+                var querySTCRASTANURACount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("32200G"));
+                var querySTCRENOVATIONCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("365216C"));
+                var querySTCSHOBACount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("11800G"));
+                var querySTCSKAKACount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("40900G"));
+                var querySTCTABARJALCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<string>("Company").Contains("49000G"));
+                
                 decimal cash = 0m;
                 foreach (var item in query)
                 {
@@ -1270,6 +1346,41 @@ namespace STLx
                             //TMF
                             excelWorksheet.Cells[20, 7].Value = queryTMFCount.Count();
 
+                            //STL
+                            using (var _context = new STLxEntities())
+                            {
+                                var companyList = _context.Companies
+                                    .SqlQuery("SELECT * FROM[STLx].[dbo].[Company] WHERE Id  NOT IN(40, 39, 38, 37, 36) AND Status = 1  AND IsDelete = 0 ORDER BY Name")
+                                    .ToList();
+                                int rowNum = 22;
+                                foreach (var clist in companyList)
+                                {
+                                    excelWorksheet.Cells[rowNum, 2].Value = clist.Name;
+                                    rowNum++;
+                                }
+
+                                //ADHUM
+                                excelWorksheet.Cells[22, 7].Value = queryAdhumCount.Count();
+
+                                //ALAM
+                                excelWorksheet.Cells[23, 7].Value = queryAlamCount.Count();
+
+                                //BACS1
+                                excelWorksheet.Cells[24, 7].Value = queryBacs1Count.Count();
+
+                                //BACS2
+                                excelWorksheet.Cells[25, 7].Value = queryBacs2Count.Count();
+
+                                //DOGUS
+                                excelWorksheet.Cells[26, 7].Value = queryDogusCount.Count();
+
+                                //DRIVERS
+                                excelWorksheet.Cells[27, 7].Value = queryDriversCount.Count();
+
+                                //ENERGY
+                                excelWorksheet.Cells[28, 7].Value = queryEnergyCount.Count();
+                            }
+                            
                             excelPackage.Save();
                         }
                     }

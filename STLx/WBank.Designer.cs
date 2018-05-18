@@ -410,7 +410,7 @@
             this.Controls.Add(this.label4);
             this.Name = "WBank";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "WBank";
+            this.Text = "With Bank Accounts";
             this.Load += new System.EventHandler(this.WBank_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWBank)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderWithBank)).EndInit();
