@@ -186,7 +186,7 @@ namespace STLx
                             if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
                             {
                                 dtBigSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 1].ToString().Trim(), 0m, 0m, 0m, 0m,
-                                    0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[i + 1].ToString().Trim(), 0m, 0m,"");
+                                    0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[i + 1].ToString().Trim(), 0m, 0m, "");
                                 break;
                             }
                         }
@@ -215,7 +215,7 @@ namespace STLx
                             if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
                             {
                                 dtSmallSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 3].ToString().Trim(), 0m, 0m, 0m,
-                                    0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString(), dr[i - 1].ToString().Trim(), 0m, 0m,"");
+                                    0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString(), dr[i - 1].ToString().Trim(), 0m, 0m, "");
                                 break;
                             }
                         }
@@ -273,8 +273,6 @@ namespace STLx
                                 row["OtherEarnings"] = Convert.ToDecimal(dr[otherEarningsIndexGosi] == DBNull.Value
                                     ? 0
                                     : dr[otherEarningsIndexGosi]);
-
-                                //Console.WriteLine($"{row["BatchNo"]}, {row["Aesthetic"]}, {row["BasicSalary"]}, {row["HousingAllowance"]}, {row["OtherEarnings"]}");
 
                                 dtBigSalaries.AcceptChanges();
                             }
@@ -388,8 +386,6 @@ namespace STLx
                     }
                     #endregion
 
-                    //dataGridView1.DataSource = dtBigSalaries;
-
                     var salaryAmountBig = GetBSalariesSalaryAmntColumn(dtBig);
 
                     UpdateBigSalaries(dtBigSalaries, textBoxBig.Text, salaryAmountBig + 1);
@@ -481,7 +477,7 @@ namespace STLx
                     ShadeBorder(textBoxSmall.Text, dtBigSalaries.Rows.Count + dtSmallSalaries.Rows.Count - 3, dtBigSalaries,
                         dtSmallSalaries);
 
-                    Summary(textBoxSmall.Text, dtAll);
+                    Summary(textBoxSmall.Text, dtAll, dtSmallSalaries, dtBigSalaries);
 
                     buttonCalculate.BackColor = Color.SaddleBrown;
 
@@ -514,7 +510,7 @@ namespace STLx
             catch (Exception)
             {
                 var msg = "Recheck excel files if equivalent to input field caption or \nContact Administrator";
-                MessageBox.Show(msg,"Admin", MessageBoxButtons.OK);
+                MessageBox.Show(msg, "Admin", MessageBoxButtons.OK);
             }
         }
 
@@ -543,7 +539,7 @@ namespace STLx
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
-               
+
             }
             return columnNum;
         }
@@ -748,7 +744,7 @@ namespace STLx
             }
             return columnNum;
         }
-        
+
         private int GetSSalariesSalaryAmntColumn()
         {
             int columnNum = 0;
@@ -1032,6 +1028,35 @@ namespace STLx
             }
         }
 
+        private void DeleteZeroSummary(string xpath)
+        {
+            try
+            {
+                var fileinfo = new FileInfo(xpath);
+                if (fileinfo.Exists)
+                {
+                    using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+                    {
+                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
+                        excelWorksheet.Cells
+                            .Where(cell =>
+                                cell.Address.StartsWith("D") //workaround to show cash
+                                && cell.Value is double
+                                && (double)cell.Value == 0.00d)
+                            .Select(cell => cell.Start.Row)
+                            .ToList()
+                            .ForEach(r => excelWorksheet.Row(r).Hidden = true);
+                        excelPackage.Save();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                throw;
+            }
+        }
+
         private void ShadeBorder(string xpath, int colNum, DataTable dtBigSalary, DataTable dtSmallSalary)
         {
             try
@@ -1075,7 +1100,7 @@ namespace STLx
                             {
                                 excelWorksheet.Cells[i, 4].Value = Convert.ToDecimal(dr[6].ToString().Trim());
                                 totalEarnings += Convert.ToDecimal(dr[6].ToString().Trim());
-                                
+
                                 decimal deduction;
                                 try
                                 {
@@ -1096,7 +1121,7 @@ namespace STLx
                                 creditCard += Convert.ToDecimal(dr[11].ToString().Trim());
                                 excelWorksheet.Cells[i, 8].Value = Convert.ToDecimal(dr[12].ToString().Trim());
                                 transfer += Convert.ToDecimal(dr[12].ToString().Trim());
-                                
+
                                 if (dr[5].ToString().Trim() != "0.00" && dr[5].ToString().Trim() != "0")
                                 {
                                     CashCount++;
@@ -1104,7 +1129,7 @@ namespace STLx
 
                                 excelWorksheet.Cells[i, 9].Value = Convert.ToDecimal(dr[5].ToString().Trim());
                                 cash += Convert.ToDecimal(dr[5].ToString().Trim());
-                                
+
                                 var money = new SeparateMoney().Separate(Convert.ToDecimal(dr[5].ToString().Trim()));
 
                                 excelWorksheet.Cells[i, 10].Value = money["1+"];
@@ -1169,13 +1194,12 @@ namespace STLx
             }
         }
 
-        private void Summary(string xpath, DataTable dtSummary)
+        private void Summary(string xpath, DataTable dtSummary, DataTable dtSmallSalary, DataTable dtBigSalary)
         {
+            var path = Path.GetDirectoryName(xpath);
+            File.Copy(Application.StartupPath + "\\Template\\Summary.xlsx", path + "\\Summary.xlsx", true);
             try
             {
-                var path = Path.GetDirectoryName(xpath);
-                File.Copy(Application.StartupPath + "\\Template\\Summary.xlsx", path + "\\Summary.xlsx", true);
-
                 var fileinfo = new FileInfo(path + "\\Summary.xlsx");
                 if (fileinfo.Exists)
                 {
@@ -1193,112 +1217,71 @@ namespace STLx
                         Credit = grp.Sum(c => c.Field<decimal>("Credit"))
                     });
 
-                var queryCashCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<decimal>("Cash") != 0m);
-                var queryPayrollCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<decimal>("Credit") != 0m);
-                var queryTransferCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<decimal>("Transfer") != 0m);
-                var queryKTCCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("KTC"));
-                var queryRFPBCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("RFPB"));
-                var querySIPCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("SIP"));
-                var queryTDFCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("TDF"));
-                var queryTMFCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("TMF"));
-                var queryAdhumCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("100088G"));
-                var queryAlamCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("100094G"));
-                var queryBacs1Count = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("2A3G"));
-                var queryBacs2Count = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("2B1G"));
-                var queryDogusCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("1B3C"));
-                var queryDriversCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("999913"));
-                var queryEnergyCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("PS02G"));
-                var queryFccCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("0905G"));
-                var queryHairCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("900002"));
-                var queryHO1Count = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("999999"));
-                var queryHO2Count = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("999998"));
-                var queryHOEngCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("999999E"));
-                var queryHOHailCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("111"));
-                var queryKAUSTCivilCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("8457C"));
-                var queryKAUSTElecCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("8457E"));
-                var queryKAUSTGenCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("8457G"));
-                var queryKAUSTMechCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("8457M"));
-                var queryKAUSTRiyadhCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("8457R"));
-                var queryMAACount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("999990"));
-                var queryMidnabhCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("100093"));
-                var queryMiskCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("064PG"));
-                var queryPACount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("100090G"));
-                var queryQunCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("100087G"));
-                var queryRabiCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("100089G"));
-                var queryRafhaCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("100083"));
-                var queryRiyadhMetro1Count = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("1B3000G"));
-                var queryRiyadhMetro2Count = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("S-4G1G"));
-                var queryRiyadhMetro3Count = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("S-4C2G"));
-                var querySabbCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("100095G"));
-                var querySharmaCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("100096G"));
-                var querySTCABQAIQCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("32100G"));
-                var querySTCASIASIYAHCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("34600G"));
-                var querySTCBALADCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("40100G"));
-                var querySTCNOZHAHCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("21900G"));
-                var querySTCQURAYYATCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("41100G"));
-                var querySTCRASTANURACount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("32200G"));
-                var querySTCRENOVATIONCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("365216C"));
-                var querySTCSHOBACount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("11800G"));
-                var querySTCSKAKACount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("40900G"));
-                var querySTCTABARJALCount = dtSummary.AsEnumerable()
-                             .Where(r => r.Field<string>("Company").Contains("49000G"));
-                
                 decimal cash = 0m;
                 foreach (var item in query)
                 {
                     if (item.Company != "")
                     {
-                        //Console.WriteLine("Company:, {0}, Count:, {1}, Cash:, {2}, Transfer, {3}, Credit, {4}", item.Company, item.Count, item.TotalCash, item.Transfer, item.Credit);
                         cash += item.TotalCash;
                     }
                 }
+                
+                //Small
+                var qrySmall = dtSmallSalary.AsEnumerable()
+                    .GroupBy(r => new { Company = r.Field<string>("Company") })
+                    .Select(grp => new
+                    {
+                        Company = grp.Key.Company,
+                        Count = grp.Count(),
+                        TotalCash = grp.Sum(c => c.Field<decimal>("Cash")),
+                        Transfer = grp.Sum(c => c.Field<decimal>("Transfer")),
+                        Credit = grp.Sum(c => c.Field<decimal>("Credit")),
+                        Bank = grp.Sum(c => c.Field<decimal>("Bank")),
+                        Payroll = grp.Sum(c => c.Field<decimal>("Payroll"))
+                    });
+                decimal bankSmall = 0m;
+                decimal payrollSmall = 0m;
+                foreach (var item in qrySmall)
+                {
+                    if (item.Company != "")
+                    {
+                        bankSmall += item.Bank;
+                        payrollSmall += item.Payroll;
+                    }
+                }
+
+                //Big
+                var qryBig = dtBigSalary.AsEnumerable()
+                    .GroupBy(r => new { Company = r.Field<string>("Company") })
+                    .Select(grp => new
+                    {
+                        Company = grp.Key.Company,
+                        Count = grp.Count(),
+                        TotalCash = grp.Sum(c => c.Field<decimal>("Cash")),
+                        Transfer = grp.Sum(c => c.Field<decimal>("Transfer")),
+                        Credit = grp.Sum(c => c.Field<decimal>("Credit")),
+                        Bank = grp.Sum(c => c.Field<decimal>("Bank")),
+                        Payroll = grp.Sum(c => c.Field<decimal>("Payroll"))
+                    });
+                decimal bankBig = 0m;
+                decimal payrollBig = 0m;
+                foreach (var item in qryBig)
+                {
+                    if (item.Company != "")
+                    {
+                        bankBig += item.Bank;
+                        payrollBig += item.Payroll;
+                    }
+                }
+
+                #region EmpCount
+                var queryCashCount = dtSummary.AsEnumerable()
+                             .Where(r => r.Field<decimal>("Cash") != 0m);
+                var queryPayrollCount = dtSmallSalary.AsEnumerable()
+                             .ToList();
+                var queryTransferCount = dtBigSalary.AsEnumerable()
+                             .ToList();
+                #endregion
 
                 //Write to Excel
                 try
@@ -1312,39 +1295,131 @@ namespace STLx
                         using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
                         {
                             ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
-                            
+
                             //Cash
                             excelWorksheet.Cells[4, 2].Value = cash;
                             excelWorksheet.Cells[4, 3].Value = 0m;
-                            excelWorksheet.Cells[4, 4].Value = cash;
-                            excelWorksheet.Cells[4, 5].Value = queryCashCount.Count(); 
+                            excelWorksheet.Cells[4, 4].Value = cash - 0m;
+                            excelWorksheet.Cells[4, 5].Value = queryCashCount.Count();
 
                             //Credit
-                            excelWorksheet.Cells[5, 2].Value = cash;
-                            excelWorksheet.Cells[5, 3].Value = 0m;
-                            excelWorksheet.Cells[5, 4].Value = cash;
+                            excelWorksheet.Cells[5, 2].Value = payrollSmall;
+                            excelWorksheet.Cells[5, 3].Value = bankSmall;
+                            excelWorksheet.Cells[5, 4].Value = payrollSmall - bankSmall;
                             excelWorksheet.Cells[5, 5].Value = queryPayrollCount.Count();
 
                             //Transfer
-                            excelWorksheet.Cells[6, 2].Value = cash;
-                            excelWorksheet.Cells[6, 3].Value = 0m;
-                            excelWorksheet.Cells[6, 4].Value = cash;
+                            excelWorksheet.Cells[6, 2].Value = payrollBig;
+                            excelWorksheet.Cells[6, 3].Value = bankBig;
+                            excelWorksheet.Cells[6, 4].Value = payrollBig - bankBig;
                             excelWorksheet.Cells[6, 5].Value = queryTransferCount.Count();
 
+                            //Sum
+                            excelWorksheet.Cells[7, 2].Value = cash + payrollSmall + payrollBig;
+                            excelWorksheet.Cells[7, 3].Value = bankSmall + bankBig;
+                            excelWorksheet.Cells[7, 4].Value = cash + (payrollSmall + payrollBig) - (bankSmall + bankBig);
+                            excelWorksheet.Cells[7, 5].Value = queryCashCount.Count() + queryPayrollCount.Count()  + queryTransferCount.Count();
+
+                            var netpay1 = 0m;
+                            var credit1 = 0m;
+                            var transfer1 = 0m;
+                            var cashi1 = 0m;
+                            var counti1 = 0m;
+
                             //KTC
-                            excelWorksheet.Cells[12, 7].Value = queryKTCCount.Count();
+                            excelWorksheet.Cells[12, 3].Value = NetPayPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[12, 4].Value = CreditPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[12, 5].Value = TransferPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[12, 6].Value = CashPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[12, 7].Value = CountPerCompany(dtSummary, "KTC");
+
+                            excelWorksheet.Cells[13, 3].Value = NetPayPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[13, 4].Value = CreditPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[13, 5].Value = TransferPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[13, 6].Value = CashPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[13, 7].Value = CountPerCompany(dtSummary, "KTC");
+
+                            netpay1 += NetPayPerCompany(dtSummary, "KTC");
+                            credit1 += CreditPerCompany(dtSummary, "KTC");
+                            transfer1 += TransferPerCompany(dtSummary, "KTC");
+                            cashi1 += CashPerCompany(dtSummary, "KTC");
+                            counti1 += CountPerCompany(dtSummary, "KTC");
 
                             //RFPB
-                            excelWorksheet.Cells[14, 7].Value = queryRFPBCount.Count();
+                            excelWorksheet.Cells[14, 3].Value = NetPayPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[14, 4].Value = CreditPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[14, 5].Value = TransferPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[14, 6].Value = CashPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[14, 7].Value = CountPerCompany(dtSummary, "RFPB");
+
+                            excelWorksheet.Cells[15, 3].Value = NetPayPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[15, 4].Value = CreditPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[15, 5].Value = TransferPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[15, 6].Value = CashPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[15, 7].Value = CountPerCompany(dtSummary, "RFPB");
+
+                            netpay1 += NetPayPerCompany(dtSummary, "RFPB");
+                            credit1 += CreditPerCompany(dtSummary, "RFPB");
+                            transfer1 += TransferPerCompany(dtSummary, "RFPB");
+                            cashi1 += CashPerCompany(dtSummary, "RFPB");
+                            counti1 += CountPerCompany(dtSummary, "RFPB");
 
                             //SIP
-                            excelWorksheet.Cells[16, 7].Value = querySIPCount.Count();
+                            excelWorksheet.Cells[16, 3].Value = NetPayPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[16, 4].Value = CreditPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[16, 5].Value = TransferPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[16, 6].Value = CashPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[16, 7].Value = CountPerCompany(dtSummary, "SIP");
+
+                            excelWorksheet.Cells[17, 3].Value = NetPayPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[17, 4].Value = CreditPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[17, 5].Value = TransferPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[17, 6].Value = CashPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[17, 7].Value = CountPerCompany(dtSummary, "SIP");
+
+                            netpay1 += NetPayPerCompany(dtSummary, "SIP");
+                            credit1 += CreditPerCompany(dtSummary, "SIP");
+                            transfer1 += TransferPerCompany(dtSummary, "SIP");
+                            cashi1 += CashPerCompany(dtSummary, "SIP");
+                            counti1 += CountPerCompany(dtSummary, "SIP");
 
                             //TDF
-                            excelWorksheet.Cells[18, 7].Value = queryTDFCount.Count();
+                            excelWorksheet.Cells[18, 3].Value = NetPayPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[18, 4].Value = CreditPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[18, 5].Value = TransferPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[18, 6].Value = CashPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[18, 7].Value = CountPerCompany(dtSummary, "TDF");
+
+                            excelWorksheet.Cells[19, 3].Value = NetPayPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[19, 4].Value = CreditPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[19, 5].Value = TransferPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[19, 6].Value = CashPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[19, 7].Value = CountPerCompany(dtSummary, "TDF");
+
+                            netpay1 += NetPayPerCompany(dtSummary, "TDF");
+                            credit1 += CreditPerCompany(dtSummary, "TDF");
+                            transfer1 += TransferPerCompany(dtSummary, "TDF");
+                            cashi1 += CashPerCompany(dtSummary, "TDF");
+                            counti1 += CountPerCompany(dtSummary, "TDF");
 
                             //TMF
-                            excelWorksheet.Cells[20, 7].Value = queryTMFCount.Count();
+                            excelWorksheet.Cells[20, 3].Value = NetPayPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[20, 4].Value = CreditPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[20, 5].Value = TransferPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[20, 6].Value = CashPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[20, 7].Value = CountPerCompany(dtSummary, "TMF");
+
+                            excelWorksheet.Cells[21, 3].Value = NetPayPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[21, 4].Value = CreditPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[21, 5].Value = TransferPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[21, 6].Value = CashPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[21, 7].Value = CountPerCompany(dtSummary, "TMF");
+
+                            netpay1 += NetPayPerCompany(dtSummary, "TMF");
+                            credit1 += CreditPerCompany(dtSummary, "TMF");
+                            transfer1 += TransferPerCompany(dtSummary, "TMF");
+                            cashi1 += CashPerCompany(dtSummary, "TMF");
+                            counti1 += CountPerCompany(dtSummary, "TMF");
 
                             //STL
                             using (var _context = new STLxEntities())
@@ -1352,6 +1427,7 @@ namespace STLx
                                 var companyList = _context.Companies
                                     .SqlQuery("SELECT * FROM[STLx].[dbo].[Company] WHERE Id  NOT IN(40, 39, 38, 37, 36) AND Status = 1  AND IsDelete = 0 ORDER BY Name")
                                     .ToList();
+
                                 int rowNum = 22;
                                 foreach (var clist in companyList)
                                 {
@@ -1359,28 +1435,41 @@ namespace STLx
                                     rowNum++;
                                 }
 
-                                //ADHUM
-                                excelWorksheet.Cells[22, 7].Value = queryAdhumCount.Count();
+                                int initialRow = 22;
+                                var netpay2 = 0m;
+                                var credit2 = 0m;
+                                var transfer2 = 0m;
+                                var cashi2 = 0m;
+                                var counti2 = 0m;
 
-                                //ALAM
-                                excelWorksheet.Cells[23, 7].Value = queryAlamCount.Count();
+                                foreach (var clist in companyList)
+                                {
+                                    excelWorksheet.Cells[initialRow, 3].Value = NetPayPerCompany(dtSummary, clist.Code);
+                                    excelWorksheet.Cells[initialRow, 4].Value = CreditPerCompany(dtSummary, clist.Code);
+                                    excelWorksheet.Cells[initialRow, 5].Value = TransferPerCompany(dtSummary, clist.Code);
+                                    excelWorksheet.Cells[initialRow, 6].Value = CashPerCompany(dtSummary, clist.Code);
+                                    excelWorksheet.Cells[initialRow, 7].Value = CountPerCompany(dtSummary, clist.Code);
 
-                                //BACS1
-                                excelWorksheet.Cells[24, 7].Value = queryBacs1Count.Count();
+                                    netpay2 += NetPayPerCompany(dtSummary, clist.Code);
+                                    credit2 += CreditPerCompany(dtSummary, clist.Code);
+                                    transfer2 += TransferPerCompany(dtSummary, clist.Code);
+                                    cashi2 += CashPerCompany(dtSummary, clist.Code);
+                                    counti2 += CountPerCompany(dtSummary, clist.Code);
 
-                                //BACS2
-                                excelWorksheet.Cells[25, 7].Value = queryBacs2Count.Count();
+                                    initialRow++;
+                                }
+                                excelWorksheet.Cells[initialRow, 3].Value = netpay2;
+                                excelWorksheet.Cells[initialRow, 4].Value = credit2;
+                                excelWorksheet.Cells[initialRow, 5].Value = transfer2;
+                                excelWorksheet.Cells[initialRow, 6].Value = cashi2;
+                                excelWorksheet.Cells[initialRow, 7].Value = counti2;
 
-                                //DOGUS
-                                excelWorksheet.Cells[26, 7].Value = queryDogusCount.Count();
-
-                                //DRIVERS
-                                excelWorksheet.Cells[27, 7].Value = queryDriversCount.Count();
-
-                                //ENERGY
-                                excelWorksheet.Cells[28, 7].Value = queryEnergyCount.Count();
+                                excelWorksheet.Cells[initialRow + 1, 3].Value = netpay1 + netpay2;
+                                excelWorksheet.Cells[initialRow + 1, 4].Value = credit1 + credit2;
+                                excelWorksheet.Cells[initialRow + 1, 5].Value = transfer1 + transfer2;
+                                excelWorksheet.Cells[initialRow + 1, 6].Value = cashi1 + cashi2;
+                                excelWorksheet.Cells[initialRow + 1, 7].Value = counti1 + counti2;
                             }
-                            
                             excelPackage.Save();
                         }
                     }
@@ -1388,13 +1477,123 @@ namespace STLx
                 catch (Exception e)
                 {
                     MessageBox.Show(e.Message);
-                    throw;
+                    //throw;
                 }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
+            DeleteZeroSummary(path + "\\Summary.xlsx");
+        }
+
+        private static int CountPerCompany(DataTable dtSummary, string Company)
+        {
+            var compCount = 0;
+            try
+            {
+                var result = dtSummary.AsEnumerable()
+                                      .Where(r => r.Field<string>("Company")
+                                      .Contains(Company));
+                compCount = result.Count();
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+            return compCount;
+        }
+
+        private static decimal NetPayPerCompany(DataTable dtSummary, string Company)
+        {
+            var netpay = 0m;
+            try
+            {
+                var result = dtSummary.AsEnumerable()
+                    .Where(r => r.Field<string>("Company").Contains(Company))
+                    .GroupBy(r => new { Company = r.Field<string>("Company") })
+                    .Select(np => new
+                    {
+                        NetPay = np.Sum(c => c.Field<decimal>("Bank"))
+                    })
+                    .FirstOrDefault();
+                netpay = result.NetPay;
+            }
+            catch (Exception)
+            {
+                return 0m;
+            }
+
+            return netpay;
+        }
+
+        private static decimal CashPerCompany(DataTable dtSummary, string Company)
+        {
+            var cash = 0m;
+            try
+            {
+                var result = dtSummary.AsEnumerable()
+                    .Where(r => r.Field<string>("Company").Contains(Company))
+                    .GroupBy(r => new { Company = r.Field<string>("Company") })
+                    .Select(np => new
+                    {
+                        Cash = np.Sum(c => c.Field<decimal>("Cash"))
+                    })
+                    .FirstOrDefault();
+                cash = result.Cash;
+            }
+            catch (Exception)
+            {
+                return 0m;
+            }
+
+            return cash;
+        }
+
+        private static decimal TransferPerCompany(DataTable dtSummary, string Company)
+        {
+            var transfer = 0m;
+            try
+            {
+                var result = dtSummary.AsEnumerable()
+                    .Where(r => r.Field<string>("Company").Contains(Company))
+                    .GroupBy(r => new { Company = r.Field<string>("Company") })
+                    .Select(np => new
+                    {
+                        Transfer = np.Sum(c => c.Field<decimal>("Transfer"))
+                    })
+                    .FirstOrDefault();
+                transfer = result.Transfer;
+            }
+            catch (Exception)
+            {
+                return 0m;
+            }
+
+            return transfer;
+        }
+
+        private static decimal CreditPerCompany(DataTable dtSummary, string Company)
+        {
+            decimal credit = 0m;
+            try
+            {
+                var result = dtSummary.AsEnumerable()
+                    .Where(r => r.Field<string>("Company").Contains(Company))
+                    .GroupBy(r => new { Company = r.Field<string>("Company") })
+                    .Select(np => new
+                    {
+                        Credit = np.Sum(c => c.Field<decimal>("Credit"))
+                    })
+                    .FirstOrDefault();
+                credit = result.Credit;
+            }
+            catch (Exception)
+            {
+                return 0m;
+            }
+            
+            return credit;
         }
     }
 }
