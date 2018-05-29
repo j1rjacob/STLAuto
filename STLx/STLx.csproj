@@ -80,6 +80,7 @@
     <Compile Include="Company.Designer.cs">
       <DependentUpon>Company.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\SmartDB.cs" />
     <Compile Include="Util\Cash.cs" />
     <Compile Include="Util\CompanyCount.cs" />
     <Compile Include="Util\Credit.cs" />
