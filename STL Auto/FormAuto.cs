@@ -183,7 +183,7 @@ namespace STL_Auto
                         for (int i = 0; i < dtBig.Columns.Count; i++)
                         {
                             if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
-                            {
+                            {   //TODO: No Batch No.
                                 dtBigSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 1].ToString().Trim(), 0m, 0m, 0m, 0m,
                                     0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[i + 1].ToString().Trim(), 0m, 0m,"");
                                 break;
@@ -388,9 +388,7 @@ namespace STL_Auto
                         }
                     }
                     #endregion
-
-                    //dataGridView1.DataSource = dtBigSalaries;
-
+                    
                     var salaryAmountBig = GetBSalariesSalaryAmntColumn(dtBig);
 
                     UpdateBigSalaries(dtBigSalaries, textBoxBig.Text, salaryAmountBig + 1);
@@ -467,9 +465,7 @@ namespace STL_Auto
                         }
                     }
                     #endregion
-
-                    //dataGridView1.DataSource = dtSmallSalaries;
-
+                    
                     var dtAll = (dtBigSalaries.AsEnumerable().Union(dtSmallSalaries.AsEnumerable(),
                         DataRowComparer.Default)).CopyToDataTable();
 
@@ -796,7 +792,7 @@ namespace STL_Auto
                     using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
                     {
                         Int64 value;
-                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[tableNum]; //todo make dynamic
+                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[tableNum]; 
                         foreach (DataRow dr in dt.Rows)
                         {
                             var i = 0;

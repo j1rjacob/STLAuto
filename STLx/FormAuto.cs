@@ -5,6 +5,7 @@ using STL_Auto.Models;
 using STL_Auto.Services;
 using STL_Auto.Util;
 using STLx.Data;
+using STLx.Util;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -150,8 +151,8 @@ namespace STLx
 
         private void buttonCalculate_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 if (textBoxSmall.Text != ""
                     && textBoxBig.Text != ""
                     && textBoxGosi.Text != ""
@@ -184,7 +185,7 @@ namespace STLx
                         for (int i = 0; i < dtBig.Columns.Count; i++)
                         {
                             if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
-                            {
+                            {   //TODO: Change of excel form can't find column 
                                 dtBigSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 1].ToString().Trim(), 0m, 0m, 0m, 0m,
                                     0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[i + 1].ToString().Trim(), 0m, 0m, "");
                                 break;
@@ -237,7 +238,7 @@ namespace STLx
 
                     dataGridView2.DataSource = dtGosi;
 
-                    var empIdIndexGosi = GetGosiEmpIdColumn(dtGosi);
+                    var empIdIndexGosi = new Iqama().GetEmpIdColumn(dtGosi);
                     var batchNoIndexGosi = GetGosiBatchNoColumn();
                     var aestheticIndexGosi = GetGosiAestheticColumn();
                     var basicSalaryIndexGosi = GetGosiBasicSalaryColumn();
@@ -506,42 +507,17 @@ namespace STLx
                 {
                     MessageBox.Show("Please fill up all fields.");
                 }
-            }
-            catch (Exception)
-            {
-                var msg = "Recheck excel files if equivalent to input field caption or \nContact Administrator";
-                MessageBox.Show(msg, "Admin", MessageBoxButtons.OK);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    //var msg = "Recheck excel files if equivalent to input field caption or \nContact Administrator";
+            //    MessageBox.Show(ex.Message, "Admin", MessageBoxButtons.OK);
+            //}
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private int GetGosiEmpIdColumn(DataTable dTable)
-        {
-            int columnNum = 0;
-            try
-            {
-                foreach (DataRow dr in dTable.Rows)
-                {
-                    for (int i = 0; i < dTable.Columns.Count; i++)
-                    {
-                        if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
-                        {
-                            columnNum = i;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-
-            }
-            return columnNum;
         }
 
         private int GetGosiAestheticColumn()
@@ -1327,99 +1303,99 @@ namespace STLx
                             var counti1 = 0m;
 
                             //KTC
-                            excelWorksheet.Cells[12, 3].Value = NetPayPerCompany(dtSummary, "KTC");
-                            excelWorksheet.Cells[12, 4].Value = CreditPerCompany(dtSummary, "KTC");
-                            excelWorksheet.Cells[12, 5].Value = TransferPerCompany(dtSummary, "KTC");
-                            excelWorksheet.Cells[12, 6].Value = CashPerCompany(dtSummary, "KTC");
-                            excelWorksheet.Cells[12, 7].Value = CountPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[12, 3].Value = new NetPay().NetPayPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[12, 4].Value = new Credit().CreditPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[12, 5].Value = new Transfer().TransferPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[12, 6].Value = new Cash().CashPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[12, 7].Value = new CompanyCount().CountPerCompany(dtSummary, "KTC");
 
-                            excelWorksheet.Cells[13, 3].Value = NetPayPerCompany(dtSummary, "KTC");
-                            excelWorksheet.Cells[13, 4].Value = CreditPerCompany(dtSummary, "KTC");
-                            excelWorksheet.Cells[13, 5].Value = TransferPerCompany(dtSummary, "KTC");
-                            excelWorksheet.Cells[13, 6].Value = CashPerCompany(dtSummary, "KTC");
-                            excelWorksheet.Cells[13, 7].Value = CountPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[13, 3].Value = new NetPay().NetPayPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[13, 4].Value = new Credit().CreditPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[13, 5].Value = new Transfer().TransferPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[13, 6].Value = new Cash().CashPerCompany(dtSummary, "KTC");
+                            excelWorksheet.Cells[13, 7].Value = new CompanyCount().CountPerCompany(dtSummary, "KTC");
 
-                            netpay1 += NetPayPerCompany(dtSummary, "KTC");
-                            credit1 += CreditPerCompany(dtSummary, "KTC");
-                            transfer1 += TransferPerCompany(dtSummary, "KTC");
-                            cashi1 += CashPerCompany(dtSummary, "KTC");
-                            counti1 += CountPerCompany(dtSummary, "KTC");
+                            netpay1 += new NetPay().NetPayPerCompany(dtSummary, "KTC");
+                            credit1 += new Credit().CreditPerCompany(dtSummary, "KTC");
+                            transfer1 += new Transfer().TransferPerCompany(dtSummary, "KTC");
+                            cashi1 += new Cash().CashPerCompany(dtSummary, "KTC");
+                            counti1 += new CompanyCount().CountPerCompany(dtSummary, "KTC");
 
                             //RFPB
-                            excelWorksheet.Cells[14, 3].Value = NetPayPerCompany(dtSummary, "RFPB");
-                            excelWorksheet.Cells[14, 4].Value = CreditPerCompany(dtSummary, "RFPB");
-                            excelWorksheet.Cells[14, 5].Value = TransferPerCompany(dtSummary, "RFPB");
-                            excelWorksheet.Cells[14, 6].Value = CashPerCompany(dtSummary, "RFPB");
-                            excelWorksheet.Cells[14, 7].Value = CountPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[14, 3].Value = new NetPay().NetPayPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[14, 4].Value = new Credit().CreditPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[14, 5].Value = new Transfer().TransferPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[14, 6].Value = new Cash().CashPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[14, 7].Value = new CompanyCount().CountPerCompany(dtSummary, "RFPB");
 
-                            excelWorksheet.Cells[15, 3].Value = NetPayPerCompany(dtSummary, "RFPB");
-                            excelWorksheet.Cells[15, 4].Value = CreditPerCompany(dtSummary, "RFPB");
-                            excelWorksheet.Cells[15, 5].Value = TransferPerCompany(dtSummary, "RFPB");
-                            excelWorksheet.Cells[15, 6].Value = CashPerCompany(dtSummary, "RFPB");
-                            excelWorksheet.Cells[15, 7].Value = CountPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[15, 3].Value = new NetPay().NetPayPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[15, 4].Value = new Credit().CreditPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[15, 5].Value = new Transfer().TransferPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[15, 6].Value = new Cash().CashPerCompany(dtSummary, "RFPB");
+                            excelWorksheet.Cells[15, 7].Value = new CompanyCount().CountPerCompany(dtSummary, "RFPB");
 
-                            netpay1 += NetPayPerCompany(dtSummary, "RFPB");
-                            credit1 += CreditPerCompany(dtSummary, "RFPB");
-                            transfer1 += TransferPerCompany(dtSummary, "RFPB");
-                            cashi1 += CashPerCompany(dtSummary, "RFPB");
-                            counti1 += CountPerCompany(dtSummary, "RFPB");
+                            netpay1 += new NetPay().NetPayPerCompany(dtSummary, "RFPB");
+                            credit1 += new Credit().CreditPerCompany(dtSummary, "RFPB");
+                            transfer1 += new Transfer().TransferPerCompany(dtSummary, "RFPB");
+                            cashi1 += new Cash().CashPerCompany(dtSummary, "RFPB");
+                            counti1 += new CompanyCount().CountPerCompany(dtSummary, "RFPB");
 
                             //SIP
-                            excelWorksheet.Cells[16, 3].Value = NetPayPerCompany(dtSummary, "SIP");
-                            excelWorksheet.Cells[16, 4].Value = CreditPerCompany(dtSummary, "SIP");
-                            excelWorksheet.Cells[16, 5].Value = TransferPerCompany(dtSummary, "SIP");
-                            excelWorksheet.Cells[16, 6].Value = CashPerCompany(dtSummary, "SIP");
-                            excelWorksheet.Cells[16, 7].Value = CountPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[16, 3].Value = new NetPay().NetPayPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[16, 4].Value = new Credit().CreditPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[16, 5].Value = new Transfer().TransferPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[16, 6].Value = new Cash().CashPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[16, 7].Value = new CompanyCount().CountPerCompany(dtSummary, "SIP");
 
-                            excelWorksheet.Cells[17, 3].Value = NetPayPerCompany(dtSummary, "SIP");
-                            excelWorksheet.Cells[17, 4].Value = CreditPerCompany(dtSummary, "SIP");
-                            excelWorksheet.Cells[17, 5].Value = TransferPerCompany(dtSummary, "SIP");
-                            excelWorksheet.Cells[17, 6].Value = CashPerCompany(dtSummary, "SIP");
-                            excelWorksheet.Cells[17, 7].Value = CountPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[17, 3].Value = new NetPay().NetPayPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[17, 4].Value = new Credit().CreditPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[17, 5].Value = new Transfer().TransferPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[17, 6].Value = new Cash().CashPerCompany(dtSummary, "SIP");
+                            excelWorksheet.Cells[17, 7].Value = new CompanyCount().CountPerCompany(dtSummary, "SIP");
 
-                            netpay1 += NetPayPerCompany(dtSummary, "SIP");
-                            credit1 += CreditPerCompany(dtSummary, "SIP");
-                            transfer1 += TransferPerCompany(dtSummary, "SIP");
-                            cashi1 += CashPerCompany(dtSummary, "SIP");
-                            counti1 += CountPerCompany(dtSummary, "SIP");
+                            netpay1 += new NetPay().NetPayPerCompany(dtSummary, "SIP");
+                            credit1 += new Credit().CreditPerCompany(dtSummary, "SIP");
+                            transfer1 += new Transfer().TransferPerCompany(dtSummary, "SIP");
+                            cashi1 += new Cash().CashPerCompany(dtSummary, "SIP");
+                            counti1 += new CompanyCount().CountPerCompany(dtSummary, "SIP");
 
                             //TDF
-                            excelWorksheet.Cells[18, 3].Value = NetPayPerCompany(dtSummary, "TDF");
-                            excelWorksheet.Cells[18, 4].Value = CreditPerCompany(dtSummary, "TDF");
-                            excelWorksheet.Cells[18, 5].Value = TransferPerCompany(dtSummary, "TDF");
-                            excelWorksheet.Cells[18, 6].Value = CashPerCompany(dtSummary, "TDF");
-                            excelWorksheet.Cells[18, 7].Value = CountPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[18, 3].Value = new NetPay().NetPayPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[18, 4].Value = new Credit().CreditPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[18, 5].Value = new Transfer().TransferPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[18, 6].Value = new Cash().CashPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[18, 7].Value = new CompanyCount().CountPerCompany(dtSummary, "TDF");
 
-                            excelWorksheet.Cells[19, 3].Value = NetPayPerCompany(dtSummary, "TDF");
-                            excelWorksheet.Cells[19, 4].Value = CreditPerCompany(dtSummary, "TDF");
-                            excelWorksheet.Cells[19, 5].Value = TransferPerCompany(dtSummary, "TDF");
-                            excelWorksheet.Cells[19, 6].Value = CashPerCompany(dtSummary, "TDF");
-                            excelWorksheet.Cells[19, 7].Value = CountPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[19, 3].Value = new NetPay().NetPayPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[19, 4].Value = new Credit().CreditPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[19, 5].Value = new Transfer().TransferPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[19, 6].Value = new Cash().CashPerCompany(dtSummary, "TDF");
+                            excelWorksheet.Cells[19, 7].Value = new CompanyCount().CountPerCompany(dtSummary, "TDF");
 
-                            netpay1 += NetPayPerCompany(dtSummary, "TDF");
-                            credit1 += CreditPerCompany(dtSummary, "TDF");
-                            transfer1 += TransferPerCompany(dtSummary, "TDF");
-                            cashi1 += CashPerCompany(dtSummary, "TDF");
-                            counti1 += CountPerCompany(dtSummary, "TDF");
+                            netpay1 += new NetPay().NetPayPerCompany(dtSummary, "TDF");
+                            credit1 += new Credit().CreditPerCompany(dtSummary, "TDF");
+                            transfer1 += new Transfer().TransferPerCompany(dtSummary, "TDF");
+                            cashi1 += new Cash().CashPerCompany(dtSummary, "TDF");
+                            counti1 += new CompanyCount().CountPerCompany(dtSummary, "TDF");
 
                             //TMF
-                            excelWorksheet.Cells[20, 3].Value = NetPayPerCompany(dtSummary, "TMF");
-                            excelWorksheet.Cells[20, 4].Value = CreditPerCompany(dtSummary, "TMF");
-                            excelWorksheet.Cells[20, 5].Value = TransferPerCompany(dtSummary, "TMF");
-                            excelWorksheet.Cells[20, 6].Value = CashPerCompany(dtSummary, "TMF");
-                            excelWorksheet.Cells[20, 7].Value = CountPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[20, 3].Value = new NetPay().NetPayPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[20, 4].Value = new Credit().CreditPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[20, 5].Value = new Transfer().TransferPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[20, 6].Value = new Cash().CashPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[20, 7].Value = new CompanyCount().CountPerCompany(dtSummary, "TMF");
 
-                            excelWorksheet.Cells[21, 3].Value = NetPayPerCompany(dtSummary, "TMF");
-                            excelWorksheet.Cells[21, 4].Value = CreditPerCompany(dtSummary, "TMF");
-                            excelWorksheet.Cells[21, 5].Value = TransferPerCompany(dtSummary, "TMF");
-                            excelWorksheet.Cells[21, 6].Value = CashPerCompany(dtSummary, "TMF");
-                            excelWorksheet.Cells[21, 7].Value = CountPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[21, 3].Value = new NetPay().NetPayPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[21, 4].Value = new Credit().CreditPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[21, 5].Value = new Transfer().TransferPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[21, 6].Value = new Cash().CashPerCompany(dtSummary, "TMF");
+                            excelWorksheet.Cells[21, 7].Value = new CompanyCount().CountPerCompany(dtSummary, "TMF");
 
-                            netpay1 += NetPayPerCompany(dtSummary, "TMF");
-                            credit1 += CreditPerCompany(dtSummary, "TMF");
-                            transfer1 += TransferPerCompany(dtSummary, "TMF");
-                            cashi1 += CashPerCompany(dtSummary, "TMF");
-                            counti1 += CountPerCompany(dtSummary, "TMF");
+                            netpay1 += new NetPay().NetPayPerCompany(dtSummary, "TMF");
+                            credit1 += new Credit().CreditPerCompany(dtSummary, "TMF");
+                            transfer1 += new Transfer().TransferPerCompany(dtSummary, "TMF");
+                            cashi1 += new Cash().CashPerCompany(dtSummary, "TMF");
+                            counti1 += new CompanyCount().CountPerCompany(dtSummary, "TMF");
 
                             //STL
                             using (var _context = new STLxEntities())
@@ -1444,17 +1420,17 @@ namespace STLx
 
                                 foreach (var clist in companyList)
                                 {
-                                    excelWorksheet.Cells[initialRow, 3].Value = NetPayPerCompany(dtSummary, clist.Code);
-                                    excelWorksheet.Cells[initialRow, 4].Value = CreditPerCompany(dtSummary, clist.Code);
-                                    excelWorksheet.Cells[initialRow, 5].Value = TransferPerCompany(dtSummary, clist.Code);
-                                    excelWorksheet.Cells[initialRow, 6].Value = CashPerCompany(dtSummary, clist.Code);
-                                    excelWorksheet.Cells[initialRow, 7].Value = CountPerCompany(dtSummary, clist.Code);
+                                    excelWorksheet.Cells[initialRow, 3].Value = new NetPay().NetPayPerCompany(dtSummary, clist.Code);
+                                    excelWorksheet.Cells[initialRow, 4].Value = new Credit().CreditPerCompany(dtSummary, clist.Code);
+                                    excelWorksheet.Cells[initialRow, 5].Value = new Transfer().TransferPerCompany(dtSummary, clist.Code);
+                                    excelWorksheet.Cells[initialRow, 6].Value = new Cash().CashPerCompany(dtSummary, clist.Code);
+                                    excelWorksheet.Cells[initialRow, 7].Value = new CompanyCount().CountPerCompany(dtSummary, clist.Code);
 
-                                    netpay2 += NetPayPerCompany(dtSummary, clist.Code);
-                                    credit2 += CreditPerCompany(dtSummary, clist.Code);
-                                    transfer2 += TransferPerCompany(dtSummary, clist.Code);
-                                    cashi2 += CashPerCompany(dtSummary, clist.Code);
-                                    counti2 += CountPerCompany(dtSummary, clist.Code);
+                                    netpay2 += new NetPay().NetPayPerCompany(dtSummary, clist.Code);
+                                    credit2 += new Credit().CreditPerCompany(dtSummary, clist.Code);
+                                    transfer2 += new Transfer().TransferPerCompany(dtSummary, clist.Code);
+                                    cashi2 += new Cash().CashPerCompany(dtSummary, clist.Code);
+                                    counti2 += new CompanyCount().CountPerCompany(dtSummary, clist.Code);
 
                                     initialRow++;
                                 }
@@ -1485,115 +1461,6 @@ namespace STLx
                 MessageBox.Show(e.Message);
             }
             DeleteZeroSummary(path + "\\Summary.xlsx");
-        }
-
-        private static int CountPerCompany(DataTable dtSummary, string Company)
-        {
-            var compCount = 0;
-            try
-            {
-                var result = dtSummary.AsEnumerable()
-                                      .Where(r => r.Field<string>("Company")
-                                      .Contains(Company));
-                compCount = result.Count();
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
-            return compCount;
-        }
-
-        private static decimal NetPayPerCompany(DataTable dtSummary, string Company)
-        {
-            var netpay = 0m;
-            try
-            {
-                var result = dtSummary.AsEnumerable()
-                    .Where(r => r.Field<string>("Company").Contains(Company))
-                    .GroupBy(r => new { Company = r.Field<string>("Company") })
-                    .Select(np => new
-                    {
-                        NetPay = np.Sum(c => c.Field<decimal>("Bank"))
-                    })
-                    .FirstOrDefault();
-                netpay = result.NetPay;
-            }
-            catch (Exception)
-            {
-                return 0m;
-            }
-
-            return netpay;
-        }
-
-        private static decimal CashPerCompany(DataTable dtSummary, string Company)
-        {
-            var cash = 0m;
-            try
-            {
-                var result = dtSummary.AsEnumerable()
-                    .Where(r => r.Field<string>("Company").Contains(Company))
-                    .GroupBy(r => new { Company = r.Field<string>("Company") })
-                    .Select(np => new
-                    {
-                        Cash = np.Sum(c => c.Field<decimal>("Cash"))
-                    })
-                    .FirstOrDefault();
-                cash = result.Cash;
-            }
-            catch (Exception)
-            {
-                return 0m;
-            }
-
-            return cash;
-        }
-
-        private static decimal TransferPerCompany(DataTable dtSummary, string Company)
-        {
-            var transfer = 0m;
-            try
-            {
-                var result = dtSummary.AsEnumerable()
-                    .Where(r => r.Field<string>("Company").Contains(Company))
-                    .GroupBy(r => new { Company = r.Field<string>("Company") })
-                    .Select(np => new
-                    {
-                        Transfer = np.Sum(c => c.Field<decimal>("Transfer"))
-                    })
-                    .FirstOrDefault();
-                transfer = result.Transfer;
-            }
-            catch (Exception)
-            {
-                return 0m;
-            }
-
-            return transfer;
-        }
-
-        private static decimal CreditPerCompany(DataTable dtSummary, string Company)
-        {
-            decimal credit = 0m;
-            try
-            {
-                var result = dtSummary.AsEnumerable()
-                    .Where(r => r.Field<string>("Company").Contains(Company))
-                    .GroupBy(r => new { Company = r.Field<string>("Company") })
-                    .Select(np => new
-                    {
-                        Credit = np.Sum(c => c.Field<decimal>("Credit"))
-                    })
-                    .FirstOrDefault();
-                credit = result.Credit;
-            }
-            catch (Exception)
-            {
-                return 0m;
-            }
-            
-            return credit;
         }
     }
 }

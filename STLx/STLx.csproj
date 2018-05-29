@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DatabaseConnections, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DatabaseConnections.2.0.0\lib\net35\DatabaseConnections.dll</HintPath>
+    </Reference>
+    <Reference Include="DatabaseConnections.OleDb, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DatabaseConnections.OleDb.2.0.0\lib\net35\DatabaseConnections.OleDb.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -74,6 +80,9 @@
     <Compile Include="Company.Designer.cs">
       <DependentUpon>Company.cs</DependentUpon>
     </Compile>
+    <Compile Include="Util\Cash.cs" />
+    <Compile Include="Util\CompanyCount.cs" />
+    <Compile Include="Util\Credit.cs" />
     <Compile Include="FormAuto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +91,7 @@
     </Compile>
     <Compile Include="Helpers\ExcelDataTable.cs" />
     <Compile Include="Helpers\Util.cs" />
+    <Compile Include="Util\Iqama.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,7 +107,9 @@
     <Compile Include="Services\PayrollProof.cs" />
     <Compile Include="Util\EmployeeIdNo.cs" />
     <Compile Include="Util\ExcelConvert.cs" />
+    <Compile Include="Util\NetPay.cs" />
     <Compile Include="Util\SeparateMoney.cs" />
+    <Compile Include="Util\Transfer.cs" />
     <Compile Include="WBank.cs">
       <SubType>Form</SubType>
     </Compile>
