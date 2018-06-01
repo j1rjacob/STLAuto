@@ -19,10 +19,21 @@ namespace STLx
 {
     public partial class FormAuto : Form
     {
+        private readonly WorkSheetName _workSheetName;
+
         public FormAuto()
         {
             InitializeComponent();
             System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("ar-SA");
+            _payrollNetPay = new PayrollNetPay();
+            _payrollCompany = new PayrollCompany();
+            _payrollBatchId = new PayrollBatchId();
+            _workSheetName = new WorkSheetName();
+        }
+
+        public WorkSheetName WorkSheetName
+        {
+            get { return _workSheetName; }
         }
 
         private void buttonPayroll_Click(object sender, EventArgs e)
@@ -169,7 +180,7 @@ namespace STLx
 
                     #region BigSalaries
                     var filePath = textBoxBig.Text;
-                    var ctsB = GetDataTableData(GetWorkSheetName(filePath), filePath);
+                    var ctsB = GetDataTableData(new WorkSheetName().GetWorkSheetName(filePath), filePath);
 
                     foreach (var ct in ctsB)
                     {
@@ -180,13 +191,14 @@ namespace STLx
                         }
                     }
 
-                    foreach (DataRow dr in dtBig.Rows) //TODO: get data from dbase not in excel wbank
+                var empIdIndexBigSalary = new Iqama().GetEmpIdColumn(dtBig);
+                foreach (DataRow dr in dtBig.Rows) //TODO: get data from dbase not in excel wbank
                     {
                         for (int i = 0; i < dtBig.Columns.Count; i++)
                         {
-                            if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
+                            if (new EmployeeIdNo().CheckMatch(dr[empIdIndexBigSalary].ToString().Trim()))
                             {   //TODO: Change of excel form can't find column 
-                                dtBigSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 1].ToString().Trim(), 0m, 0m, 0m, 0m,
+                                dtBigSalaries.Rows.Add(dr[empIdIndexBigSalary].ToString().Trim(), dr[i - 1].ToString().Trim(), 0m, 0m, 0m, 0m,
                                     0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[i + 1].ToString().Trim(), 0m, 0m, "");
                                 break;
                             }
@@ -196,7 +208,7 @@ namespace STLx
 
                     #region SmallSalaries
                     var filePathS = textBoxSmall.Text;
-                    var ctsS = GetDataTableData(GetWorkSheetName(filePathS), filePathS);
+                    var ctsS = GetDataTableData(new WorkSheetName().GetWorkSheetName(filePathS), filePathS);
 
                     foreach (var ct in ctsS)
                     {
@@ -225,7 +237,7 @@ namespace STLx
 
                     #region Gosi
                     filePath = textBoxGosi.Text;
-                    var ctsG = GetDataTableData(GetWorkSheetName(filePath), filePath);
+                    var ctsG = GetDataTableData(new WorkSheetName().GetWorkSheetName(filePath), filePath);
 
                     foreach (var ct in ctsG)
                     {
@@ -239,11 +251,11 @@ namespace STLx
                     dataGridView2.DataSource = dtGosi;
 
                     var empIdIndexGosi = new Iqama().GetEmpIdColumn(dtGosi);
-                    var batchNoIndexGosi = GetGosiBatchNoColumn();
-                    var aestheticIndexGosi = GetGosiAestheticColumn();
-                    var basicSalaryIndexGosi = GetGosiBasicSalaryColumn();
-                    var housingAllowanceIndexGosi = GetHousingAllowanceColumn();
-                    var otherEarningsIndexGosi = GetOtherEarningsColumn();
+                    var batchNoIndexGosi = new GosiBatchNo().GetGosiBatchNoColumn(dataGridView2);
+                    var aestheticIndexGosi = new GosiAesthetic().GetGosiAestheticColumn(dataGridView2);
+                    var basicSalaryIndexGosi = new GosiBasicSalary().GetGosiBasicSalaryColumn(dataGridView2);
+                    var housingAllowanceIndexGosi = new HousingAllowance().GetHousingAllowanceColumn(dataGridView2);
+                    var otherEarningsIndexGosi = new OtherEarnings().GetOtherEarningsColumn(dataGridView2);
 
                     var EmpIdIndexBigSalaries = 0;
                     Int64 emplIdValueGosi;
@@ -315,7 +327,7 @@ namespace STLx
 
                     #region PayrollBigSalary
                     filePath = textBoxPayroll.Text;
-                    var ctsPB = GetDataTableData(GetWorkSheetName(filePath), filePath);
+                    var ctsPB = GetDataTableData(new WorkSheetName().GetWorkSheetName(filePath), filePath);
 
                     foreach (var ct in ctsPB)
                     {
@@ -326,9 +338,9 @@ namespace STLx
                         }
                     }
 
-                    var netPayPayrollPB = GetPayrollNetPay(dtPayroll);
-                    var companyPayrollPB = GetPayrollCompany(dtPayroll);
-                    var batchIDPayrollPB = GetPayrollBatchIdColumn(dtPayroll);
+                    var netPayPayrollPB = new PayrollNetPay().GetPayrollNetPay(dtPayroll);
+                    var companyPayrollPB = new PayrollCompany().GetPayrollCompany(dtPayroll);
+                    var batchIDPayrollPB = new PayrollBatchId().GetPayrollBatchIdColumn(dtPayroll);
 
                     Int64 batchIdPB;
                     var payrollPB = new Dictionary<string, string>();
@@ -393,7 +405,7 @@ namespace STLx
 
                     #region PayrollSmallSalary
                     filePath = textBoxPayroll.Text;
-                    var ctsPS = GetDataTableData(GetWorkSheetName(filePath), filePath);
+                    var ctsPS = GetDataTableData(new WorkSheetName().GetWorkSheetName(filePath), filePath);
 
                     foreach (var ct in ctsPS)
                     {
@@ -404,9 +416,9 @@ namespace STLx
                         }
                     }
 
-                    var netPayPayrollSB = GetPayrollNetPay(dtPayroll);
-                    var companyPayrollSB = GetPayrollCompany(dtPayroll);
-                    var batchIDPayrollSB = GetPayrollBatchIdColumn(dtPayroll);
+                    var netPayPayrollSB = new PayrollNetPay().GetPayrollNetPay(dtPayroll);
+                    var companyPayrollSB = new PayrollCompany().GetPayrollCompany(dtPayroll);
+                    var batchIDPayrollSB = new PayrollBatchId().GetPayrollBatchIdColumn(dtPayroll);
 
                     Int64 batchIdSB;
                     var payroll = new Dictionary<string, string>();
@@ -471,7 +483,7 @@ namespace STLx
 
                     dataGridView1.DataSource = dtAll;
 
-                    var salaryAmountSmall = GetSSalariesSalaryAmntColumn();
+                    var salaryAmountSmall = new SmallSalariesSalaryAmnt().GetSmallSalariesSalaryAmntColumn(dataGridView3);
 
                     UpdateSmallSalaries(dtSmallSalaries, textBoxSmall.Text, salaryAmountSmall + 1);
 
@@ -520,183 +532,6 @@ namespace STLx
 
         }
 
-        private int GetGosiAestheticColumn()
-        {
-            int columnNum = 0;
-            try
-            {
-                foreach (DataGridViewColumn column in dataGridView2.Columns)
-                {
-                    if (column.HeaderText == "الجمالي بعد البدلات")
-                    {
-                        columnNum = column.Index;
-                        break;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            return columnNum;
-        }
-
-        private int GetGosiBatchNoColumn()
-        {
-            int columnNum = 0;
-            try
-            {
-                foreach (DataGridViewColumn column in dataGridView2.Columns)
-                {
-                    if (column.HeaderText == "الرقم الوظيفي بالمنشأة")
-                    {
-                        columnNum = column.Index;
-                        break;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            return columnNum;
-        }
-
-        private int GetGosiBasicSalaryColumn()
-        {
-            int columnNum = 0;
-            try
-            {
-                foreach (DataGridViewColumn column in dataGridView2.Columns)
-                {
-                    if (column.HeaderText == "الأجر الأساسي")
-                    {
-                        columnNum = column.Index;
-                        break;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            return columnNum;
-        }
-
-        private int GetHousingAllowanceColumn()
-        {
-            int columnNum = 0;
-            try
-            {
-                foreach (DataGridViewColumn column in dataGridView2.Columns)
-                {
-                    if (column.HeaderText == "بدل السكن الشهري")
-                    {
-                        columnNum = column.Index;
-                        break;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            return columnNum;
-        }
-
-        private int GetOtherEarningsColumn()
-        {
-            int columnNum = 0;
-            try
-            {
-                foreach (DataGridViewColumn column in dataGridView2.Columns)
-                {
-                    if (column.HeaderText == "بدلات أخرى")
-                    {
-                        columnNum = column.Index;
-                        break;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            return columnNum;
-        }
-
-        private int GetPayrollNetPay(DataTable dTable)
-        {
-            int columnNum = 0;
-            try
-            {
-                foreach (DataRow dr in dTable.Rows)
-                {
-                    for (int i = 0; i < dTable.Columns.Count; i++)
-                    {
-                        if (dr[i].ToString().Trim() == "Net Pay")
-                        {
-                            columnNum = i;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            return columnNum;
-        }
-
-        private int GetPayrollCompany(DataTable dTable)
-        {
-            int columnNum = 0;
-            try
-            {
-                foreach (DataRow dr in dTable.Rows)
-                {
-                    for (int i = 0; i < dTable.Columns.Count; i++)
-                    {
-                        if (dr[i].ToString().Trim() == "Project")
-                        {
-                            columnNum = i;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            return columnNum;
-        }
-
-        private int GetPayrollBatchIdColumn(DataTable dTable)
-        {
-            int columnNum = 0;
-            try
-            {
-                foreach (DataRow dr in dTable.Rows)
-                {
-                    for (int i = 0; i < dTable.Columns.Count; i++)
-                    {
-                        if (dr[i].ToString().Trim() == "Emp. ID")
-                        {
-                            columnNum = i;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            return columnNum;
-        }
-
         private int GetBSalariesSalaryAmntColumn(DataTable dTable)
         {
             int columnNum = 0;
@@ -721,27 +556,6 @@ namespace STLx
             return columnNum;
         }
 
-        private int GetSSalariesSalaryAmntColumn()
-        {
-            int columnNum = 0;
-            try
-            {
-                foreach (DataGridViewColumn column in dataGridView3.Columns)
-                {
-                    if (column.HeaderText == "Salary_Amount")
-                    {
-                        columnNum = column.Index;
-                        break;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            return columnNum;
-        }
-
         private void UpdateBigSalaries(DataTable dt, string xPath, int salaryAmntCol)
         {
             try
@@ -749,7 +563,7 @@ namespace STLx
                 int tableNum = 0;
                 int counter = 1;
                 var filePath = textBoxBig.Text;
-                var ctsB = GetDataTableData(GetWorkSheetName(filePath), filePath);
+                var ctsB = GetDataTableData(new WorkSheetName().GetWorkSheetName(filePath), filePath);
 
                 foreach (var ct in ctsB)
                 {
@@ -819,7 +633,7 @@ namespace STLx
                 int tableNum = 0;
                 int counter = 1;
                 var filePathS = textBoxSmall.Text;
-                var ctsS = GetDataTableData(GetWorkSheetName(filePathS), filePathS);
+                var ctsS = GetDataTableData(new WorkSheetName().GetWorkSheetName(filePathS), filePathS);
 
                 foreach (var ct in ctsS)
                 {
@@ -889,32 +703,6 @@ namespace STLx
                 MessageBox.Show(e.Message);
             }
             return ct;
-        }
-
-        private List<string> GetWorkSheetName(string path)
-        {
-            var wsName = new List<string>();
-            try
-            {
-                var fileinfo = new FileInfo(path);
-                if (fileinfo.Exists)
-                {
-                    using (var package = new ExcelPackage(fileinfo))
-                    {
-                        package.Workbook.Worksheets.Add("Halla"); //WorkAround for list lol...
-                        var ws = package.Workbook.Worksheets.Select(x => x.Name);
-                        foreach (var sheet in ws)
-                        {
-                            wsName.Add(sheet);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            return wsName;
         }
 
         private void DeleteZeroBigRows(string xpath)

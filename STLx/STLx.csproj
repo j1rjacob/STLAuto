@@ -32,12 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DatabaseConnections, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DatabaseConnections.2.0.0\lib\net35\DatabaseConnections.dll</HintPath>
-    </Reference>
-    <Reference Include="DatabaseConnections.OleDb, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DatabaseConnections.OleDb.2.0.0\lib\net35\DatabaseConnections.OleDb.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -80,6 +74,21 @@
     <Compile Include="Company.Designer.cs">
       <DependentUpon>Company.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Util\PayrollBatchId.cs" />
+    <Compile Include="Util\PayrollCompany.cs" />
+    <Compile Include="Util\PayrollNetPay.cs" />
+    <Compile Include="Util\SmallSalariesSalaryAmnt.cs" />
+    <Compile Include="Util\OtherEarnings.cs" />
+    <Compile Include="Util\HousingAllowance.cs" />
+    <Compile Include="Util\GosiBasicSalary.cs" />
+    <Compile Include="Util\GosiBatchNo.cs" />
+    <Compile Include="Util\GosiAesthetic.cs" />
     <Compile Include="Helpers\SmartDB.cs" />
     <Compile Include="Util\Cash.cs" />
     <Compile Include="Util\CompanyCount.cs" />
@@ -123,8 +132,12 @@
     <Compile Include="WithoutBank.Designer.cs">
       <DependentUpon>WithoutBank.cs</DependentUpon>
     </Compile>
+    <Compile Include="WorkSheetName.cs" />
     <EmbeddedResource Include="Company.resx">
       <DependentUpon>Company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAuto.resx">
       <DependentUpon>FormAuto.cs</DependentUpon>
