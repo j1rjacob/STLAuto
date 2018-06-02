@@ -1,10 +1,10 @@
-using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OfficeOpenXml;
 
-namespace STLx
+namespace STLx.Util
 {
     public class WorkSheetName
     {

@@ -80,6 +80,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Util\BatchNo.cs" />
+    <Compile Include="Util\BigSalariesSalaryAmnt.cs" />
+    <Compile Include="Util\DataTableName.cs" />
     <Compile Include="Util\PayrollBatchId.cs" />
     <Compile Include="Util\PayrollCompany.cs" />
     <Compile Include="Util\PayrollNetPay.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="Util\NetPay.cs" />
     <Compile Include="Util\SeparateMoney.cs" />
     <Compile Include="Util\Transfer.cs" />
+    <Compile Include="Util\WorkSheetName.cs" />
     <Compile Include="WBank.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,7 +136,6 @@
     <Compile Include="WithoutBank.Designer.cs">
       <DependentUpon>WithoutBank.cs</DependentUpon>
     </Compile>
-    <Compile Include="WorkSheetName.cs" />
     <EmbeddedResource Include="Company.resx">
       <DependentUpon>Company.cs</DependentUpon>
     </EmbeddedResource>

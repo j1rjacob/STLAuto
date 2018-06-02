@@ -17,10 +17,6 @@ namespace STLx
 
         private void button1_Click(object sender, EventArgs e)
         {
-            sb = new OleDbConnectionStringBuilder();
-            sb.Provider = "Microsoft.Jet.OLEDB.4.0";
-            sb.DataSource = "E:\\MaskRider\\Setup\\pps.mdb";
-
             conn = new OleDbConnection(ConfigurationManager.ConnectionStrings["OleDBConn"].ConnectionString);
 
             DataTable table = new DataTable();
