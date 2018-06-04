@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -20,7 +19,6 @@ namespace STLx
         public FormAuto()
         {
             InitializeComponent();
-            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("ar-SA");
         }
 
         private void buttonPayroll_Click(object sender, EventArgs e)
@@ -149,9 +147,9 @@ namespace STLx
 
         private void buttonCalculate_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            if (textBoxSmall.Text != ""
+            try
+            {
+                if (textBoxSmall.Text != ""
                 && textBoxBig.Text != ""
                 && textBoxGosi.Text != ""
                 && textBoxPayroll.Text != ""
@@ -185,36 +183,6 @@ namespace STLx
                     {
                         if (new EmployeeIdNo().CheckMatch(dr[empIdIndexBigSalary].ToString().Trim()))
                         {
-                            //string batchNo;
-                            //try
-                            //{
-                            //    batchNo = dr[empIdIndexBigSalary - 1].ToString();
-                            //}
-                            //catch (IndexOutOfRangeException)
-                            //{
-                            //    var findIqama = dr[empIdIndexBigSalary].ToString();
-                            //    using (var _context = new STLxEntities())
-                            //    {
-                            //        var query = _context.WithBankAccounts.Where(
-                            //                b => b.Iqama == findIqama)
-                            //            .Select(w => new
-                            //            {
-                            //                batchNo = w.BatchNo
-                            //            })
-                            //            .FirstOrDefault();
-                            //        batchNo = query.batchNo;
-                            //    }
-                            //}
-                            //catch (NullReferenceException)
-                            //{
-                                
-                            //}
-                            //catch (Exception)
-                            //{
-                            //    batchNo = "0";
-                            //}
-                            //Console.WriteLine($"Batch No {batchNo}");
-
                             dtBigSalaries.Rows.Add(dr[empIdIndexBigSalary].ToString().Trim(), "", 0m, 0m, 0m, 0m,
                                 0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[empIdIndexBigSalary + 1].ToString().Trim(), 0m, 0m, "");
                             break;
@@ -540,12 +508,11 @@ namespace STLx
             {
                 MessageBox.Show("Please fill up all fields.");
             }
-            //}
-            //catch (Exception ex)
-            //{
-            //    //var msg = "Recheck excel files if equivalent to input field caption or \nContact Administrator";
-            //    MessageBox.Show(ex.Message, "Admin", MessageBoxButtons.OK);
-            //}
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Admin", MessageBoxButtons.OK);
+            }
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
@@ -616,6 +583,7 @@ namespace STLx
                     }
                 }
                 DeleteZeroBigRows(xPath);
+                DeleteZeroBigRows2(xPath);
             }
             catch (Exception ex)
             {
@@ -690,6 +658,34 @@ namespace STLx
                         excelWorksheet.Cells
                             .Where(cell =>
                                 cell.Address.StartsWith("F") 
+                                && cell.Value is double
+                                && (double)cell.Value == 00d)
+                            .Select(cell => cell.Start.Row)
+                            .ToList()
+                            .ForEach(r => excelWorksheet.Row(r).Hidden = true);
+                        excelPackage.Save();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                throw;
+            }
+        }
+        private void DeleteZeroBigRows2(string xpath)
+        {
+            try
+            {
+                var fileinfo = new FileInfo(xpath);
+                if (fileinfo.Exists)
+                {
+                    using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+                    {
+                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
+                        excelWorksheet.Cells
+                            .Where(cell =>
+                                cell.Address.StartsWith("E") 
                                 && cell.Value is double
                                 && (double)cell.Value == 00d)
                             .Select(cell => cell.Start.Row)
@@ -937,10 +933,7 @@ namespace STLx
             try
             {
                 var fileinfo = new FileInfo(path + "\\Summary.xlsx");
-                if (fileinfo.Exists)
-                {
-                    //throw new NotImplementedException();
-                }
+               
 
                 var query = dtSummary.AsEnumerable()
                     .GroupBy(r => new { Company = r.Field<string>("Company") })
@@ -982,7 +975,7 @@ namespace STLx
                     if (item.Company != "")
                     {
                         bankSmall += item.Bank;
-                        payrollSmall += item.Payroll;
+                        payrollSmall += item.Credit;
                     }
                 }
 
@@ -999,6 +992,7 @@ namespace STLx
                         Bank = grp.Sum(c => c.Field<decimal>("Bank")),
                         Payroll = grp.Sum(c => c.Field<decimal>("Payroll"))
                     });
+
                 decimal bankBig = 0m;
                 decimal payrollBig = 0m;
                 foreach (var item in qryBig)
@@ -1006,7 +1000,7 @@ namespace STLx
                     if (item.Company != "")
                     {
                         bankBig += item.Bank;
-                        payrollBig += item.Payroll;
+                        payrollBig += item.Transfer;
                     }
                 }
 
@@ -1040,13 +1034,13 @@ namespace STLx
 
                             //Credit
                             excelWorksheet.Cells[5, 2].Value = payrollSmall;
-                            excelWorksheet.Cells[5, 3].Value = bankSmall;
+                            //excelWorksheet.Cells[5, 3].Value = bankSmall;
                             excelWorksheet.Cells[5, 4].Value = payrollSmall - bankSmall;
                             excelWorksheet.Cells[5, 5].Value = queryPayrollCount.Count();
 
                             //Transfer
                             excelWorksheet.Cells[6, 2].Value = payrollBig;
-                            excelWorksheet.Cells[6, 3].Value = bankBig;
+                            //excelWorksheet.Cells[6, 3].Value = bankBig;
                             excelWorksheet.Cells[6, 4].Value = payrollBig - bankBig;
                             excelWorksheet.Cells[6, 5].Value = queryTransferCount.Count();
 
@@ -1161,7 +1155,7 @@ namespace STLx
                             using (var _context = new STLxEntities())
                             {
                                 var companyList = _context.Companies
-                                    .SqlQuery("SELECT * FROM[STLx].[dbo].[Company] WHERE Id  NOT IN(40, 39, 38, 37, 36) AND Status = 1  AND IsDelete = 0 ORDER BY Name")
+                                    .SqlQuery("SELECT * FROM [STLx].[dbo].[Company] WHERE Id  NOT IN(40, 39, 38, 37, 36) AND Status = 1  AND IsDelete = 0 ORDER BY Name")
                                     .ToList();
 
                                 int rowNum = 22;
@@ -1205,6 +1199,9 @@ namespace STLx
                                 excelWorksheet.Cells[initialRow + 1, 5].Value = transfer1 + transfer2;
                                 excelWorksheet.Cells[initialRow + 1, 6].Value = cashi1 + cashi2;
                                 excelWorksheet.Cells[initialRow + 1, 7].Value = counti1 + counti2;
+
+                                excelWorksheet.Cells[5, 3].Value = credit1 + credit2;
+                                excelWorksheet.Cells[6, 3].Value = transfer1 + transfer2;
                             }
                             excelPackage.Save();
                         }

@@ -103,7 +103,6 @@
       <DependentUpon>FormAuto.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ExcelDataTable.cs" />
-    <Compile Include="Helpers\Util.cs" />
     <Compile Include="Util\Iqama.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -115,9 +114,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ConnectionString.cs" />
-    <Compile Include="Services\DataTableUtil.cs" />
     <Compile Include="Services\MakeTable.cs" />
-    <Compile Include="Services\PayrollProof.cs" />
     <Compile Include="Util\EmployeeIdNo.cs" />
     <Compile Include="Util\ExcelConvert.cs" />
     <Compile Include="Util\NetPay.cs" />
