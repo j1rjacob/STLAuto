@@ -6,19 +6,19 @@ namespace STLx.Util
 {
     public class CompanyCount
     {
-        public int CountPerCompany(DataTable dtSummary, string Company)
+        public decimal CountPerCompany(DataTable dtSummary, string Company)
         {
-            var compCount = 0;
+            var compCount = 0m;
             try
             {
                 var result = dtSummary.AsEnumerable()
                     .Where(r => r.Field<string>("Company")
                         .Contains(Company));
-                compCount = result.Count();
+                compCount = Convert.ToDecimal(result.Count());
             }
             catch (Exception)
             {
-                return 0;
+                return 0m;
             }
             return compCount;
         }

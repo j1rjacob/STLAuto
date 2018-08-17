@@ -20,7 +20,6 @@ namespace STLx
         {
             InitializeComponent();
         }
-
         private void buttonPayroll_Click(object sender, EventArgs e)
         {
             try
@@ -31,11 +30,9 @@ namespace STLx
                 {
                     textBoxPayroll.Text = openFileDialog.FileName;
                 }
-
                 var filename = Path.GetFileNameWithoutExtension(openFileDialog.SafeFileName);
                 string currentDirectory = Path.GetDirectoryName(openFileDialog.FileName);
                 string filePath = Path.GetFullPath(currentDirectory);
-
                 if (new ExcelConvert().ConvertXlsx(filename, filePath))
                 {
                     textBoxPayroll.Text = filePath + "\\" + filename + ".xlsx";
@@ -51,7 +48,6 @@ namespace STLx
                 MessageBox.Show(ex.Message);
             }
         }
-
         private void buttonGosi_Click(object sender, EventArgs e)
         {
             try
@@ -82,7 +78,6 @@ namespace STLx
                 MessageBox.Show(ex.Message);
             }
         }
-
         private void buttonBig_Click(object sender, EventArgs e)
         {
             try
@@ -113,7 +108,6 @@ namespace STLx
                 MessageBox.Show(ex.Message);
             }
         }
-
         private void buttonSmall_Click(object sender, EventArgs e)
         {
             try
@@ -144,9 +138,11 @@ namespace STLx
                 MessageBox.Show(ex.Message);
             }
         }
-
         private void buttonCalculate_Click(object sender, EventArgs e)
         {
+            toolStripProgressBar.Style = ProgressBarStyle.Marquee;
+            toolStripProgressBar.MarqueeAnimationSpeed = 30;
+            //Task.Run(() => );
             try
             {
                 if (textBoxSmall.Text != ""
@@ -154,372 +150,373 @@ namespace STLx
                 && textBoxGosi.Text != ""
                 && textBoxPayroll.Text != ""
                 && TextBoxPaymentDescription.Text != "")
-            {
-                var dtBigSalaries = new MakeTable().BigSalaries();
-                var dtSmallSalaries = new MakeTable().BigSalaries();
-
-                DataTable dtPayroll = null;
-                DataTable dtGosi = null;
-                DataTable dtBig = null;
-                DataTable dtSmall = null;
-
-                #region BigSalaries
-                var filePath = textBoxBig.Text;
-                var ctsB = new DataTableName().GetDataTableName(new WorkSheetName().GetWorkSheetName(filePath), filePath);
-
-                foreach (var ct in ctsB)
                 {
-                    if (ct.ColoumnCount >= 13)
-                    {
-                        dtBig = ct.Table;
-                        break;
-                    }
-                }
+                    var dtBigSalaries = new MakeTable().BigSalaries();
+                    var dtSmallSalaries = new MakeTable().BigSalaries();
 
-                var empIdIndexBigSalary = new Iqama().GetEmpIdColumn(dtBig);
-                foreach (DataRow dr in dtBig.Rows) 
-                {
-                    for (int i = 0; i < dtBig.Columns.Count; i++)
+                    DataTable dtPayroll = null;
+                    DataTable dtGosi = null;
+                    DataTable dtBig = null;
+                    DataTable dtSmall = null;
+
+                    #region BigSalaries
+                    var filePath = textBoxBig.Text;
+                    var ctsB = new DataTableName().GetDataTableName(new WorkSheetName().GetWorkSheetName(filePath), filePath);
+
+                    foreach (var ct in ctsB)
                     {
-                        if (new EmployeeIdNo().CheckMatch(dr[empIdIndexBigSalary].ToString().Trim()))
+                        if (ct.ColoumnCount >= 13)
                         {
-                            dtBigSalaries.Rows.Add(dr[empIdIndexBigSalary].ToString().Trim(), "", 0m, 0m, 0m, 0m,
-                                0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[empIdIndexBigSalary + 1].ToString().Trim(), 0m, 0m, "");
+                            dtBig = ct.Table;
                             break;
                         }
                     }
-                }
-                #endregion
 
-                #region SmallSalaries
-                var filePathS = textBoxSmall.Text;
-                var ctsS = new DataTableName().GetDataTableName(new WorkSheetName().GetWorkSheetName(filePathS), filePathS);
-
-                foreach (var ct in ctsS)
-                {
-                    if (ct.ColoumnCount == 9)
+                    var empIdIndexBigSalary = new Iqama().GetEmpIdColumn(dtBig);
+                    foreach (DataRow dr in dtBig.Rows)
                     {
-                        dtSmall = ct.Table;
-                        break;
-                    }
-                }
-
-                dataGridView3.DataSource = dtSmall;
-
-                foreach (DataRow dr in dtSmall.Rows) //TODO: get data from dbase not in excel wobank
-                {
-                    for (int i = 0; i < dtSmall.Columns.Count; i++)
-                    {
-                        if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
+                        for (int i = 0; i < dtBig.Columns.Count; i++)
                         {
-                            dtSmallSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 3].ToString().Trim(), 0m, 0m, 0m,
-                                0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString(), dr[i - 1].ToString().Trim(), 0m, 0m, "");
+                            if (new EmployeeIdNo().CheckMatch(dr[empIdIndexBigSalary].ToString().Trim()))
+                            {
+                                dtBigSalaries.Rows.Add(dr[empIdIndexBigSalary].ToString().Trim(), "", 0m, 0m, 0m, 0m,
+                                    0m, 0m, 0m, dtBig.Rows.IndexOf(dr).ToString(), dr[empIdIndexBigSalary + 1].ToString().Trim(), 0m, 0m, "");
+                                break;
+                            }
+                        }
+                    }
+                    #endregion
+
+                    #region SmallSalaries
+                    var filePathS = textBoxSmall.Text;
+                    var ctsS = new DataTableName().GetDataTableName(new WorkSheetName().GetWorkSheetName(filePathS), filePathS);
+
+                    foreach (var ct in ctsS)
+                    {
+                        if (ct.ColoumnCount == 9)
+                        {
+                            dtSmall = ct.Table;
                             break;
                         }
                     }
-                }
-                #endregion
 
-                #region Gosi
-                filePath = textBoxGosi.Text;
-                var ctsG = new DataTableName().GetDataTableName(new WorkSheetName().GetWorkSheetName(filePath), filePath);
+                    dataGridView3.DataSource = dtSmall;
 
-                foreach (var ct in ctsG)
-                {
-                    if (ct.ColoumnCount == 14)
+                    foreach (DataRow dr in dtSmall.Rows) //TODO: get data from dbase not in excel wobank
                     {
-                        dtGosi = ct.Table;
-                        break;
-                    }
-                }
-
-                dataGridView2.DataSource = dtGosi;
-
-                var empIdIndexGosi = new Iqama().GetEmpIdColumn(dtGosi);
-                var batchNoIndexGosi = new GosiBatchNo().GetGosiBatchNoColumn(dataGridView2);
-                var aestheticIndexGosi = new GosiAesthetic().GetGosiAestheticColumn(dataGridView2);
-                var basicSalaryIndexGosi = new GosiBasicSalary().GetGosiBasicSalaryColumn(dataGridView2);
-                var housingAllowanceIndexGosi = new HousingAllowance().GetHousingAllowanceColumn(dataGridView2);
-                var otherEarningsIndexGosi = new OtherEarnings().GetOtherEarningsColumn(dataGridView2);
-
-                var EmpIdIndexBigSalaries = 0;
-                Int64 emplIdValueGosi;
-
-                //BIG
-                foreach (DataRow dr in dtGosi.Rows) //TODO: compare batch no or iqama 
-                {
-                    if (Int64.TryParse(dr[empIdIndexGosi].ToString().Trim(), out emplIdValueGosi))
-                    {
-                        DataRow row = dtBigSalaries.Select("Iqama ='" + emplIdValueGosi + "'").FirstOrDefault();
-
-                        if (row != null)
+                        for (int i = 0; i < dtSmall.Columns.Count; i++)
                         {
-                            if (row["BatchNo"] == null)
+                            if (new EmployeeIdNo().CheckMatch(dr[i].ToString().Trim()))
                             {
-                                dr[batchNoIndexGosi].ToString();
+                                dtSmallSalaries.Rows.Add(dr[i].ToString().Trim(), dr[i - 3].ToString().Trim(), 0m, 0m, 0m,
+                                    0m, 0m, 0m, 0m, dtSmall.Rows.IndexOf(dr).ToString(), dr[i - 1].ToString().Trim(), 0m, 0m, "");
+                                break;
                             }
-
-                            row["BatchNo"] = Convert.ToDecimal(dr[batchNoIndexGosi] == DBNull.Value
-                                ? 0
-                                : dr[batchNoIndexGosi]);
-
-                            row["Aesthetic"] = Convert.ToDecimal(dr[aestheticIndexGosi] == DBNull.Value
-                                ? 0
-                                : dr[aestheticIndexGosi]);
-                            row["BasicSalary"] = Convert.ToDecimal(dr[basicSalaryIndexGosi] == DBNull.Value
-                                ? 0
-                                : dr[basicSalaryIndexGosi]);
-                            row["HousingAllowance"] = Convert.ToDecimal(dr[housingAllowanceIndexGosi] == DBNull.Value
-                                ? 0
-                                : dr[housingAllowanceIndexGosi]);
-                            row["OtherEarnings"] = Convert.ToDecimal(dr[otherEarningsIndexGosi] == DBNull.Value
-                                ? 0
-                                : dr[otherEarningsIndexGosi]);
-
-                            dtBigSalaries.AcceptChanges();
                         }
                     }
-                }
+                    #endregion
 
-                //SMALL 
-                foreach (DataRow dr in dtGosi.Rows) //TODO: compare batch no or iqama
-                {
-                    if (Int64.TryParse(dr[empIdIndexGosi].ToString().Trim(), out emplIdValueGosi))
+                    #region Gosi
+                    filePath = textBoxGosi.Text;
+                    var ctsG = new DataTableName().GetDataTableName(new WorkSheetName().GetWorkSheetName(filePath), filePath);
+
+                    foreach (var ct in ctsG)
                     {
-                        DataRow row = dtSmallSalaries.Select("Iqama ='" + emplIdValueGosi + "'").FirstOrDefault();
-
-                        if (row != null)
+                        if (ct.ColoumnCount == 14)
                         {
-                            if (row["BatchNo"] == null)
-                            {
-                                dr[batchNoIndexGosi].ToString();
-                            }
-
-                            row["Aesthetic"] = Convert.ToDecimal(dr[aestheticIndexGosi] == DBNull.Value
-                                ? 0
-                                : dr[aestheticIndexGosi]);
-                            row["BasicSalary"] = Convert.ToDecimal(dr[basicSalaryIndexGosi] == DBNull.Value
-                                ? 0
-                                : dr[basicSalaryIndexGosi]);
-                            row["HousingAllowance"] = Convert.ToDecimal(dr[housingAllowanceIndexGosi] == DBNull.Value
-                                ? 0
-                                : dr[housingAllowanceIndexGosi]);
-                            row["OtherEarnings"] = Convert.ToDecimal(dr[otherEarningsIndexGosi] == DBNull.Value
-                                ? 0
-                                : dr[otherEarningsIndexGosi]);
-
-                            dtSmallSalaries.AcceptChanges();
+                            dtGosi = ct.Table;
+                            break;
                         }
                     }
-                }
-                #endregion
 
-                #region PayrollBigSalary
-                filePath = textBoxPayroll.Text;
-                var ctsPB = new DataTableName().GetDataTableName(new WorkSheetName().GetWorkSheetName(filePath), filePath);
+                    dataGridView2.DataSource = dtGosi;
 
-                foreach (var ct in ctsPB)
-                {
-                    if (ct.ColoumnCount == 22)
+                    var empIdIndexGosi = new Iqama().GetEmpIdColumn(dtGosi);
+                    var batchNoIndexGosi = new GosiBatchNo().GetGosiBatchNoColumn(dataGridView2);
+                    var aestheticIndexGosi = new GosiAesthetic().GetGosiAestheticColumn(dataGridView2);
+                    var basicSalaryIndexGosi = new GosiBasicSalary().GetGosiBasicSalaryColumn(dataGridView2);
+                    var housingAllowanceIndexGosi = new HousingAllowance().GetHousingAllowanceColumn(dataGridView2);
+                    var otherEarningsIndexGosi = new OtherEarnings().GetOtherEarningsColumn(dataGridView2);
+
+                    var EmpIdIndexBigSalaries = 0;
+                    Int64 emplIdValueGosi;
+
+                    //BIG
+                    foreach (DataRow dr in dtGosi.Rows) //TODO: compare batch no or iqama 
                     {
-                        dtPayroll = ct.Table;
-                        break;
-                    }
-                }
-
-                var netPayPayrollPB = new PayrollNetPay().GetPayrollNetPay(dtPayroll);
-                var companyPayrollPB = new PayrollCompany().GetPayrollCompany(dtPayroll);
-                var batchIDPayrollPB = new PayrollBatchId().GetPayrollBatchIdColumn(dtPayroll);
-
-                Int64 batchIdPB;
-                var payrollPB = new Dictionary<string, string>();
-                decimal salaryBig = 0m;
-                foreach (DataRow dr in dtPayroll.Rows)
-                {
-                    if (Int64.TryParse(dr[batchIDPayrollPB].ToString().Replace(".00", "").Replace(",", "").Trim(),
-                        out batchIdPB))
-                    {
-                        DataRow row = dtBigSalaries.Select("BatchNo ='" + batchIdPB + "'").FirstOrDefault();
-                        if (row != null)
+                        if (Int64.TryParse(dr[empIdIndexGosi].ToString().Trim(), out emplIdValueGosi))
                         {
-                            //Check Duplicate here remove then add again
-                            if (!payrollPB.ContainsKey(row["Iqama"].ToString()))
-                            {
-                                payrollPB.Add(row["Iqama"].ToString(), dr[netPayPayrollPB].ToString());
+                            DataRow row = dtBigSalaries.Select("Iqama ='" + emplIdValueGosi + "'").FirstOrDefault();
 
-                                salaryBig = Convert.ToDecimal(dr[netPayPayrollPB]);
-                                row["Bank"] =
-                                    Convert.ToDecimal(dr[netPayPayrollPB]) >= Convert.ToDecimal(row["Aesthetic"])
+                            if (row != null)
+                            {
+                                if (row["BatchNo"] == null)
+                                {
+                                    dr[batchNoIndexGosi].ToString();
+                                }
+
+                                row["BatchNo"] = Convert.ToDecimal(dr[batchNoIndexGosi] == DBNull.Value
+                                    ? 0
+                                    : dr[batchNoIndexGosi]);
+
+                                row["Aesthetic"] = Convert.ToDecimal(dr[aestheticIndexGosi] == DBNull.Value
+                                    ? 0
+                                    : dr[aestheticIndexGosi]);
+                                row["BasicSalary"] = Convert.ToDecimal(dr[basicSalaryIndexGosi] == DBNull.Value
+                                    ? 0
+                                    : dr[basicSalaryIndexGosi]);
+                                row["HousingAllowance"] = Convert.ToDecimal(dr[housingAllowanceIndexGosi] == DBNull.Value
+                                    ? 0
+                                    : dr[housingAllowanceIndexGosi]);
+                                row["OtherEarnings"] = Convert.ToDecimal(dr[otherEarningsIndexGosi] == DBNull.Value
+                                    ? 0
+                                    : dr[otherEarningsIndexGosi]);
+
+                                dtBigSalaries.AcceptChanges();
+                            }
+                        }
+                    }
+
+                    //SMALL 
+                    foreach (DataRow dr in dtGosi.Rows) //TODO: compare batch no or iqama
+                    {
+                        if (Int64.TryParse(dr[empIdIndexGosi].ToString().Trim(), out emplIdValueGosi))
+                        {
+                            DataRow row = dtSmallSalaries.Select("Iqama ='" + emplIdValueGosi + "'").FirstOrDefault();
+
+                            if (row != null)
+                            {
+                                if (row["BatchNo"] == null)
+                                {
+                                    dr[batchNoIndexGosi].ToString();
+                                }
+
+                                row["Aesthetic"] = Convert.ToDecimal(dr[aestheticIndexGosi] == DBNull.Value
+                                    ? 0
+                                    : dr[aestheticIndexGosi]);
+                                row["BasicSalary"] = Convert.ToDecimal(dr[basicSalaryIndexGosi] == DBNull.Value
+                                    ? 0
+                                    : dr[basicSalaryIndexGosi]);
+                                row["HousingAllowance"] = Convert.ToDecimal(dr[housingAllowanceIndexGosi] == DBNull.Value
+                                    ? 0
+                                    : dr[housingAllowanceIndexGosi]);
+                                row["OtherEarnings"] = Convert.ToDecimal(dr[otherEarningsIndexGosi] == DBNull.Value
+                                    ? 0
+                                    : dr[otherEarningsIndexGosi]);
+
+                                dtSmallSalaries.AcceptChanges();
+                            }
+                        }
+                    }
+                    #endregion
+
+                    #region PayrollBigSalary
+                    filePath = textBoxPayroll.Text;
+                    var ctsPB = new DataTableName().GetDataTableName(new WorkSheetName().GetWorkSheetName(filePath), filePath);
+
+                    foreach (var ct in ctsPB)
+                    {
+                        if (ct.ColoumnCount == 22)
+                        {
+                            dtPayroll = ct.Table;
+                            break;
+                        }
+                    }
+
+                    var netPayPayrollPB = new PayrollNetPay().GetPayrollNetPay(dtPayroll);
+                    var companyPayrollPB = new PayrollCompany().GetPayrollCompany(dtPayroll);
+                    var batchIDPayrollPB = new PayrollBatchId().GetPayrollBatchIdColumn(dtPayroll);
+
+                    Int64 batchIdPB;
+                    var payrollPB = new Dictionary<string, string>();
+                    decimal salaryBig = 0m;
+                    foreach (DataRow dr in dtPayroll.Rows)
+                    {
+                        if (Int64.TryParse(dr[batchIDPayrollPB].ToString().Replace(".00", "").Replace(",", "").Trim(),
+                            out batchIdPB))
+                        {
+                            DataRow row = dtBigSalaries.Select("BatchNo ='" + batchIdPB + "'").FirstOrDefault();
+                            if (row != null)
+                            {
+                                //Check Duplicate here remove then add again
+                                if (!payrollPB.ContainsKey(row["Iqama"].ToString()))
+                                {
+                                    payrollPB.Add(row["Iqama"].ToString(), dr[netPayPayrollPB].ToString());
+
+                                    salaryBig = Convert.ToDecimal(dr[netPayPayrollPB]);
+                                    row["Bank"] =
+                                        Convert.ToDecimal(dr[netPayPayrollPB]) >= Convert.ToDecimal(row["Aesthetic"])
+                                            ? Convert.ToDecimal(row["Aesthetic"])
+                                            : Convert.ToDecimal(dr[netPayPayrollPB]);
+                                    row["Transfer"] =
+                                        Convert.ToDecimal(dr[netPayPayrollPB]) >= Convert.ToDecimal(row["Aesthetic"])
+                                            ? Convert.ToDecimal(row["Aesthetic"])
+                                            : Convert.ToDecimal(dr[netPayPayrollPB]);
+                                    row["Cash"] =
+                                        (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"])) < 0
+                                            ? 0
+                                            : (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"]));
+                                }
+                                else
+                                {
+                                    var firstSalary = payrollPB.SingleOrDefault(x => x.Key == row["Iqama"].ToString());
+                                    salaryBig = Convert.ToDecimal(dr[netPayPayrollPB]) +
+                                                Convert.ToDecimal(firstSalary.Value);
+
+                                    payrollPB.Remove(firstSalary.Key);
+                                    payrollPB.Add(firstSalary.Key, salaryBig.ToString());
+
+                                    row["Bank"] = Convert.ToDecimal(salaryBig) >= Convert.ToDecimal(row["Aesthetic"])
                                         ? Convert.ToDecimal(row["Aesthetic"])
-                                        : Convert.ToDecimal(dr[netPayPayrollPB]);
-                                row["Transfer"] =
-                                    Convert.ToDecimal(dr[netPayPayrollPB]) >= Convert.ToDecimal(row["Aesthetic"])
+                                        : Convert.ToDecimal(salaryBig);
+                                    row["Transfer"] = Convert.ToDecimal(salaryBig) >= Convert.ToDecimal(row["Aesthetic"])
                                         ? Convert.ToDecimal(row["Aesthetic"])
-                                        : Convert.ToDecimal(dr[netPayPayrollPB]);
-                                row["Cash"] =
-                                    (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"])) < 0
+                                        : Convert.ToDecimal(salaryBig);
+                                    row["Cash"] = (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"])) < 0
                                         ? 0
                                         : (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"]));
+                                }
+                                row["Payroll"] = salaryBig;
+                                row["Company"] = dr[companyPayrollPB];
+                                dtBigSalaries.AcceptChanges();
                             }
-                            else
-                            {
-                                var firstSalary = payrollPB.SingleOrDefault(x => x.Key == row["Iqama"].ToString());
-                                salaryBig = Convert.ToDecimal(dr[netPayPayrollPB]) +
-                                            Convert.ToDecimal(firstSalary.Value);
-
-                                payrollPB.Remove(firstSalary.Key);
-                                payrollPB.Add(firstSalary.Key, salaryBig.ToString());
-
-                                row["Bank"] = Convert.ToDecimal(salaryBig) >= Convert.ToDecimal(row["Aesthetic"])
-                                    ? Convert.ToDecimal(row["Aesthetic"])
-                                    : Convert.ToDecimal(salaryBig);
-                                row["Transfer"] = Convert.ToDecimal(salaryBig) >= Convert.ToDecimal(row["Aesthetic"])
-                                    ? Convert.ToDecimal(row["Aesthetic"])
-                                    : Convert.ToDecimal(salaryBig);
-                                row["Cash"] = (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"])) < 0
-                                    ? 0
-                                    : (Convert.ToDecimal(salaryBig) - Convert.ToDecimal(row["Aesthetic"]));
-                            }
-                            row["Payroll"] = salaryBig;
-                            row["Company"] = dr[companyPayrollPB];
-                            dtBigSalaries.AcceptChanges();
                         }
                     }
-                }
-                #endregion
+                    #endregion
 
-                var salaryAmountBig = new BigSalariesSalaryAmnt().GetBigSalariesSalaryAmntColumn(dtBig);
+                    var salaryAmountBig = new BigSalariesSalaryAmnt().GetBigSalariesSalaryAmntColumn(dtBig);
 
-                UpdateBigSalaries(dtBigSalaries, textBoxBig.Text, salaryAmountBig + 1);
+                    UpdateBigSalaries(dtBigSalaries, textBoxBig.Text, salaryAmountBig + 1);
 
-                #region PayrollSmallSalary
-                filePath = textBoxPayroll.Text;
-                var ctsPS = new DataTableName().GetDataTableName(new WorkSheetName().GetWorkSheetName(filePath), filePath);
+                    #region PayrollSmallSalary
+                    filePath = textBoxPayroll.Text;
+                    var ctsPS = new DataTableName().GetDataTableName(new WorkSheetName().GetWorkSheetName(filePath), filePath);
 
-                foreach (var ct in ctsPS)
-                {
-                    if (ct.ColoumnCount == 22)
+                    foreach (var ct in ctsPS)
                     {
-                        dtPayroll = ct.Table;
-                        break;
-                    }
-                }
-
-                var netPayPayrollSB = new PayrollNetPay().GetPayrollNetPay(dtPayroll);
-                var companyPayrollSB = new PayrollCompany().GetPayrollCompany(dtPayroll);
-                var batchIDPayrollSB = new PayrollBatchId().GetPayrollBatchIdColumn(dtPayroll);
-
-                Int64 batchIdSB;
-                var payroll = new Dictionary<string, string>();
-                foreach (DataRow dr in dtPayroll.Rows)
-                {
-                    if (Int64.TryParse(dr[batchIDPayrollSB].ToString().Replace(".00", "").Replace(",", "").Trim(),
-                        out batchIdSB))
-                    {
-                        DataRow row = dtSmallSalaries.Select("BatchNo ='" + batchIdSB + "'").FirstOrDefault();
-
-                        if (row != null)
+                        if (ct.ColoumnCount == 22)
                         {
-                            if (!payroll.ContainsKey(row["Iqama"].ToString()))
-                            {
-                                payroll.Add(row["Iqama"].ToString(), dr[netPayPayrollSB].ToString());
-                                row["Payroll"] = Convert.ToDecimal(dr[netPayPayrollSB]);
-                                var sal = Convert.ToDecimal(dr[netPayPayrollSB]);
-                                row["Bank"] =
-                                    Convert.ToDecimal(dr[netPayPayrollSB]) >= Convert.ToDecimal(row["Aesthetic"])
-                                        ? Convert.ToDecimal(row["Aesthetic"])
-                                        : Convert.ToDecimal(dr[netPayPayrollSB]);
-                                row["Credit"] =
-                                    Convert.ToDecimal(dr[netPayPayrollSB]) >= Convert.ToDecimal(row["Aesthetic"])
-                                        ? Convert.ToDecimal(row["Aesthetic"])
-                                        : Convert.ToDecimal(dr[netPayPayrollSB]);
-                                row["Cash"] =
-                                    (Convert.ToDecimal(sal) - Convert.ToDecimal(row["Aesthetic"])) < 0
-                                        ? 0
-                                        : (Convert.ToDecimal(sal) - Convert.ToDecimal(row["Aesthetic"]));
-                            }
-                            else
-                            {
-                                var firstSalary = payroll.SingleOrDefault(x => x.Key == row["Iqama"].ToString());
-                                var salary = Convert.ToDecimal(dr[netPayPayrollSB]) +
-                                             Convert.ToDecimal(firstSalary.Value);
-                                payroll.Remove(firstSalary.Key);
-                                payroll.Add(firstSalary.Key, salary.ToString());
-
-                                row["Payroll"] = salary;
-
-                                row["Bank"] = Convert.ToDecimal(salary) >= Convert.ToDecimal(row["Aesthetic"])
-                                    ? Convert.ToDecimal(row["Aesthetic"])
-                                    : Convert.ToDecimal(salary);
-
-                                row["Credit"] = Convert.ToDecimal(salary) >= Convert.ToDecimal(row["Aesthetic"])
-                                    ? Convert.ToDecimal(row["Aesthetic"])
-                                    : Convert.ToDecimal(salary);
-
-                                row["Cash"] = (Convert.ToDecimal(salary) - Convert.ToDecimal(row["Aesthetic"])) < 0
-                                    ? 0
-                                    : (Convert.ToDecimal(salary) - Convert.ToDecimal(row["Aesthetic"]));
-                            }
-                            row["Company"] = dr[companyPayrollSB];
-                            dtSmallSalaries.AcceptChanges();
+                            dtPayroll = ct.Table;
+                            break;
                         }
                     }
+
+                    var netPayPayrollSB = new PayrollNetPay().GetPayrollNetPay(dtPayroll);
+                    var companyPayrollSB = new PayrollCompany().GetPayrollCompany(dtPayroll);
+                    var batchIDPayrollSB = new PayrollBatchId().GetPayrollBatchIdColumn(dtPayroll);
+
+                    Int64 batchIdSB;
+                    var payroll = new Dictionary<string, string>();
+                    foreach (DataRow dr in dtPayroll.Rows)
+                    {
+                        if (Int64.TryParse(dr[batchIDPayrollSB].ToString().Replace(".00", "").Replace(",", "").Trim(),
+                            out batchIdSB))
+                        {
+                            DataRow row = dtSmallSalaries.Select("BatchNo ='" + batchIdSB + "'").FirstOrDefault();
+
+                            if (row != null)
+                            {
+                                if (!payroll.ContainsKey(row["Iqama"].ToString()))
+                                {
+                                    payroll.Add(row["Iqama"].ToString(), dr[netPayPayrollSB].ToString());
+                                    row["Payroll"] = Convert.ToDecimal(dr[netPayPayrollSB]);
+                                    var sal = Convert.ToDecimal(dr[netPayPayrollSB]);
+                                    row["Bank"] =
+                                        Convert.ToDecimal(dr[netPayPayrollSB]) >= Convert.ToDecimal(row["Aesthetic"])
+                                            ? Convert.ToDecimal(row["Aesthetic"])
+                                            : Convert.ToDecimal(dr[netPayPayrollSB]);
+                                    row["Credit"] =
+                                        Convert.ToDecimal(dr[netPayPayrollSB]) >= Convert.ToDecimal(row["Aesthetic"])
+                                            ? Convert.ToDecimal(row["Aesthetic"])
+                                            : Convert.ToDecimal(dr[netPayPayrollSB]);
+                                    row["Cash"] =
+                                        (Convert.ToDecimal(sal) - Convert.ToDecimal(row["Aesthetic"])) < 0
+                                            ? 0
+                                            : (Convert.ToDecimal(sal) - Convert.ToDecimal(row["Aesthetic"]));
+                                }
+                                else
+                                {
+                                    var firstSalary = payroll.SingleOrDefault(x => x.Key == row["Iqama"].ToString());
+                                    var salary = Convert.ToDecimal(dr[netPayPayrollSB]) +
+                                                 Convert.ToDecimal(firstSalary.Value);
+                                    payroll.Remove(firstSalary.Key);
+                                    payroll.Add(firstSalary.Key, salary.ToString());
+
+                                    row["Payroll"] = salary;
+
+                                    row["Bank"] = Convert.ToDecimal(salary) >= Convert.ToDecimal(row["Aesthetic"])
+                                        ? Convert.ToDecimal(row["Aesthetic"])
+                                        : Convert.ToDecimal(salary);
+
+                                    row["Credit"] = Convert.ToDecimal(salary) >= Convert.ToDecimal(row["Aesthetic"])
+                                        ? Convert.ToDecimal(row["Aesthetic"])
+                                        : Convert.ToDecimal(salary);
+
+                                    row["Cash"] = (Convert.ToDecimal(salary) - Convert.ToDecimal(row["Aesthetic"])) < 0
+                                        ? 0
+                                        : (Convert.ToDecimal(salary) - Convert.ToDecimal(row["Aesthetic"]));
+                                }
+                                row["Company"] = dr[companyPayrollSB];
+                                dtSmallSalaries.AcceptChanges();
+                            }
+                        }
+                    }
+                    #endregion
+
+                    var dtAll = (dtBigSalaries.AsEnumerable().Union(dtSmallSalaries.AsEnumerable(),
+                        DataRowComparer.Default)).CopyToDataTable();
+
+                    dataGridView1.DataSource = dtAll;
+
+                    var salaryAmountSmall = new SmallSalariesSalaryAmnt().GetSmallSalariesSalaryAmntColumn(dataGridView3);
+
+                    UpdateSmallSalaries(dtSmallSalaries, textBoxSmall.Text, salaryAmountSmall + 1);
+
+                    ShadeBorder(textBoxSmall.Text, dtBigSalaries.Rows.Count + dtSmallSalaries.Rows.Count - 3, dtBigSalaries,
+                        dtSmallSalaries);
+
+                    Summary(textBoxSmall.Text, dtAll, dtSmallSalaries, dtBigSalaries);
+
+                    buttonCalculate.BackColor = Color.SaddleBrown;
+
+                    DialogResult dialogResult =
+                        MessageBox.Show("Calcution finished, Again?", "TMF", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        buttonCalculate.BackColor = Color.Green;
+                        buttonSmall.BackColor = Color.Green;
+                        buttonBig.BackColor = Color.Green;
+                        buttonGosi.BackColor = Color.Green;
+                        buttonPayroll.BackColor = Color.Green;
+
+                        textBoxSmall.Clear();
+                        textBoxBig.Clear();
+                        textBoxGosi.Clear();
+                        textBoxPayroll.Clear();
+                        TextBoxPaymentDescription.Clear();
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        MessageBox.Show("Ok");
+                    }
                 }
-                #endregion
-
-                var dtAll = (dtBigSalaries.AsEnumerable().Union(dtSmallSalaries.AsEnumerable(),
-                    DataRowComparer.Default)).CopyToDataTable();
-
-                dataGridView1.DataSource = dtAll;
-
-                var salaryAmountSmall = new SmallSalariesSalaryAmnt().GetSmallSalariesSalaryAmntColumn(dataGridView3);
-
-                UpdateSmallSalaries(dtSmallSalaries, textBoxSmall.Text, salaryAmountSmall + 1);
-
-                ShadeBorder(textBoxSmall.Text, dtBigSalaries.Rows.Count + dtSmallSalaries.Rows.Count - 3, dtBigSalaries,
-                    dtSmallSalaries);
-
-                Summary(textBoxSmall.Text, dtAll, dtSmallSalaries, dtBigSalaries);
-
-                buttonCalculate.BackColor = Color.SaddleBrown;
-
-                DialogResult dialogResult = 
-                    MessageBox.Show("Calcution finished, Again?", "TMF", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
+                else
                 {
-                    buttonCalculate.BackColor = Color.Green;
-                    buttonSmall.BackColor = Color.Green;
-                    buttonBig.BackColor = Color.Green;
-                    buttonGosi.BackColor = Color.Green;
-                    buttonPayroll.BackColor = Color.Green;
-
-                    textBoxSmall.Clear();
-                    textBoxBig.Clear();
-                    textBoxGosi.Clear();
-                    textBoxPayroll.Clear();
-                    TextBoxPaymentDescription.Clear();
+                    MessageBox.Show("Please fill up all fields.");
                 }
-                else if (dialogResult == DialogResult.No)
-                {
-                    MessageBox.Show("Ok");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please fill up all fields.");
-            }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Admin", MessageBoxButtons.OK);
             }
-        }
 
+            toolStripProgressBar.Style = ProgressBarStyle.Continuous;
+            toolStripProgressBar.MarqueeAnimationSpeed = 0;
+        }
         private void buttonSearch_Click(object sender, EventArgs e)
         {
 
         }
-
         private void UpdateBigSalaries(DataTable dt, string xPath, int salaryAmntCol)
         {
             try
@@ -582,15 +579,14 @@ namespace STLx
                         excelPackage.Save();
                     }
                 }
-                DeleteZeroBigRows(xPath);
-                DeleteZeroBigRows2(xPath);
+                HideZeroBigRows(xPath);
+                HideZeroBigRows2(xPath);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-
         private void UpdateSmallSalaries(DataTable dt, string xPath, int salaryAmntCol)
         {
             try
@@ -637,101 +633,14 @@ namespace STLx
                         excelPackage.Save();
                     }
                 }
-                DeleteZeroSmallRows(xPath);
+                HideZeroSmallRows(xPath);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-
-        private void DeleteZeroBigRows(string xpath)
-        {
-            try
-            {
-                var fileinfo = new FileInfo(xpath);
-                if (fileinfo.Exists)
-                {
-                    using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
-                    {
-                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
-                        excelWorksheet.Cells
-                            .Where(cell =>
-                                cell.Address.StartsWith("F") 
-                                && cell.Value is double
-                                && (double)cell.Value == 00d)
-                            .Select(cell => cell.Start.Row)
-                            .ToList()
-                            .ForEach(r => excelWorksheet.Row(r).Hidden = true);
-                        excelPackage.Save();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw;
-            }
-        }
-        private void DeleteZeroBigRows2(string xpath)
-        {
-            try
-            {
-                var fileinfo = new FileInfo(xpath);
-                if (fileinfo.Exists)
-                {
-                    using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
-                    {
-                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
-                        excelWorksheet.Cells
-                            .Where(cell =>
-                                cell.Address.StartsWith("E") 
-                                && cell.Value is double
-                                && (double)cell.Value == 00d)
-                            .Select(cell => cell.Start.Row)
-                            .ToList()
-                            .ForEach(r => excelWorksheet.Row(r).Hidden = true);
-                        excelPackage.Save();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw;
-            }
-        }
-
-        private void DeleteZeroSmallRows(string xpath)
-        {
-            try
-            {
-                var fileinfo = new FileInfo(xpath);
-                if (fileinfo.Exists)
-                {
-                    using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
-                    {
-                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[2];
-                        excelWorksheet.Cells
-                            .Where(cell =>
-                                cell.Address.StartsWith("H")
-                                && cell.Value is double
-                                && (double)cell.Value == 00d) //todo make dynamic
-                            .Select(cell => cell.Start.Row)
-                            .ToList()
-                            .ForEach(r => excelWorksheet.Row(r).Hidden = true);
-                        excelPackage.Save();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw;
-            }
-        }
-
-        private void DeleteZeroPayrollProofRows(string xpath)
+        private void HideZeroBigRows(string xpath)
         {
             try
             {
@@ -759,8 +668,7 @@ namespace STLx
                 throw;
             }
         }
-
-        private void DeleteZeroSummary(string xpath)
+        private void HideZeroBigRows2(string xpath)
         {
             try
             {
@@ -772,9 +680,9 @@ namespace STLx
                         ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
                         excelWorksheet.Cells
                             .Where(cell =>
-                                cell.Address.StartsWith("D") //workaround to show cash
+                                cell.Address.StartsWith("E")
                                 && cell.Value is double
-                                && (double)cell.Value == 0.00d)
+                                && (double)cell.Value == 00d)
                             .Select(cell => cell.Start.Row)
                             .ToList()
                             .ForEach(r => excelWorksheet.Row(r).Hidden = true);
@@ -788,7 +696,91 @@ namespace STLx
                 throw;
             }
         }
-
+        private void HideZeroSmallRows(string xpath)
+        {
+            try
+            {
+                var fileinfo = new FileInfo(xpath);
+                if (fileinfo.Exists)
+                {
+                    using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+                    {
+                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[2];
+                        excelWorksheet.Cells
+                            .Where(cell =>
+                                cell.Address.StartsWith("H")
+                                && cell.Value is double
+                                && (double)cell.Value == 00d) //todo make dynamic
+                            .Select(cell => cell.Start.Row)
+                            .ToList()
+                            .ForEach(r => excelWorksheet.Row(r).Hidden = true);
+                        excelPackage.Save();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                throw;
+            }
+        }
+        private void HideZeroPayrollProofRows(string xpath)
+        {
+            try
+            {
+                var fileinfo = new FileInfo(xpath);
+                if (fileinfo.Exists)
+                {
+                    using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+                    {
+                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
+                        excelWorksheet.Cells
+                            .Where(cell =>
+                                cell.Address.StartsWith("D")
+                                && cell.Value is double
+                                && (double)cell.Value == 00d)
+                            .Select(cell => cell.Start.Row)
+                            .ToList()
+                            .ForEach(r => excelWorksheet.Row(r).Hidden = true);
+                        excelPackage.Save();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                throw;
+            }
+        }
+        private void HideZeroSummary(string xpath)
+        {
+            try
+            {
+                var fileinfo = new FileInfo(xpath);
+                if (fileinfo.Exists)
+                {
+                    using (ExcelPackage excelPackage = new ExcelPackage(fileinfo))
+                    {
+                        ExcelWorksheet excelWorksheet = excelPackage.Workbook.Worksheets[1];
+                        excelWorksheet.Cells
+                            .Where(cell =>
+                                cell.Address.StartsWith("G") //workaround to show cash
+                                && cell.Value is double
+                                && (double)cell.Value == 00d)
+                            .Select(cell => cell.Start.Row)
+                            .ToList()
+                            .ForEach(r => excelWorksheet.Row(r).Hidden = true);
+                        excelWorksheet.Cells["G1:G125"].Style.Numberformat.Format = "0";
+                        excelPackage.Save();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                throw;
+            }
+        }
         private void ShadeBorder(string xpath, int colNum, DataTable dtBigSalary, DataTable dtSmallSalary)
         {
             try
@@ -915,8 +907,7 @@ namespace STLx
 
                         excelPackage.Save();
                     }
-                    //DeleteZeroPayrollProofRows(path + "\\PayrollProof.xlsx");
-                    //Console.WriteLine($"Cash Count {CashCount}");
+                    HideZeroPayrollProofRows(path + "\\PayrollProof.xlsx");
                 }
             }
             catch (Exception e)
@@ -925,7 +916,6 @@ namespace STLx
                 throw;
             }
         }
-
         private void Summary(string xpath, DataTable dtSummary, DataTable dtSmallSalary, DataTable dtBigSalary)
         {
             var path = Path.GetDirectoryName(xpath);
@@ -933,8 +923,6 @@ namespace STLx
             try
             {
                 var fileinfo = new FileInfo(path + "\\Summary.xlsx");
-               
-
                 var query = dtSummary.AsEnumerable()
                     .GroupBy(r => new { Company = r.Field<string>("Company") })
                     .Select(grp => new
@@ -1155,12 +1143,13 @@ namespace STLx
                             using (var _context = new STLxEntities())
                             {
                                 var companyList = _context.Companies
-                                    .SqlQuery("SELECT * FROM [STLx].[dbo].[Company] WHERE Id  NOT IN(40, 39, 38, 37, 36) AND Status = 1  AND IsDelete = 0 ORDER BY Name")
+                                    .SqlQuery("SELECT * FROM [Company] WHERE Id  NOT IN(47, 44, 41, 35, 8) AND Status = 1  AND IsDelete = 0 ORDER BY Name")
                                     .ToList();
 
                                 int rowNum = 22;
                                 foreach (var clist in companyList)
                                 {
+                                    Console.WriteLine(clist);
                                     excelWorksheet.Cells[rowNum, 2].Value = clist.Name;
                                     rowNum++;
                                 }
@@ -1217,7 +1206,7 @@ namespace STLx
             {
                 MessageBox.Show(e.Message);
             }
-            DeleteZeroSummary(path + "\\Summary.xlsx");
+            HideZeroSummary(path + "\\Summary.xlsx");
         }
     }
 }

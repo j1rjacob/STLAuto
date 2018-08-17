@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAuto));
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
@@ -52,6 +53,7 @@
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.buttonSearch = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
@@ -59,11 +61,18 @@
             // 
             // statusStrip
             // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar});
             this.statusStrip.Location = new System.Drawing.Point(0, 430);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(811, 22);
             this.statusStrip.TabIndex = 4;
             this.statusStrip.Text = "statusStrip1";
+            // 
+            // toolStripProgressBar
+            // 
+            this.toolStripProgressBar.Name = "toolStripProgressBar";
+            this.toolStripProgressBar.Size = new System.Drawing.Size(200, 16);
             // 
             // openFileDialog
             // 
@@ -327,6 +336,8 @@
             this.Name = "FormAuto";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Excel Auto Big Salary";
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
@@ -359,5 +370,6 @@
         private System.Windows.Forms.TextBox textBoxSearch;
         private System.Windows.Forms.Button buttonSearch;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
     }
 }
